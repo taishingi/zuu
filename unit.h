@@ -1,10 +1,7 @@
 #ifndef YUBEL_LIBRARY_H
 #define YUBEL_LIBRARY_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
+#include "check.h"
 
 #define IS_OK                 "The actual value match true"
 #define IS_KO                 "The actual value match false"
@@ -21,12 +18,7 @@
 #define IS_FULL               "The value is at tye maximum value"
 #define IS_NOT_FULL           "The value is not at the maximum value"
 
-extern unsigned int success;
-extern unsigned int failures;
-extern int status;
 
-#define immunity() fprintf(stdout,"\nAssertions : %d\nFailures   : %d\nExecuted   : %d\n\n",success,failures,success+failures);
-#define check(test, s, f) if(test) {success++; fprintf(stdout,"\n[  Ok  ] %s\n",s); status = EXIT_SUCCESS; } else{ failures++; fprintf(stderr,"\n[  KO  ] %s %s %d\n",f,__FILE__,__LINE__); status = EXIT_FAILURE;} if(status) { immunity() exit(status);}
 #define ok(actual) check((actual),IS_OK,IS_KO);
 #define ko(actual) check(!(actual),IS_KO,IS_OK);
 #define equals(actual, expected) check((actual) == (expected),IS_EQUALS,IS_NOT_EQUALS);
