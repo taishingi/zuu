@@ -14,6 +14,7 @@ void test_basic(void)
 	identical("aa","aa")
 	different("a,","a!")
 	not(42,46)
+	is(42,42)
 }
 int main(void)
 {
