@@ -13,6 +13,7 @@ void test_basic(void)
 	unequals(1,2)
 	identical("aa","aa")
 	different("a,","a!")
+	not(42,46)
 }
 int main(void)
 {

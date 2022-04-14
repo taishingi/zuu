@@ -17,7 +17,8 @@
 #define IS_NOT_EMPTY          "The value is not empty"
 #define IS_FULL               "The value is at tye maximum value"
 #define IS_NOT_FULL           "The value is not at the maximum value"
-
+#define IS_NOT                "The value is not equal to the expected value"
+#define IS_NO_NOT             "The value is equal to the expected value"   
 
 #define ok(actual) check((actual),IS_OK,IS_KO);
 #define ko(actual) check(!(actual),IS_KO,IS_OK);
@@ -31,5 +32,7 @@
 #define desc(s) fprintf(stdout,"\n\033[1;37m[ \033[1;35m%s\033[30m \033[1;37m]\033[30m\n",s); 
 #define scenario(description, f) desc(description) f();
 #define theory(description, expected, f) desc(description)  check((expected) == (f()),THEORY_IS_TRUE,THEORY_IS_FALSE);
+#define not(actual,expected) check(actual != expected,IS_NOT,IS_NO_NOT);
+
 
 #endif
