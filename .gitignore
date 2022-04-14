@@ -14,3 +14,5 @@ yubel_*
 cmake-build-debug
 .idea
 .cmake
+.vscode
+build

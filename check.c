@@ -1,5 +1,7 @@
-#include "unit.h"
+#include "check.h"
 
-unsigned int success = 0;
-unsigned int failures = 0;
+double success = 0;
+double failures = 0;
 int status = EXIT_FAILURE;
+char bar_success[FILENAME_MAX];
+char bar_failure[FILENAME_MAX];

@@ -28,7 +28,8 @@
 #define def(actual) check((actual) != NULL,IS_DEF,IS_NOT_DEF);
 #define empty(actual) check(strcmp((actual),"") == 0,IS_EMPTY,IS_NOT_EMPTY);
 #define full(actual, max) if((max)) { check(((actual) / (max)) == 1,IS_FULL,IS_NOT_FULL);};
-#define scenario(description, f) fprintf(stdout,"\n// %s\n",description); f();
-#define theory(description, expected, f) fprintf(stdout,"\n// %s\n",description);  check((expected) == (f()),THEORY_IS_TRUE,THEORY_IS_FALSE);
+#define desc(s) fprintf(stdout,"\n\033[1;37m[ \033[1;35m%s\033[30m \033[1;37m]\033[30m\n",s); 
+#define scenario(description, f) desc(description) f();
+#define theory(description, expected, f) desc(description)  check((expected) == (f()),THEORY_IS_TRUE,THEORY_IS_FALSE);
 
 #endif
