@@ -36,7 +36,10 @@
         check(((actual) / (max)) == 1, IS_FULL, IS_NOT_FULL); \
     };
 #define desc(s) fprintf(stdout, "\n\033[1;37m[ \033[1;35m%s\033[30m \033[1;37m]\033[30m\n", s);
-#define scenario(description, f) desc(description) f();
+#define notify(s) fprintf(stdout, "\n\033[1;36m@%s\033[30m\033[30m\n", s);
+#define scenario(description, f) \
+    desc(description);           \
+    f();
 #define theory(description, expected, f) desc(description) check((expected) == (f()), THEORY_IS_TRUE, THEORY_IS_FALSE);
 #define not(actual, expected) check(actual != expected, IS_NOT, IS_NO_NOT);
 #define is(actual, expected) check(actual == expected, IS_IS, IS_NOT_IS);

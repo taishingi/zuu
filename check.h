@@ -7,11 +7,17 @@
 #include <string.h>
 #include <unistd.h>
 
+extern bool before_all_called;
 extern double success;
 extern double failures;
 extern int status;
 extern char bar_success[FILENAME_MAX];
 extern char bar_failure[FILENAME_MAX];
+extern void before_all(void);
+extern void before(void);
+extern void after(void);
+extern void after_all(void);
+
 #define repeat(input, count)          \
     for (int i = 0; i < count; i++)   \
     {                                 \
@@ -27,8 +33,19 @@ extern char bar_failure[FILENAME_MAX];
     {                                                                                                                                                                                                                                                                                \
         fprintf(stdout, "\n\n\033[1;37m[\033[30m");                                                                                                                                                                                                                                  \
         repeat("\033[1;32m#", (success / (success + failures) * 100) / 3) fprintf(stdout, "\033[1;37m] [ \033[1;32m%0.f \033[1;31m%0.f \033[1;37m]\033[30m\n\n", success, failures);                                                                                                 \
-    }
+    }                                                                                                                                                                                                                                                                                \
+    after_all();
 #define check(test, s, f)                                                                      \
+    if (before_all_called == false)                                                            \
+    {                                                                                          \
+        before_all();                                                                          \
+        before();                                                                              \
+        before_all_called = true;                                                              \
+    }                                                                                          \
+    else                                                                                       \
+    {                                                                                          \
+        before();                                                                              \
+    }                                                                                          \
     if (test)                                                                                  \
     {                                                                                          \
         success++;                                                                             \
@@ -44,6 +61,7 @@ extern char bar_failure[FILENAME_MAX];
         status = EXIT_FAILURE;                                                                 \
     }                                                                                          \
     usleep(100000);                                                                            \
+    after();                                                                                   \
     if (status)                                                                                \
     {                                                                                          \
         immunity();                                                                            \
