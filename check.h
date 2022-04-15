@@ -43,7 +43,7 @@ extern char bar_failure[FILENAME_MAX];
         strcat(bar_failure, "\033[1;31m#\033[30m");                                            \
         status = EXIT_FAILURE;                                                                 \
     }                                                                                          \
-    usleep(500000);                                                                            \
+    usleep(100000);                                                                            \
     if (status)                                                                                \
     {                                                                                          \
         immunity();                                                                            \
