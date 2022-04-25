@@ -5,11 +5,11 @@
 # Installation
 
 ```bash
-    git clone https://github.com/shingitai/yubel
+git clone https://github.com/shingitai/yubel
 ```
 
 ```bash
-    cd yubel && cmake . && sudo make install
+cd yubel && cmake . && sudo make install
 ```
 
 
@@ -85,5 +85,5 @@ int main(void)
 # Usage
 
 ```bash 
-    oh *.c
+oh *.c
 ```
