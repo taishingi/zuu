@@ -12,6 +12,14 @@
     cd yubel && cmake . && sudo make install
 ```
 
+
+# tests
+
+|function|
++--------+
+|   ok        |
+
+
 # Usage
 
 ```bash 
