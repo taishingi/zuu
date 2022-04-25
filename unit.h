@@ -29,6 +29,7 @@
 #define identical(actual, expected) check(strcmp((actual), (expected)) == 0, IS_IDENTICAL, IS_NOT_IDENTICAL);
 #define different(actual, expected) check(strcmp((actual), (expected)) != 0, IS_NOT_IDENTICAL, IS_IDENTICAL);
 #define def(actual) check((actual) != NULL, IS_DEF, IS_NOT_DEF);
+#define undef(actual) check((actual) == NULL, IS_NOT_DEF, IS_DEF);
 #define empty(actual) check(strcmp((actual), "") == 0, IS_EMPTY, IS_NOT_EMPTY);
 #define full(actual, max)                                     \
     if ((max))                                                \
