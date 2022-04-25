@@ -1,6 +1,7 @@
 #ifndef YUBEL_CHECK_H
 #define YUBEL_CHECK_H
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -20,6 +21,7 @@ extern void before_all(void);
 extern void before(void);
 extern void after(void);
 extern void after_all(void);
+extern FILE *foh;
 
 #define repeat(input, count)          \
     for (int i = 0; i < count; i++)   \
@@ -67,8 +69,15 @@ extern void after_all(void);
         exit(status);               \
     };
 
-int run(int argc,const char **argv);
-
-bool found(const char *a,const char *b);
-bool has(const char *x,const char *needle);
+int run(int argc, const char **argv);
+bool found(const char *a, const char *b);
+bool has(const char *x, const char *needle);
+bool oh_execute_last_command(void);
+FILE *get(const char *filename, const char *mode);
+bool has_oh_files(int argc, const char **argv);
+char *oh_file_path(const char *filename);
+bool oh(const char *filename);
+int oh_close();
+bool is_oh(const char *filename);
+bool oh_exec(char *cmd);
 #endif

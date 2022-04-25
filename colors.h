@@ -42,6 +42,7 @@
 #define alert(message) \
     danger(message);   \
     exit(1);
+#define die(message) alert(message);
 #define warning(message) msg(message, BACKGROUND_YELLOW, FOREGROUND_WHITE,"✴");
 #define info(message) msg(message, BACKGROUND_CYAN, FOREGROUND_WHITE,"✵");
 #define primary(message) msg(message, BACKGROUND_BLUE, FOREGROUND_WHITE,"🟍");
