@@ -14,11 +14,9 @@
 
 
 # tests
-
-|function|
---------------
-|   ok        |
-
+|  Function     | Do                                        | Arguments     |       
+|---------------|-------------------------------------------|---------------|
+|  ok           |  test if actual value is equal to true    | boolean       |
 
 # Usage
 
