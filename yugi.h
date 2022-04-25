@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "colors.h"
+#include "unit.h"
 
 extern bool before_all_called;
 extern double assertions;

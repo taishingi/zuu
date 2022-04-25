@@ -31,13 +31,7 @@
 |  is           |  check if a value is equal to an value                       | string,bool,pointer       |
 |  not          |  check if a value is not equal to an another value           | string,bool,pointer       |
 
-# Usage
-
-```bash 
-    oh *.c
-```
-
-# Minimum code
+# Minimum test code
 
 ```c
 #include <yugi.h>
@@ -88,3 +82,8 @@ int main(void)
 }
 ```
 
+# Usage
+
+```bash 
+    oh *.c
+```
