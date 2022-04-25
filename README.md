@@ -1,6 +1,6 @@
 # What is it ? 
 
-> It's a c framework to tests applications written in c.
+> It's a framework to tests applications written in c.
 
 # Installation
 
