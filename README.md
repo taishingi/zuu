@@ -31,7 +31,7 @@ cd yubel && cmake . && sudo make install
 |  is           |  check if a value is equal to an value                       | string,bool,pointer       |
 |  not          |  check if a value is not equal to an another value           | string,bool,pointer       |
 
-# Minimum test code
+# The minimum test code
 
 ```c
 #include <yugi.h>
@@ -82,7 +82,7 @@ int main(void)
 }
 ```
 
-# Usage
+# Test usage
 
 ```bash 
 oh *.c
