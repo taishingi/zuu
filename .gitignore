@@ -16,3 +16,5 @@ cmake-build-debug
 .cmake
 .vscode
 build
+oh
+debug
