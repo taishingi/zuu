@@ -4,7 +4,9 @@
 
 # Installation
 
-`git clone https://github.com/shingitai/yubel`
+```bash
+    git clone https://github.com/shingitai/yubel
+```
 
 `cd yubel && cmake . && sudo make install`
 
