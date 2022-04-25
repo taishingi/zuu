@@ -38,7 +38,6 @@ cd yubel && cmake . && sudo make install
 |  theory(description,expected,f)   |  check if a theory is true or false                          | char *|const char *,bool,void*                         | 
 |  is(a,b)                          |  check if a value is equal to an value                       | char *|const char *,bool,void*                         |
 |  not(a,b)                         |  check if a value is not equal to an another value           | char *|const char *,bool,void*                         |
-```
 # The unit minimum test code
 
 ```c
