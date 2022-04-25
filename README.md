@@ -14,6 +14,8 @@
 
 # Usage
 
-`oh test_file.c`
+```bash 
+    oh *.c
+```
 
 
