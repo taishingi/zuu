@@ -37,4 +37,54 @@
     oh *.c
 ```
 
+# Minimum code
+
+```c
+#include <yugi.h>
+
+/**
+ * 
+ * Function executed before all tests
+ * 
+ **/
+void before_all(void)
+{
+
+}
+
+/**
+ * 
+ * Function excecuted before a test
+ * 
+ **/ 
+void before(void)
+{
+
+}
+
+/**
+ * 
+ * Function executed after a test
+ * 
+ **/
+void after(void)
+{
+
+}
+
+/**
+ * 
+ * Function executed after al test
+ * 
+ **/
+void after_all(void)
+{
+    
+}
+
+int main(void)
+{
+    return status;
+}
+```
 
