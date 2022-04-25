@@ -8,7 +8,7 @@
     git clone https://github.com/shingitai/yubel
 ```
 
-````bash
+```bash
     cd yubel && cmake . && sudo make install
 ```
 
