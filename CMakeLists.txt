@@ -21,6 +21,6 @@ add_lib(colors)
 add_lib(unit)
 
 
-add_executable(oh oh.c oh.h)
+add_executable(oh oh.c yugi.h)
 target_link_libraries(oh yugi)
-install(PROGRAMS oh DESTINATION bin)
+install(PROGRAMS oh yugi DESTINATION bin)

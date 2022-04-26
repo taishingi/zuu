@@ -7,6 +7,8 @@
 #include <stdbool.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
+
 
 #include "colors.h"
 #include "unit.h"
@@ -69,15 +71,16 @@ extern FILE *foh;
         exit(status);               \
     };
 
+char *oh_history_file(void);
 int run(int argc, const char **argv);
 bool found(const char *a, const char *b);
 bool has(const char *x, const char *needle);
 bool oh_execute_last_command(void);
 FILE *get(const char *filename, const char *mode);
 bool has_oh_files(int argc, const char **argv);
-char *oh_file_path(const char *filename);
+const char *oh_file_path(const char *filename);
 bool oh(const char *filename);
 int oh_close();
 bool is_oh(const char *filename);
-bool oh_exec(char *cmd);
+bool oh_exec(const char *cmd);
 #endif

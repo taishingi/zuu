@@ -7,7 +7,7 @@ char bar_success[FILENAME_MAX];
 char bar_failure[FILENAME_MAX];
 bool before_all_called = false;
 FILE *foh = NULL;
-
+char x[FILENAME_MAX];
 bool found(const char *a, const char *b)
 {
     return strcmp(a, b) == 0;
@@ -20,7 +20,7 @@ bool has(const char *x, const char *needle)
 
 bool has_oh_files(int argc, const char **argv)
 {
-    for (int i = 0; i < argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         if (has(argv[i], "_oh.c"))
         {
@@ -39,21 +39,14 @@ FILE *get(const char *filename, const char *mode)
     }
     return foh;
 }
+char *oh_history_file(void)
+{
+    snprintf(x, FILENAME_MAX, "%s/.oh_history", getenv("HOME"));
+    return x;
+}
 bool oh_execute_last_command(void)
 {
-    char filename[FILENAME_MAX];
-    char *line;
-    size_t len;
-    snprintf(filename, FILENAME_MAX, "%s/.oh_history", getenv("HOME"));
-    foh = get(filename,"r");
-    fseek(foh, 0L, SEEK_END);
-    int x = getline(&line, &len, foh);
-
-    if (len > 0 && oh_close() && x)
-    {
-        return oh_exec(line);
-    }
-    die("We are not found history");
+    return oh_exec("yugi");
 }
 int oh_close()
 {
@@ -61,24 +54,33 @@ int oh_close()
     {
         remove("./debug");
     }
-    fclose(foh);
+    if (foh != NULL)
+    {
+        fclose(foh);
+    }
     return status;
 }
-char *oh_file_path(const char *filename)
+const char *oh_file_path(const char *filename)
 {
-    char *path =NULL;
-    char *res = realpath(filename, path);
-    if (res)
-    {
-        return path;
-    }
-    die("Failed to find the filename path");
+    char *res = realpath(filename, x);
+    return res != NULL ? x : "";
 }
 
-bool oh_exec(char *cmd)
+bool oh_exec(const char *cmd)
 {
     bool s = false;
     FILE *c = popen(cmd, "w");
+
+    if (!has(cmd, "yugi"))
+    {
+        FILE *save = get(oh_history_file(), "a+");
+        if (cmd != NULL)
+        {
+            fprintf(save, "%s\n", cmd);
+        }
+        fclose(save);
+    }
+
     if (!c)
     {
         status = EXIT_FAILURE;
@@ -101,19 +103,59 @@ bool oh_exec(char *cmd)
 }
 bool oh(const char *filename)
 {
+    char path[1024];
+
     char cmd[PATH_MAX];
-    snprintf(cmd, PATH_MAX, "gcc %s -o debug -l yugi -l unit && ./debug", oh_file_path(filename));
+    if (getcwd(path, 1024) == NULL)
+    {
+        die("Failed t found the current directory pathname");
+    }
+    snprintf(cmd, PATH_MAX, "gcc %s -o %s/specs/debug -l yugi -l unit", oh_file_path(filename), path);
+    oh_exec(cmd);
+    snprintf(cmd, PATH_MAX, "%s/specs/debug", path);
     return oh_exec(cmd);
 }
 bool is_oh(const char *filename)
 {
-    return strstr(filename, "_oh.c");
+    return strstr(filename, "_oh.c") != NULL;
 }
 int run(int argc, const char **argv)
 {
+    if (argc == 1)
+    {
+        if (oh_execute_last_command())
+        {
+            status = EXIT_SUCCESS;
+        }
+        return status;
+    }
+
+    if (argc == 2)
+    {
+        if (access(argv[1], F_OK) == 0)
+        {
+            goto run;
+        }
+        else
+        {
+            goto mode;
+        }
+    }
+    if (argc > 2)
+    {
+        if(found(argv[1], "-w") && found(argv[2], "-t"))
+        {
+            snprintf(x, FILENAME_MAX, "yugi --watch -t %s", argv[3]);
+            if (oh_exec(x))
+            {
+                status = EXIT_SUCCESS;
+            }
+        }
+        goto end;
+    }
+run:
     if (has_oh_files(argc, argv))
     {
-
         for (int i = 1; i < argc; i++)
         {
             if (is_oh(argv[i]))
@@ -129,9 +171,20 @@ int run(int argc, const char **argv)
             }
         }
     }
-    else if (oh_execute_last_command())
+    return status;
+mode:
+    if (found(argv[1], "-w"))
     {
-        status = EXIT_SUCCESS;
+        if (oh_exec("yugi --watch"))
+        {
+            status = EXIT_SUCCESS;
+        }
+        else
+        {
+            die("failed to run the watch mode");
+        }
+        goto end;
     }
-    return oh_close();
+end:
+    return status;
 }
