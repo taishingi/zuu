@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define FORMAT_RESET "\033[0m"
 #define FORMAT_BRIGHT "\033[1m"
@@ -34,18 +35,12 @@
 #define BACKGROUND_CYAN "\033[1;46m"
 #define BACKGROUND_WHITE "\033[1;47m"
 #define BACKGROUND_CRIMSON "\033[1;48m"
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
-#define msg(message, background, foreground, icon) fprintf(stdout, "%s%s%s\n\n %s %s\n%s\n", FORMAT_BRIGHT, background, foreground, icon, message, FORMAT_RESET);
-#define success(message) msg(message, BACKGROUND_GREEN, FOREGROUND_WHITE, "🗸");
-#define title(message) msg(message, BACKGROUND_BLUE, FOREGROUND_WHITE, "≟");
-#define danger(message) msg(message, BACKGROUND_RED, FOREGROUND_WHITE, "🟔");
-#define alert(message)                              \
-    danger(message);                                \
+#define echo(message, background, foreground) fprintf(stdout, "%s%s%s%s\n", background, foreground, message, FORMAT_RESET); sleep(1);
+#define msg(message) echo(message,BACKGROUND_BLACK,FOREGROUND_CYAN  ); sleep(0.7);
+
+#define die(message)                                 \
+    echo(message, BACKGROUND_BLACK, FOREGROUND_RED); \
     exit(1);
-#define die(message) alert(message);
-#define warning(message) msg(message, BACKGROUND_YELLOW, FOREGROUND_WHITE, "✴");
-#define info(message) msg(message, BACKGROUND_CYAN, FOREGROUND_WHITE, "✵");
-#define primary(message) msg(message, BACKGROUND_BLUE, FOREGROUND_WHITE, "🟍");
-#define secondary(message) msg(message, BACKGROUND_WHITE, FOREGROUND_RESET, "⭒");
-#define link(link) primary(link);
 #endif

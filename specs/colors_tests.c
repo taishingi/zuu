@@ -2,13 +2,7 @@
 
 int main()
 {
-    secondary("secondary");
-    primary("primary");
-    success("success");
-    danger("danger");
-    warning("warning");
-    info("info");
-    link("https://google.com");
-
+    echo("lol",BACKGROUND_BLACK,FOREGROUND_GREEN);
+    msg("lol");
     return 0;
 }

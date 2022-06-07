@@ -11,16 +11,15 @@ macro(add_lib name)
     install(FILES ${name}.h DESTINATION include)
     install(TARGETS ${name} DESTINATION lib)
     add_executable(yubel_${name} specs/${name}_tests.c ${name}.h)
-    target_link_libraries(yubel_${name} ${name} yugi)
+    target_link_libraries(yubel_${name} ${name} )
     add_test(${name} ./yubel_${name} ==0)
 endmacro()
 
 
-add_lib(yugi)
 add_lib(colors)
 add_lib(unit)
+add_lib(installation)
 
+add_executable(yugi yugi.c yugi.h)
 
-add_executable(oh oh.c yugi.h)
-target_link_libraries(oh yugi)
 install(PROGRAMS oh yugi DESTINATION bin)

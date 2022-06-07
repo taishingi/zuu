@@ -26,9 +26,18 @@ void test_basic(void)
 	ok(true);
 	ko(false);
 	equals(1, 1);
-	unequals(1, 2);
+	equals(1, 1);
+	equals(1, 1);
+	equals(1, 1);
+	equals(1, 1);
+	equals(1, 1);
+	equals(1, 1);
+	paradox("pythagore incorrect", 3, hypot(3, 4));
+	equals(1, 1);
+	unequals(1, 10);
 	identical("aa", "aa");
-	different("a,", "a!") not(42, 46);
+	different("a,", "a!");
+	not(42, 46);
 	is(42, 42);
 }
 int main(void)
