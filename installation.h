@@ -28,5 +28,4 @@ installation *install(const char *description);
 installation *make(const char *command);
 installation *rm(const char *data);
 
-
 #endif

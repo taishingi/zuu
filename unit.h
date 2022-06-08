@@ -31,6 +31,10 @@
 #define IS_NOT_IS "The value is not equal to the expected value"
 #define PARADOX_IS_TRUE "The paradox is true"
 #define PARADOX_IS_FALSE "The paradox is false"
+#define IS_SUPERIOR "The value is superior to the expected value"
+#define IS_NOT_SUPERIOR "The value is not superior to the expected value"
+#define IS_INFERIOR "The value is inferior to the expected value"
+#define IS_NOT_INFERIOR "The value is not inferior to the expected value"
 
 extern bool before_all_called;
 extern double assertions;
@@ -78,6 +82,7 @@ extern void after_all(void);
     else                                             \
     {                                                \
         failures++;                                  \
+        status = EXIT_FAILURE;                       \
         echo(s, BACKGROUND_BLACK, FOREGROUND_RED);   \
     }                                                \
     after();                                         \
@@ -89,6 +94,8 @@ extern void after_all(void);
 
 #define ok(actual) check((actual), IS_OK, IS_KO);
 #define ko(actual) check(!(actual), IS_KO, IS_OK);
+#define superior(actual, expected) check((actual) > expected, IS_SUPERIOR, IS_NOT_SUPERIOR);
+#define inferior(actual, expected) check((actual) < expected, IS_INFERIOR, IS_NOT_INFERIOR);
 #define equals(actual, expected) check((actual) == (expected), IS_EQUALS, IS_NOT_EQUALS);
 #define unequals(actual, expected) check((actual) != (expected), IS_EQUALS, IS_NOT_EQUALS);
 #define identical(actual, expected) check(strcmp((actual), (expected)) == 0, IS_IDENTICAL, IS_NOT_IDENTICAL);
@@ -101,16 +108,16 @@ extern void after_all(void);
     {                                                         \
         check(((actual) / (max)) == 1, IS_FULL, IS_NOT_FULL); \
     }
-#define scenario(description, f) \
-    echo(description,BACKGROUND_BLACK,FOREGROUND_CYAN);                  \
+#define scenario(description, f)                          \
+    echo(description, BACKGROUND_BLACK, FOREGROUND_CYAN); \
     f();
-#define theory(description, expected, f) \
-    echo(description,BACKGROUND_BLACK,FOREGROUND_CYAN);                  \
+#define theory(description, expected, f)                  \
+    echo(description, BACKGROUND_BLACK, FOREGROUND_CYAN); \
     check((expected) == (f()), THEORY_IS_TRUE, THEORY_IS_FALSE);
 #define not(actual, expected) check(actual != expected, IS_NOT, IS_NO_NOT);
 #define is(actual, expected) check(actual == expected, IS_IS, IS_NOT_IS);
 #define paradox(description, actual, expected) \
-    msg(description);                        \
+    msg(description);                          \
     check((actual) != (expected), PARADOX_IS_TRUE, PARADOX_IS_FALSE);
 
 #endif

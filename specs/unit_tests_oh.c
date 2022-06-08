@@ -24,6 +24,9 @@ int secret()
 void test_basic(void)
 {
 	ok(true);
+	inferior(1,2);
+	superior(2,1);
+	ok(true);
 	ko(false);
 	equals(1, 1);
 	equals(1, 1);

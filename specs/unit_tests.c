@@ -34,7 +34,7 @@ void test_basic(void)
 	equals(1, 1);
 	paradox("pythagore incorrect", 3, hypot(3, 4));
 	equals(1, 1);
-	unequals(1, 1);
+	unequals(10, 1);
 	identical("aa", "aa");
 	different("a,", "a!");
 	not(42, 46);
