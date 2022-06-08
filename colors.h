@@ -38,9 +38,7 @@
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 #define echo(message, background, foreground) fprintf(stdout, "%s%s%s%s\n", background, foreground, message, FORMAT_RESET); sleep(1);
-#define msg(message) echo(message,BACKGROUND_BLACK,FOREGROUND_CYAN  ); sleep(0.7);
+#define msg(message) echo(message,BACKGROUND_BLACK,FOREGROUND_CYAN  ); 
+#define die(message) echo(message, BACKGROUND_BLACK, FOREGROUND_RED); exit(1);
 
-#define die(message)                                 \
-    echo(message, BACKGROUND_BLACK, FOREGROUND_RED); \
-    exit(1);
 #endif

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdarg.h>
+#include "colors.h"
 
 typedef struct installation installation;
 struct installation

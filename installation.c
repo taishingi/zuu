@@ -30,9 +30,7 @@ installation *exist(const char *filename)
     }
     else
     {
-        puts("The filename has not been founded in the system\n");
-        sleep(1);
-        exit(EXIT_FAILURE);
+        die("The filename has not been founded in the system\n");
     }
     return rm(filename);
 }
@@ -72,9 +70,7 @@ installation *cd(const char *directory)
     }
     else
     {
-        fprintf(stderr, "The current directory has not been changed\n");
-        sleep(1);
-        exit(EXIT_FAILURE);
+        die("The current directory has not been changed\n");
     }
     return &i;
 }
