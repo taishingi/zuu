@@ -35,6 +35,10 @@
 #define IS_NOT_SUPERIOR "The value is not superior to the expected value"
 #define IS_INFERIOR "The value is inferior to the expected value"
 #define IS_NOT_INFERIOR "The value is not inferior to the expected value"
+#define IS_SUCCESSFUL "The exit status code is 0"
+#define IS_NOT_SUCCESSFUL "The exit status code isn't 0"
+#define IS_FAILED "The exit status code is 1"
+#define IS_NOT_FAILED "The exit status code isn't 0"
 
 extern bool before_all_called;
 extern double assertions;
@@ -96,6 +100,8 @@ extern void after_all(void);
 #define ko(actual) check(!(actual), IS_KO, IS_OK);
 #define superior(actual, expected) check((actual) > expected, IS_SUPERIOR, IS_NOT_SUPERIOR);
 #define inferior(actual, expected) check((actual) < expected, IS_INFERIOR, IS_NOT_INFERIOR);
+#define successful(actual) check((actual) == EXIT_SUCCESS, IS_SUCCESSFUL, IS_NOT_SUCCESSFUL);
+#define fail(actual) check((actual) == EXIT_FAILURE, IS_NOT_SUCCESSFUL, IS_SUCCESSFUL);
 #define equals(actual, expected) check((actual) == (expected), IS_EQUALS, IS_NOT_EQUALS);
 #define unequals(actual, expected) check((actual) != (expected), IS_EQUALS, IS_NOT_EQUALS);
 #define identical(actual, expected) check(strcmp((actual), (expected)) == 0, IS_IDENTICAL, IS_NOT_IDENTICAL);

@@ -21,6 +21,13 @@ int secret()
 	return 42;
 }
 
+void test_success(void)
+{
+	successful(0);
+	successful(EXIT_SUCCESS);
+	fail(EXIT_FAILURE);
+	fail(1);
+}
 void test_basic(void)
 {
 	ok(true);
@@ -43,6 +50,7 @@ void test_basic(void)
 int main(void)
 {
 	scenario("Basic tests", test_basic);
+	scenario("Succesfull tests", test_success);
 	theory("The secret of the life", 42, secret);
 	def("aaa");
 	full(100, 100);
