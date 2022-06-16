@@ -39,6 +39,8 @@
 #define IS_NOT_SUCCESSFUL "The exit status code isn't 0"
 #define IS_FAILED "The exit status code is 1"
 #define IS_NOT_FAILED "The exit status code isn't 0"
+#define CONTAINS "The actual value contains expected value"
+#define NOT_CONTAINS "The actual value not contains the expected value"
 
 extern bool before_all_called;
 extern double assertions;
@@ -109,6 +111,8 @@ extern void after_all(void);
 #define def(actual) check((actual) != NULL, IS_DEF, IS_NOT_DEF);
 #define undef(actual) check((actual) == NULL, IS_NOT_DEF, IS_DEF);
 #define empty(actual) check(strcmp((actual), "") == 0, IS_EMPTY, IS_NOT_EMPTY);
+#define contains(expected,actual) check(strstr(actual,expected) !=NULL,CONTAINS,NOT_CONTAINS);
+
 #define full(actual, max)                                     \
     if ((max))                                                \
     {                                                         \

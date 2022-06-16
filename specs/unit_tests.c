@@ -45,6 +45,7 @@ void test_basic(void)
 	identical("aa", "aa");
 	different("a,", "a!");
 	not(42, 46);
+	contains("a","I am a man")
 	is(42, 42);
 }
 int main(void)

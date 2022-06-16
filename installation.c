@@ -10,7 +10,6 @@ installation *download(const char *filename)
 installation *install(const char *description)
 {
     puts(description);
-    sleep(1);
     i.get = &get;
     i.cd = &cd;
     i.make = &make;
@@ -26,7 +25,6 @@ installation *exist(const char *filename)
     if (access(filename, F_OK))
     {
         puts("The filename has been found\n");
-        sleep(1);
     }
     else
     {
@@ -57,7 +55,6 @@ installation *make(const char *command)
         exit(EXIT_FAILURE);
     }
     pclose(f);
-    sleep(1);
     return &i;
 }
 
@@ -66,7 +63,6 @@ installation *cd(const char *directory)
     if (chdir(directory) == 0)
     {
         puts("The current directory has been changed successfully\n");
-        sleep(1);
     }
     else
     {
