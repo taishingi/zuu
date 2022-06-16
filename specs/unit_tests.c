@@ -1,5 +1,7 @@
 #include "../unit.h"
 
+bool policy = true;
+
 void before_all(void)
 {
 }
@@ -23,28 +25,28 @@ int secret()
 
 void test_success(void)
 {
-	successful(0);
-	successful(EXIT_SUCCESS);
-	fail(EXIT_FAILURE);
-	fail(1);
+	successful(0)
+	successful(EXIT_SUCCESS)
+	fail(EXIT_FAILURE)
+	fail(1)
 }
 void test_basic(void)
 {
-	ok(true);
-	ko(false);
-	equals(1, 1);
-	equals(1, 1);
-	equals(1, 1);
-	equals(1, 1);
-	equals(1, 1);
-	equals(1, 1);
-	equals(1, 1);
-	paradox("pythagore incorrect", 3, hypot(3, 4));
-	equals(1, 1);
-	unequals(10, 1);
-	identical("aa", "aa");
-	different("a,", "a!");
-	not(42, 46);
+	ok(true)
+	ko(false)
+	equals(1, 1)
+	equals(1, 1)
+	equals(1, 1)
+	equals(1, 1)
+	equals(1, 1)
+	equals(1, 1)
+	equals(1, 1)
+	paradox("pythagore incorrect", 3, hypot(3, 4))
+	equals(1, 1)
+	unequals(10, 1)
+	identical("aa", "aa")
+	different("a,", "a!")
+	not(42, 46)
 	contains("a","I am a man")
 	is(42, 42);
 }

@@ -51,7 +51,7 @@ extern void before_all(void);
 extern void before(void);
 extern void after(void);
 extern void after_all(void);
-
+extern bool policy;
 #define repeat(input, count)          \
     for (int i = 0; i < count; i++)   \
     {                                 \
@@ -68,34 +68,42 @@ extern void after_all(void);
         repeat("\033[1;32m#", (assertions / (assertions + failures) * 100) / 2) fprintf(stdout, "\033[1;37m] [ \033[1;32m%0.f \033[1;31m%0.f \033[1;37m]\033[30m\n\n", assertions, failures);                                                                                                    \
     }                                                                                                                                                                                                                                                                                            \
     after_all();
-#define check(test, s, f)                            \
-    if (before_all_called == false)                  \
-    {                                                \
-        before_all();                                \
-        before();                                    \
-        before_all_called = true;                    \
-    }                                                \
-    else                                             \
-    {                                                \
-        before();                                    \
-    }                                                \
-    if (test)                                        \
-    {                                                \
-        assertions++;                                \
-        echo(s, BACKGROUND_BLACK, FOREGROUND_GREEN); \
-        status = EXIT_SUCCESS;                       \
-    }                                                \
-    else                                             \
-    {                                                \
-        failures++;                                  \
-        status = EXIT_FAILURE;                       \
-        echo(s, BACKGROUND_BLACK, FOREGROUND_RED);   \
-    }                                                \
-    after();                                         \
-    if (status)                                      \
-    {                                                \
-        immunity();                                  \
-        exit(status);                                \
+#define check(test, s, f)                              \
+    if (before_all_called == false)                    \
+    {                                                  \
+        before_all();                                  \
+        before();                                      \
+        before_all_called = true;                      \
+    }                                                  \
+    else                                               \
+    {                                                  \
+        before();                                      \
+    }                                                  \
+    if (test)                                          \
+    {                                                  \
+        assertions++;                                  \
+        echo(s, BACKGROUND_BLACK, FOREGROUND_GREEN);   \
+        status = EXIT_SUCCESS;                         \
+    }                                                  \
+    else                                               \
+    {                                                  \
+        failures++;                                    \
+        status = EXIT_FAILURE;                         \
+        if (policy)                                    \
+        {                                              \
+            after();                                   \
+            die(f);                                    \
+        }                                              \
+        else                                           \
+        {                                              \
+            echo(f, BACKGROUND_BLACK, FOREGROUND_RED); \
+            after();                                   \
+        }                                              \
+        if (status)                                    \
+        {                                              \
+            immunity();                                \
+            exit(status);                              \
+        }                                              \
     }
 
 #define ok(actual) check((actual), IS_OK, IS_KO);
@@ -111,7 +119,7 @@ extern void after_all(void);
 #define def(actual) check((actual) != NULL, IS_DEF, IS_NOT_DEF);
 #define undef(actual) check((actual) == NULL, IS_NOT_DEF, IS_DEF);
 #define empty(actual) check(strcmp((actual), "") == 0, IS_EMPTY, IS_NOT_EMPTY);
-#define contains(expected,actual) check(strstr(actual,expected) !=NULL,CONTAINS,NOT_CONTAINS);
+#define contains(expected, actual) check(strstr(actual, expected) != NULL, CONTAINS, NOT_CONTAINS);
 
 #define full(actual, max)                                     \
     if ((max))                                                \
