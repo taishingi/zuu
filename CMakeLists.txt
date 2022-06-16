@@ -22,4 +22,4 @@ add_lib(installation)
 
 add_executable(yugi yugi.c yugi.h)
 
-install(PROGRAMS oh yugi DESTINATION bin)
+install(PROGRAMS  yugi DESTINATION bin)
