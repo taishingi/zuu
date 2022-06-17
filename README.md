@@ -70,6 +70,8 @@ int main(void)
 
 ```
 
+## Installation
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/shingitai/yubel/master/install | bash
 ```
