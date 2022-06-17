@@ -10,6 +10,8 @@ else
 	rm -rf oh
 fi
 
+echo "\033[1;32m"
+
 git clone https://github.com/shingitai/yubel oh
 
 cd oh && cmake . && sudo make install
@@ -17,5 +19,9 @@ cd oh && cmake . && sudo make install
 cd /tmp
 
 rm -rf oh
+
+echo "bye"
+
+echo "\033[30m"
 
 exit $?
