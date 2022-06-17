@@ -10,7 +10,7 @@ else
 	rm -rf oh
 fi
 
-echo "\033[1;32m"
+echo -e "\033[1;32m"
 
 git clone https://github.com/shingitai/yubel oh
 
@@ -22,6 +22,6 @@ rm -rf oh
 
 echo "bye"
 
-echo "\033[30m"
+echo -e "\033[30m"
 
 exit $?
