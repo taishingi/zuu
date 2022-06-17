@@ -23,41 +23,30 @@ int secret()
 	return 42;
 }
 
-void test_success(void)
+int test_get_code()
 {
-	successful(0)
-	successful(EXIT_SUCCESS)
-	fail(EXIT_FAILURE)
-	fail(1)
+	return EXIT_FAILURE;
 }
-void test_basic(void)
+int test_get_file()
 {
-	ok(true)
-	ko(false)
-	equals(1, 1)
-	equals(1, 1)
-	equals(1, 1)
-	equals(1, 1)
-	equals(1, 1)
-	equals(1, 1)
-	equals(1, 1)
-	paradox("pythagore incorrect", 3, hypot(3, 4))
-	equals(1, 1)
-	unequals(10, 1)
-	identical("aa", "aa")
-	different("a,", "a!")
-	not(42, 46)
-	contains("a","I am a man")
-	is(42, 42);
+	return EXIT_SUCCESS;
+}
+unit *test_basic(unit *u)
+{
+	u->ok(true)
+		->ko(false)
+		->equals(1, 1)
+		->unequals(1, 2)
+		->different("a", "aa")
+		->identical("a", "a")
+		->contains("Music", "Music is life")
+		->empty("")
+		->full("a")
+		->success(test_get_file)
+		->fail(test_get_code);
+	return u;
 }
 int main(void)
 {
-	scenario("Basic tests", test_basic);
-	scenario("Succesfull tests", test_success);
-	theory("The secret of the life", 42, secret);
-	def("aaa");
-	full(100, 100);
-	empty("");
-	immunity();
-	return status;
+	return Unit("Test")->scenario("Basic tests", test_basic)->immunity();
 }

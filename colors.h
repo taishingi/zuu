@@ -11,7 +11,7 @@
 #define FORMAT_DIM "\033[2m"
 #define FORMAT_ITALIC "\033[3m"
 #define FORMAT_UNDERSCORE "\033[4m"
-#define FORMAT_BLINK "\033[5m"
+#define FORMAT_BLINK "\033[1;40m\033[5m"
 #define FORMAT_BLINK2 "\033[6m"
 #define FORMAT_REVERSE "\033[7m"
 #define FORMAT_HIDDEN "\033[8m"
@@ -38,7 +38,9 @@
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
 
 #define echo(message, background, foreground) fprintf(stdout, "%s%s%s%s\n", background, foreground, message, FORMAT_RESET);
-#define msg(message) echo(message,BACKGROUND_BLACK,FOREGROUND_CYAN  ); 
-#define die(message) echo(message, BACKGROUND_BLACK, FOREGROUND_RED); exit(1);
+#define msg(message) echo(message, BACKGROUND_BLACK, FOREGROUND_CYAN);
+#define die(message)                                              \
+    echo(message,FORMAT_BLINK, FOREGROUND_RED); \
+    exit(1);
 
 #endif
