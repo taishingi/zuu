@@ -1,0 +1,4 @@
+#!/bin/bash
+
+git clone https://github.com/shingitai/yugi &&
+cd yugi && cmake . && sudo make install
