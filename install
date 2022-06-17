@@ -10,7 +10,7 @@ else
 	rm -rf oh
 fi
 
-echo -e "\033[1;32m"
+echo -e -n "\033[1;32m"
 
 git clone https://github.com/shingitai/yubel oh
 
