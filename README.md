@@ -9,12 +9,12 @@
 >Best regards
 
 * [Source code](https://github.com/taishingi/yubel)
-	* [License](https://github.com/taishingi/yubel/blob/master/LICENSE)
 	* [Unit](https://github.com/taishingi/yubel/tree/master/Unit)
-* [Installation](https://github.com/taishingi/yubel/tree/master/Installation)
+	* [Installation](https://github.com/taishingi/yubel/tree/master/Installation)
 * [Todo](https://trello.com/invite/b/XMS8W2TN/ebf447aa1ec218071a67fcafec3df0ae/yubel)
 * [Twitter](https://twitter.com/taishingi)
 * [Donate](https://www.paypal.com/donate/?hosted_button_id=A99G4XSSEX9LJ)
+* [License](https://github.com/taishingi/yubel/blob/master/LICENSE)
 # Headers
 
 > To test block of code
