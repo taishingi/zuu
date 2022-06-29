@@ -53,7 +53,7 @@ Installation *Installation::download(const string &url)
     string cmd = "curl -fsSL ";
     cmd.append(url.c_str());
     return this->cd(filesystem::temp_directory_path())->shell(cmd.c_str());
-}
+
 
 Installation *Installation::get(const string &url)
 {

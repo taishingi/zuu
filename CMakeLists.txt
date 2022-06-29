@@ -7,8 +7,8 @@ add_compile_options(-Wall -Wextra -ansi -pedantic)
 enable_testing()
 
 macro(add_lib name)
-    add_library(${name} ${name}.cpp ${name}.hpp)
-    install(FILES ${name}.h DESTINATION include)
+    add_library(${name} ${name}/${name}.cpp ${name}/${name}.hpp)
+    install(FILES ${name}/${name}.h DESTINATION include)
     install(TARGETS ${name} DESTINATION lib)
 endmacro()
 
