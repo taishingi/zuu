@@ -8,14 +8,13 @@ enable_testing()
 
 macro(add_lib name)
     add_library(${name} ${name}/${name}.cpp ${name}/${name}.hpp)
-    install(FILES ${name}/${name}.h DESTINATION include)
+    install(FILES ${name}/${name}.hpp DESTINATION include)
     install(TARGETS ${name} DESTINATION lib)
 endmacro()
 
 macro(add_exec name)
-    add_executable(${name} ${name}.c ${name}.h)
-    install(FILES ${name}.hpp DESTINATION include)
-    install(TARGETS ${name} DESTINATION lib)
+    add_executable(${name} ${name}.cpp ${name}.hpp)
+    install(PROGRAMS ${name} DESTINATION bin)
 endmacro()
 
 

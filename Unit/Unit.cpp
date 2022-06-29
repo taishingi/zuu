@@ -2,7 +2,7 @@
 
 using namespace Yubel;
 
-Unit u;
+Unit *u;
 
 Unit::~Unit()
 {
@@ -34,7 +34,7 @@ Unit *Unit::exist(const string &filename)
 Unit *Unit::describe(const string &description, Unit *(*it)(Unit *u))
 {
     cout << description << endl;
-    return it(&u);
+    return it(u);
 }
 Unit *Unit::ok(bool actual)
 {
