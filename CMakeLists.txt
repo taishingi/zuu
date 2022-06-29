@@ -1,25 +1,23 @@
-cmake_minimum_required(VERSION 3.21)
-project(yubel C)
+cmake_minimum_required(VERSION 3.5)
 
-set(CMAKE_C_STANDARD 11)
+project(yubel VERSION 0.2 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
 
 add_compile_options(-Wall -Wextra -ansi -pedantic)
 enable_testing()
+
 macro(add_lib name)
-    add_library(${name} ${name}.c ${name}.h)
-    target_link_libraries(${name})
+    add_library(${name} ${name}.cpp ${name}.hpp)
     install(FILES ${name}.h DESTINATION include)
     install(TARGETS ${name} DESTINATION lib)
-    add_executable(yubel_${name} specs/${name}_tests.c ${name}.h)
-    target_link_libraries(yubel_${name} ${name} )
-    add_test(${name} ./yubel_${name} ==0)
+endmacro()
+
+macro(add_exec name)
+    add_executable(${name} ${name}.c ${name}.h)
+    install(FILES ${name}.hpp DESTINATION include)
+    install(TARGETS ${name} DESTINATION lib)
 endmacro()
 
 
-add_lib(colors)
-add_lib(unit)
-add_lib(installation)
-
-add_executable(yugi yugi.c yugi.h)
-
-install(PROGRAMS  yugi DESTINATION bin)
+add_lib(Unit)
+add_lib(Installation)
