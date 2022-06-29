@@ -11,6 +11,7 @@ Unit::~Unit()
 }
 Unit::Unit(const string &description)
 {
+    cout << "\033[1;34m" << endl;
     cout << description << endl;
     this->assertions = 0;
     this->failures = 0;
@@ -33,6 +34,7 @@ Unit *Unit::exist(const string &filename)
 
 Unit *Unit::describe(const string &description, Unit *(*it)(Unit *u))
 {
+    cout << "\033[1;36m" << endl;
     cout << description << endl;
     return it(u);
 }
@@ -48,7 +50,7 @@ Unit *Unit::def(void *p)
 
 Unit *Unit::empty(const string &actual)
 {
-    return this->check(actual.compare("") != 0);
+    return this->check(actual.compare("") == 0);
 }
 
 Unit *Unit::ko(bool actual)
@@ -87,12 +89,100 @@ Unit *Unit::contains(const string expected, const string &actual)
 
 Unit *Unit::check(bool tdd)
 {
-    tdd ? this->assertions++ : this->failures++;
+    if (tdd)
+    {
+        this->assertions++;
+        cout << "\033[1;37m°\033[30m";
+    }
+    else
+    {
+        this->failures++;
+        cout << "\033[1;37mø\033[30m";
+    }
     return this;
 }
 
 int Unit::end()
 {
-    cout << "Assertions : " << this->assertions << "Failure : " << this->failures << endl;
+    double s = (this->assertions / (this->failures + this->assertions) * 100) / 2;
+    double f = (this->failures / (this->failures + this->assertions) * 100) / 2;
+
+    cout << endl
+         << endl
+         << "\033[1;37m[";
+    if (this->failures == 0)
+    {
+        for (int i = 0; i < s; i++)
+        {
+            cout << "\033[1;32m*\033[30m";
+        }
+
+        cout << "\033[1;37m]" << endl
+             << endl
+             << "[";
+        for (int i = 0; i < s; i++)
+        {
+            cout << " ";
+        }
+    }
+    else if (this->failures < this->assertions)
+    {
+
+        for (int i = 0; i < s; i++)
+        {
+            cout << "\033[1;32m*\033[30m";
+        }
+
+        cout << "\033[1;37m]" << endl
+             << endl
+             << "[";
+        for (int i = 0; i < f - 1; i++)
+        {
+            cout << "\033[1;31m*\033[30m";
+        }
+
+        for (int i = f; i < s; i++)
+        {
+
+            cout << " ";
+        }
+    }
+    else if (this->failures > this->assertions)
+    {
+
+        for (int i = 0; i < s; i++)
+        {
+            cout << "\033[1;32m*\033[30m";
+        }
+
+        for (int i = s; i < f - 1; i++)
+        {
+
+            cout << " ";
+        }
+        cout << "\033[1;37m]" << endl
+             << endl
+             << "[";
+        for (int i = 0; i < f; i++)
+        {
+            cout << "\033[1;31m*\033[30m";
+        }
+    }
+    else
+    {
+        for (int i = 0; i < s; i++)
+        {
+            cout << "\033[1;32m#\033[30m";
+        }
+        cout << "\033[1;37m]" << endl
+             << endl
+             << "[";
+        for (int i = 0; i < f; i++)
+        {
+            cout << "\033[1;31m#\033[30m";
+        }
+    }
+    cout << "\033[1;37m]\033[30m" << endl
+         << endl;
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }
