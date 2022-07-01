@@ -89,16 +89,8 @@ Unit *Unit::contains(const string expected, const string &actual)
 
 Unit *Unit::check(bool tdd)
 {
-    if (tdd)
-    {
-        this->assertions++;
-        cout << "\033[1;37m°\033[30m";
-    }
-    else
-    {
-        this->failures++;
-        cout << "\033[1;37mø\033[30m";
-    }
+    tdd ? this->assertions++ : this->failures++;
+
     return this;
 }
 
@@ -117,7 +109,7 @@ int Unit::end()
             cout << "\033[1;32m*\033[30m";
         }
 
-        cout << "\033[1;37m]" << endl
+        cout << "\033[1;37m] [ \033[1;32m" << this->assertions << " \033[1;31m" << this->failures << " \033[1;37m] "<< endl
              << endl
              << "[";
         for (int i = 0; i < s; i++)
@@ -184,5 +176,6 @@ int Unit::end()
     }
     cout << "\033[1;37m]\033[30m" << endl
          << endl;
+    cout << "\033[1;32mAssertions " << this->assertions << " \033[1;37mFailures : \033[1;31m" << this->failures << " \033[1;36mExecuted :  \033[1;37m" << this->assertions + this->failures << endl;
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }

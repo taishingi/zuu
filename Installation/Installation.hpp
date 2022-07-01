@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
+#include <cstdio>
 
 namespace Yubel
 {
@@ -11,8 +12,18 @@ namespace Yubel
 
     class Installation
     {
+    private:
+        string curl = "curl -fsSL ";
+        string git = "git clone ";
+        string wget = "wget ";
+        string checkout = "cd ";
+        string remove = "rm -rf ";
 
     public:
+        static const string INSTALLATION_DIRECTORY;
+        static const string TEMPORY_DIRECTORY;
+        static const string RUN_CMAKE;
+
         /**
          *
          * @brief Construct a new Installation object
@@ -21,8 +32,37 @@ namespace Yubel
          *
          */
         Installation(const string &description);
+        /**
+         * 
+         * @brief Construct a new Installation object
+         * 
+         * @param description The installation description 
+         * @param repository The repository url
+         * @param install  The install command
+         * 
+         */
+        Installation(const string &description, const string &repository, const string &install = RUN_CMAKE);
 
         ~Installation();
+
+        /**
+         *
+         * @brief Remove the installation directory
+         *
+         * @return int
+         */
+        int response();
+
+        /**
+         *
+         * @brief Remove the installation directory
+         *
+         * @param f The callback
+         *
+         * @return int
+         *
+         */
+        int response(Installation *(*f)(Installation *i));
 
         /**
          *
@@ -98,6 +138,26 @@ namespace Yubel
          *
          */
         Installation *compile();
+
+        /**
+         *
+         * @brief Clean the installation directory
+         *
+         * @return Installation*
+         *
+         */
+        Installation *clean();
+
+        /**
+         *
+         * @brief Clean the installation directory
+         *
+         * @param f The callback
+         *
+         * @return Installation*
+         *
+         */
+        Installation *clean(Installation *(*f)(Installation *i));
     };
 }
 #endif
