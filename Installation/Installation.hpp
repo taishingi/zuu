@@ -4,160 +4,88 @@
 #include <iostream>
 #include <string>
 #include <filesystem>
+#include <cassert>
 #include <cstdio>
-
+#include <cstdlib>
 namespace Yubel
 {
     using namespace std;
+    static const string DIRECTORY = "oh";
+    static const string INSTALLATION_DIRECTORY = "/tmp/oh";
+    static const string RUN_CMAKE = "cmake . && make";
+    static const string TEMPORY_DIRECTORY = "/tmp";
+    static const string RUN_COMPOSER = "composer install";
+    static const string checkout = "cd ";
+    static const string curl = "curl -fsSL";
+    static const string wget = "wget ";
+    static const string git = "git clone ";
+    static const string rmdir = "rm -rf ";
 
-    class Installation
-    {
-    private:
-        string curl = "curl -fsSL ";
-        string git = "git clone ";
-        string wget = "wget ";
-        string checkout = "cd ";
-        string remove = "rm -rf ";
+    bool app(const string &repository,const string &app,const string &command = RUN_CMAKE);
+    /**
+     *
+     * @brief change of directory
+     *
+     * @param directory The directory name
+     *
+     * @return Installation*
+     *
+     */
+    void cd(const string &directory);
 
-    public:
-        static const string INSTALLATION_DIRECTORY;
-        static const string TEMPORY_DIRECTORY;
-        static const string RUN_CMAKE;
+    /**
+     *
+     * @brief Enter in the installation directory
+     *
+     * @return Installation*
+     *
+     */
+    void enter();
 
-        /**
-         *
-         * @brief Construct a new Installation object
-         *
-         * @param description The installation description
-         *
-         */
-        Installation(const string &description);
-        /**
-         * 
-         * @brief Construct a new Installation object
-         * 
-         * @param description The installation description 
-         * @param repository The repository url
-         * @param install  The install command
-         * 
-         */
-        Installation(const string &description, const string &repository, const string &install = RUN_CMAKE);
+    /**
+     *
+     * @brief Execute a shell command
+     *
+     * @param command The command to execute
+     *
+     * @return Installation*
+     *
+     */
+    void shell(const string &command);
 
-        ~Installation();
+    /**
+     *
+     * @brief clone a remote repository
+     *
+     *
+     * @param url the repo url
+     *
+     * @return Installation*
+     *
+     */
+    void clone(const string &url, const string &directory);
 
-        /**
-         *
-         * @brief Remove the installation directory
-         *
-         * @return int
-         */
-        int response();
+    /**
+     *
+     * @brief Remove file or directory
+     *
+     * @param path The path to delete
+     *"/tmp"
+     * @return Installation*
+     *
+     **/
+    void rm(const string &path);
 
-        /**
-         *
-         * @brief Remove the installation directory
-         *
-         * @param f The callback
-         *
-         * @return int
-         *
-         */
-        int response(Installation *(*f)(Installation *i));
+    /**
+     *
+     * @brief Run compilat>ion
+     *
+     * @return void
+     *
+     */
+    void compile();
 
-        /**
-         *
-         * @brief change of directory
-         *
-         * @param directory The directory name
-         *
-         * @return Installation*
-         *
-         */
-        Installation *cd(const string &directory);
-
-        /**
-         *
-         * @brief Execute a shell command
-         *
-         * @param command The command to execute
-         *
-         * @return Installation*
-         *
-         */
-        Installation *shell(const string &command);
-
-        /**
-         *
-         * @brief clone a remote repository
-         *
-         *
-         * @param url the repo url
-         *
-         * @return Installation*
-         *
-         */
-        Installation *clone(const string &url);
-        /**
-         *
-         * @brief Download  with curl
-         *
-         * @param url The url to download
-         *
-         * return Installation*
-         *
-         */
-        Installation *download(const string &url);
-
-        /**
-         *
-         * @brief download with wget
-         *
-         * @param url The url to download
-         *
-         * @return Installation*
-         *
-         */
-        Installation *get(const string &url);
-
-        /**
-         *
-         * @brief Remove file or directory
-         *
-         * @param path The path to delete
-         *
-         * @return Installation*
-         *
-         **/
-        Installation *rm(const string &path);
-
-        /**
-         *
-         * @brief Run compilation
-         *
-         * @return Installation*
-         *
-         */
-        Installation *compile();
-
-        /**
-         *
-         * @brief Clean the installation directory
-         *
-         * @return Installation*
-         *
-         */
-        Installation *clean();
-
-        /**
-         *
-         * @brief Clean the installation directory
-         *
-         * @param f The callback
-         *
-         * @return Installation*
-         *
-         */
-        Installation *clean(Installation *(*f)(Installation *i));
-    };
+    void make(const string &application,const string &command);
 }
+
 #endif

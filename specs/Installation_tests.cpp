@@ -1,11 +1,9 @@
 #include <Installation.hpp>
 
 using namespace Yubel;
-
 int main()
 {
-    return (new Installation(
-                "Check yubel installation",
-                "https://github.com/taishingi/yubel"))
-        ->response();
+    app("https://github.com/taishingi/yubel.git", "yubel");
+    app("https://github.com/taishingi/nirvana.git", "nirvana", RUN_COMPOSER);
+    return 0;
 }

@@ -1,72 +1,119 @@
+
 #include "Installation.hpp"
 
 using namespace Yubel;
 
-const string Installation::INSTALLATION_DIRECTORY = "/tmp/oh";
-const string Installation::RUN_CMAKE = "cmake . && make";
-const string Installation::TEMPORY_DIRECTORY = "/tmp";
-
-Installation *Installation::clean(Installation *(*f)(Installation *i))
+bool Yubel::app(const string &repository, const string &application, const string &command)
 {
-    return f(this);
-}
-Installation::Installation(const string &description)
-{
-    cout << description.c_str() << endl;
+    rm(application);
+    clone(repository, application);
+    make(application, command);
+    rm(application);
+    fprintf(stdout, "%s", "\033[30m");
+    return true;
 }
 
-Installation::Installation(const string &description, const string &repository, const string &install)
+/**
+ *
+ * @brief change of directory
+ *
+ * @param directory
+ *
+ * @return Installation*
+ *
+ */
+void Yubel::cd(const string &directory)
 {
-    cout << description.c_str() << endl;
-    this->clone(repository.c_str())->cd(INSTALLATION_DIRECTORY)->shell(install.c_str());
+    string x;
+    shell(x.append(checkout).append(directory.c_str()));
+    x.clear();
+    x.assign(checkout);
 }
-Installation *Installation::clean()
+/**
+ *
+ * @brief Enter in the installation directory
+ *https://github.com/taishingi/yubel.git
+ * @return Installation*
+ *
+ */
+void Yubel::enter()
 {
-    return this->rm(INSTALLATION_DIRECTORY);
-}
-Installation *Installation::cd(const string &directory)
-{
-    return this->shell(this->checkout.append(directory.c_str()).c_str());
+    cd(INSTALLATION_DIRECTORY);
 }
 
-Installation *Installation::shell(const string &command)
+/**
+ *
+ * @brief Execute a shell command
+ *
+ * @param command The command to execute
+ *
+ * @return Installation*
+ *
+ */
+void Yubel::shell(const string &command)
 {
+    fputs("\033[1;32m", stdout);
+
     FILE *c = popen(command.c_str(), "w");
-
+    if (c == NULL)
+    {
+        pclose(c);
+        exit(EXIT_FAILURE);
+    }
     pclose(c);
-    return this;
+    fputs("\033[1;37m", stdout);
 }
 
-Installation *Installation::rm(const string &path)
+/**
+ *
+ * @brief clone a remote repository
+ *
+ *
+ * @param url the repo url
+ *
+ * @return Installation*
+ *
+ */
+void Yubel::clone(const string &url, const string &directory)
 {
-    return this->shell(this->remove.append(path.c_str()).c_str());
+    string x = "git clone ";
+    shell(x.append(url).append(" /tmp/").append(directory));
+    x.assign("git clone ");
+}
+/**
+ *
+ * @brief Remove file or directory
+ *
+ * @param path The path to delete
+ *
+ * @return void
+ *
+ **/
+void Yubel::rm(const string &path)
+{
+    string x = "rm -rf /tmp/";
+    shell(x.append(path.c_str()));
+    x.clear();
+    x.assign("rm -rf /tmp/");
 }
 
-Installation *Installation::clone(const string &url)
+/**
+ *
+ * @brief Run compilation
+ *
+ * @return Installation*
+ *
+ */
+void Yubel::compile()
 {
-    return this->shell(this->git.append(url.c_str()).append(" ").append(INSTALLATION_DIRECTORY).c_str());
+    shell(RUN_CMAKE);
 }
 
-Installation *Installation::compile()
+void Yubel::make(const string &application, const string &command)
 {
-    return this->cd(INSTALLATION_DIRECTORY)->shell(Installation::RUN_CMAKE);
-}
-
-Installation *Installation::download(const string &url)
-{
-    return this->cd(INSTALLATION_DIRECTORY)->shell(this->curl.append(url.c_str()).c_str());
-}
-Installation *Installation::get(const string &url)
-{
-    return this->cd(INSTALLATION_DIRECTORY)->shell(this->wget.append(url.c_str()).c_str());
-}
-int Installation::response(Installation *(*f)(Installation *i))
-{
-    f(this);
-    return 0;
-}
-int Installation::response()
-{
-    this->clean();
-    return 0;
+    string x;
+    fprintf(stdout, "%s[ %s ]%s", "\033[1;34m", application.c_str(), "\033[1;37m");
+    cd(x.append("/tmp/").append(application));
+    x.clear();
+    shell(command);
 }
