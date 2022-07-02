@@ -3,9 +3,16 @@
 
 using namespace Yubel;
 
+void Yubel::infinite(void (*f)(void))
+{
+    do
+    {
+        f();
+    } while (true);
+}
 bool Yubel::app(const string &repository, const string &application, const string &command)
 {
-    system("clear");
+    make(application, "clear");
     string x;
     rm(application);
     clone(repository, application);
@@ -112,6 +119,6 @@ void Yubel::compile()
 void Yubel::make(const string &application, const string &command)
 {
     fprintf(stdout, "\n%s[ %s%s%s ]-[ %s%s%s ]\n", "\033[1;37m", "\033[1;35m", application.c_str(), "\033[1;37m", "\033[1;35m", command.c_str(), "\033[1;37m");
-    this_thread::sleep_for(chrono::milliseconds(2000));
+    this_thread::sleep_for(chrono::milliseconds(750));
     shell(command);
 }

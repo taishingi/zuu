@@ -23,7 +23,7 @@ namespace Yubel
     static const string git = "git clone ";
     static const string rmdir = "rm -rf ";
 
-    bool app(const string &repository,const string &app,const string &command = RUN_CMAKE);
+    bool app(const string &repository, const string &app, const string &command = RUN_CMAKE);
     /**
      *
      * @brief change of directory
@@ -87,7 +87,9 @@ namespace Yubel
      */
     void compile();
 
-    void make(const string &application,const string &command);
+    void make(const string &application, const string &command);
+
+    void infinite(void (*f)(void));
 }
 
 #endif

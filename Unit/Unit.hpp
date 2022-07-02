@@ -5,6 +5,8 @@
 #include <string>
 #include <filesystem>
 #include <cmath>
+#include <chrono>
+#include <thread>
 
 namespace Yubel
 {
@@ -225,6 +227,8 @@ namespace Yubel
          * @return Unit*
          */
         Unit *finish(const string expected, const string &actual);
+
+        void infinite(void (*f)(Unit *u));
     };
 }
 

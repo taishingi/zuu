@@ -12,19 +12,33 @@ Unit::~Unit()
 Unit::Unit(const string &description)
 {
     system("clear");
-    cout << "\033[1;37m[ \033[1;35m" << description << " \033[1;37m]" << endl;
+    cout << "\033[1;37m[ \033[1;35m" << description << " \033[1;37m]" << endl
+         << endl;
+    this_thread::sleep_for(chrono::milliseconds(1000));
     this->assertions = 0;
     this->failures = 0;
 }
 
+void Unit::infinite(void (*f)(Unit *u))
+{
+    do
+    {
+        this->assertions = 0;
+        this->failures = 0;
+        f(this);
+        system("clear");
+    } while (true);
+}
 Unit *Unit::theory(const string &describe, bool expected, bool (*f)(Unit *u))
 {
-    cout << "\033[1;37m[\033[1;35m " << describe << " \033[1;37m]\033[30m" << endl;
+    cout << "\033[1;37m[\033[1;35m " << describe << " \033[1;37m]\033[30m" << endl
+         << endl;
     return this->check(f(this) == expected, "The theory is true", "The theory is false");
 }
 Unit *Unit::chaos(const string &describe, bool (*f)(Unit *u))
 {
-    cout << "\033[1;37m[ \033[1;35m" << describe << " \033[1;37m]" << endl;
+    cout << "\033[1;37m[ \033[1;35m" << describe << " \033[1;37m]" << endl
+         << endl;
 
     return this->check(f(this) == false, "The chaos theory is true", "The chaos theroy is false");
 }
@@ -94,7 +108,11 @@ Unit *Unit::contains(const string expected, const string &actual)
 Unit *Unit::check(bool tdd, const string &s, const string &f)
 {
     tdd ? this->assertions++ : this->failures++;
-    tdd ? cout << "\033[1;37m[ \033[1;32mOK \033[1;37m]\033[1;34m " << s << endl : cout << "\033[1;37m[\033[1;31m KO \033[1;37m]\033[1;34m  " << f << endl;
+    tdd ? cout << "\033[1;37m[ \033[1;32mOK \033[1;37m]\033[1;34m " << s << endl
+               << endl
+        : cout << "\033[1;37m[\033[1;31m KO \033[1;37m]\033[1;34m  " << f << endl
+               << endl;
+    this_thread::sleep_for(chrono::milliseconds(0750));
     return this;
 }
 
@@ -182,5 +200,6 @@ int Unit::end()
          << endl;
     cout << "\033[1;32mAssertions " << this->assertions << " \033[1;37mFailures : \033[1;31m" << this->failures << " \033[1;36mExecuted :  \033[1;37m" << this->assertions + this->failures << endl
          << endl;
+    this_thread::sleep_for(chrono::milliseconds(1000));
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }

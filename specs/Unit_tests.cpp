@@ -14,10 +14,10 @@ int exit_failure()
 {
     return EXIT_FAILURE;
 }
-int main(void)
+
+void application(Unit *u)
 {
-    return (new Unit("Test the Unit Framework"))
-        ->ok(true)
+    u->ok(true)
         ->ko(false)
         ->differents("a", "b")
         ->identicals("a", "a")
@@ -32,4 +32,9 @@ int main(void)
         ->code(EXIT_SUCCESS, exit_success)
         ->code(EXIT_FAILURE, exit_failure)
         ->end();
+}
+
+int main(void)
+{
+    (new Unit("Test the framework"))->infinite(application);
 }
