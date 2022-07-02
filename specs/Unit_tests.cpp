@@ -2,6 +2,10 @@
 
 using namespace Yubel;
 
+bool exit_bool(Unit *u)
+{
+    return false;
+}
 int exit_success(void)
 {
     return EXIT_SUCCESS;
@@ -17,15 +21,15 @@ int main(void)
         ->ko(false)
         ->differents("a", "b")
         ->identicals("a", "a")
-        ->exist("README.md")
         ->empty("")
         ->contains("Linux", "Os linux is super")
         ->finish("linux", "Linus develop linux")
         ->begin("Linux", "Linux is developed by Linus")
-        ->exist("/usr/bin/git")
         ->success(exit_success)
         ->fail(exit_failure)
+        ->theory("Theory is false", false, exit_bool)
+        ->chaos("is false", exit_bool)
         ->code(EXIT_SUCCESS, exit_success)
         ->code(EXIT_FAILURE, exit_failure)
-    ->end();
+        ->end();
 }

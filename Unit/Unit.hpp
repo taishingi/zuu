@@ -16,16 +16,7 @@ namespace Yubel
 
         double failures;
 
-        /**
-         *
-         * @brief check a test
-         *
-         * @param tdd THe test
-         *
-         * @return Unit*
-         *
-         */
-        Unit *check(bool tdd);
+        Unit *check(bool tdd, const string &s, const string &f);
 
     public:
         /**
@@ -62,6 +53,31 @@ namespace Yubel
          *
          */
         Unit *describe(const string &description, Unit *(*it)(Unit *u));
+
+        /**
+         *
+         * @brief check if a theory is true
+         *
+         * @param describe The theory description
+         * @param expected The expected value
+         * @param f        The theory callback
+         *
+         * @return Unit*
+         *
+         **/
+        Unit *theory(const string &describe, bool expected, bool (*f)(Unit *u));
+
+        /**
+         *
+         * @brief Check if a theory is false
+         *
+         * @param describe The chaos description
+         * @param f         The callback
+         *
+         * @return Unit*
+         *
+         */
+        Unit *chaos(const string &describe, bool (*f)(Unit *u));
 
         /**
          *
