@@ -5,10 +5,10 @@ using namespace Yubel;
 
 bool Yubel::app(const string &repository, const string &application, const string &command)
 {
+    string x;
     rm(application);
     clone(repository, application);
-    make(application, command);
-    rm(application);
+    make(application, x.append("cd /tmp/").append(application).append(" && ").append(command));
     fprintf(stdout, "%s", "\033[30m");
     return true;
 }
@@ -25,7 +25,7 @@ bool Yubel::app(const string &repository, const string &application, const strin
 void Yubel::cd(const string &directory)
 {
     string x;
-    shell(x.append(checkout).append(directory.c_str()));
+    make(directory, x.append("cd /tmp/").append(directory.c_str()));
     x.clear();
     x.assign(checkout);
 }
@@ -52,16 +52,15 @@ void Yubel::enter()
  */
 void Yubel::shell(const string &command)
 {
-    fputs("\033[1;32m", stdout);
-
+    puts("\033[1;34m");
     FILE *c = popen(command.c_str(), "w");
     if (c == NULL)
     {
         pclose(c);
+        puts("aaa");
         exit(EXIT_FAILURE);
     }
     pclose(c);
-    fputs("\033[1;37m", stdout);
 }
 
 /**
@@ -77,7 +76,7 @@ void Yubel::shell(const string &command)
 void Yubel::clone(const string &url, const string &directory)
 {
     string x = "git clone ";
-    shell(x.append(url).append(" /tmp/").append(directory));
+    make(directory, x.append(url).append(" /tmp/").append(directory));
     x.assign("git clone ");
 }
 /**
@@ -92,7 +91,7 @@ void Yubel::clone(const string &url, const string &directory)
 void Yubel::rm(const string &path)
 {
     string x = "rm -rf /tmp/";
-    shell(x.append(path.c_str()));
+    make(path, x.append(path.c_str()));
     x.clear();
     x.assign("rm -rf /tmp/");
 }
@@ -111,9 +110,6 @@ void Yubel::compile()
 
 void Yubel::make(const string &application, const string &command)
 {
-    string x;
-    fprintf(stdout, "%s[ %s ]%s", "\033[1;34m", application.c_str(), "\033[1;37m");
-    cd(x.append("/tmp/").append(application));
-    x.clear();
+    fprintf(stdout, "\n%s[ %s%s%s ]-[ %s%s%s ]\n", "\033[1;37m", "\033[1;35m", application.c_str(), "\033[1;37m", "\033[1;35m", command.c_str(), "\033[1;37m");
     shell(command);
 }
