@@ -18,5 +18,6 @@ macro(add_exec name)
 endmacro()
 
 
+add_lib(Generator)
 add_lib(Unit)
 add_lib(Installation)
