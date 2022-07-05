@@ -3,13 +3,7 @@
 
 using namespace Yubel;
 
-void Yubel::infinite(void (*f)(void))
-{
-    do
-    {
-        f();
-    } while (true);
-}
+
 bool Yubel::app(const string &repository, const string &application, const string &command)
 {
     make(application, "clear");
@@ -17,7 +11,6 @@ bool Yubel::app(const string &repository, const string &application, const strin
     rm(application);
     clone(repository, application);
     make(application, x.append("cd /tmp/").append(application).append(" && ").append(command));
-    fprintf(stdout, "%s", "\033[30m");
     return true;
 }
 

@@ -31,7 +31,7 @@ namespace Yubel
      * @param directory The directory name
      *
      * @return Installation*
-     *
+     *>
      */
     void cd(const string &directory);
 
@@ -88,8 +88,6 @@ namespace Yubel
     void compile();
 
     void make(const string &application, const string &command);
-
-    void infinite(void (*f)(void));
 }
 
 #endif

@@ -15,18 +15,16 @@ namespace Yubel
     {
     private:
         double assertions;
-
         double failures;
-
-        Unit *check(bool tdd, const string &s, const string &f);
+        Unit *check(const string &describe, bool tdd);
 
     public:
         /**
          *
          * @brief  Get stats
          *
-         * @return int
          *
+         * @return int
          */
         int end();
 
@@ -54,7 +52,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *describe(const string &description, Unit *(*it)(Unit *u));
+        Unit *run(Unit *(*it)(Unit *u));
 
         /**
          *
@@ -83,17 +81,6 @@ namespace Yubel
 
         /**
          *
-         * @brief Check if the file exist
-         *
-         * @param filename The filename
-         *
-         * @return Unit*
-         *
-         */
-        Unit *exist(const string &filename);
-
-        /**
-         *
          * @brief CHeck if the string is empty
          *
          * @param actual The string to check
@@ -101,7 +88,8 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *empty(const string &actual);
+        Unit *empty(const string &describe, const string &actual);
+        Unit *full(const string &describe, const string &actual);
 
         /**
          *
@@ -112,7 +100,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *def(void *p);
+        Unit *def(const string &describe, void *p);
 
         /**
          *
@@ -123,7 +111,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *success(int (*f)(void));
+        Unit *success(const string &describe, int (*f)(void));
 
         /**
          *
@@ -134,7 +122,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *fail(int (*f)(void));
+        Unit *fail(const string &describe, int (*f)(void));
 
         /**
          *
@@ -146,7 +134,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *code(int status, int (*code)(void));
+        Unit *code(const string &describe, int status, int (*code)(void));
 
         /**
          *
@@ -158,7 +146,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *identicals(const string &a, const string &b);
+        Unit *identicals(const string &describe, const string &a, const string &b);
 
         /**
          *
@@ -170,7 +158,7 @@ namespace Yubel
          * @return Unit*
          *
          **/
-        Unit *differents(const string &a, const string &b);
+        Unit *differents(const string &describe, const string &a, const string &b);
 
         /**
          *
@@ -181,7 +169,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *ok(bool actual);
+        Unit *ok(const string &describe, bool actual);
 
         /**
          *
@@ -192,19 +180,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *ko(bool actual);
-
-        /**
-         *
-         * @brief  check if a string start with a string
-         *
-         * @param expected The expected start text
-         * @param actual THe actual text
-         *
-         * @return Unit*
-         *
-         */
-        Unit *begin(const string expected, const string &actual);
+        Unit *ko(const string &describe, bool actual);
 
         /**
          *
@@ -216,19 +192,9 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *contains(const string expected, const string &actual);
+        Unit *contains(const string &describe, const string &expected, const string &actual);
 
-        /**
-         *
-         * @brief Check if a string finish with a string
-         *
-         * @param expected The expected value
-         * @param actual The actual value
-         * @return Unit*
-         */
-        Unit *finish(const string expected, const string &actual);
-
-        void infinite(void (*f)(Unit *u));
+        void infinite(const string &describe, int (*f)(Unit *u));
     };
 }
 

@@ -1,3 +1,4 @@
+
 #include "Unit.hpp"
 
 using namespace Yubel;
@@ -11,7 +12,6 @@ Unit::~Unit()
 }
 Unit::Unit(const string &description)
 {
-    system("clear");
     cout << "\033[1;37m[ \033[1;35m" << description << " \033[1;37m]" << endl
          << endl;
     this_thread::sleep_for(chrono::milliseconds(1000));
@@ -19,100 +19,82 @@ Unit::Unit(const string &description)
     this->failures = 0;
 }
 
-void Unit::infinite(void (*f)(Unit *u))
+Unit *Unit::run(Unit *(*it)(Unit *u))
 {
-    do
-    {
-        this->assertions = 0;
-        this->failures = 0;
-        f(this);
-        system("clear");
-    } while (true);
+    return it(this);
 }
+
 Unit *Unit::theory(const string &describe, bool expected, bool (*f)(Unit *u))
 {
-    cout << "\033[1;37m[\033[1;35m " << describe << " \033[1;37m]\033[30m" << endl
-         << endl;
-    return this->check(f(this) == expected, "The theory is true", "The theory is false");
+    return this->check(describe, expected == f(this));
 }
+
 Unit *Unit::chaos(const string &describe, bool (*f)(Unit *u))
 {
-    cout << "\033[1;37m[ \033[1;35m" << describe << " \033[1;37m]" << endl
-         << endl;
-
-    return this->check(f(this) == false, "The chaos theory is true", "The chaos theroy is false");
-}
-Unit *Unit::differents(const string &a, const string &b)
-{
-    return this->check(a.compare(b.c_str()) != 0, "The strings are differents", "The strings are equals");
+    return this->check(describe, f(this) == false);
 }
 
-Unit *Unit::identicals(const string &a, const string &b)
+Unit *Unit::empty(const string &describe, const string &actual)
 {
-    return this->check(a.compare(b.c_str()) == 0, "The strings are identicals", "The strings are differents");
+    return this->check(describe, actual.empty());
 }
-Unit *Unit::describe(const string &description, Unit *(*it)(Unit *u))
+Unit *Unit::full(const string &describe, const string &actual)
 {
-    cout << "\033[1;37m[\033[ 1;34m" << description << "\033[1;37m ]" << endl;
-    return it(u);
-}
-Unit *Unit::ok(bool actual)
-{
-    return this->check(actual, "The value is equal to true", "The value is equal to false");
+    return this->check(describe, !actual.empty());
 }
 
-Unit *Unit::def(void *p)
+Unit *Unit::def(const string &describe, void *p)
 {
-    return this->check(p != NULL, "The pointer has been defined", "The pointer has not been defined");
+    return this->check(describe, p != nullptr);
 }
 
-Unit *Unit::empty(const string &actual)
+Unit *Unit::success(const string &describe, int (*f)(void))
 {
-    return this->check(actual.compare("") == 0, "The string is empty", "The string is not empty");
+    return this->check(describe, EXIT_SUCCESS == f());
 }
 
-Unit *Unit::ko(bool actual)
+Unit *Unit::fail(const string &describe, int (*f)(void))
 {
-    return this->check(!actual, "The value match false", "The value match true");
-}
-Unit *Unit::success(int (*f)(void))
-{
-    return this->check(EXIT_SUCCESS == f(), "The status code is a success", "The status code is a failure");
+    return this->check(describe, EXIT_FAILURE == f());
 }
 
-Unit *Unit::fail(int (*f)(void))
+Unit *Unit::code(const string &describe, int status, int (*code)(void))
 {
-    return this->check(EXIT_FAILURE == f(), "The status code is a failure", "The status code is a success");
+    return this->check(describe, status == code());
 }
 
-Unit *Unit::begin(const string expected, const string &actual)
+Unit *Unit::identicals(const string &describe, const string &a, const string &b)
 {
-    return this->check(actual.rfind(expected.c_str(), 0) == 0, "The string start with the expected data", "The string don't start with the expected data");
+    return this->check(describe, a.compare(b.c_str()) == 0);
 }
 
-Unit *Unit::finish(const string expected, const string &actual)
+Unit *Unit::differents(const string &describe, const string &a, const string &b)
 {
-    return this->check(equal(expected.rbegin(), expected.rend(), actual.rbegin()), "The string finnish with the expected data", "The string don't finnish with the expected data");
+    return this->check(describe, a.compare(b.c_str()) != 0);
 }
 
-Unit *Unit::code(int status, int (*code)(void))
+Unit *Unit::ko(const string &describe, bool actual)
 {
-    return this->check(status == code(), "The expected status code has been returned", "The function don't return the good status code");
+    return this->check(describe, !actual);
 }
 
-Unit *Unit::contains(const string expected, const string &actual)
+Unit *Unit::ok(const string &describe, bool actual)
 {
-    return this->check(actual.find(expected.c_str()), "The string contains the expected string", "The expected string has not been found");
+    return this->check(describe, actual);
 }
 
-Unit *Unit::check(bool tdd, const string &s, const string &f)
+Unit *Unit::contains(const string &describe, const string &expected, const string &actual)
+{
+    return this->check(describe, actual.contains(expected));
+}
+Unit *Unit::check(const string &describe, bool tdd)
 {
     tdd ? this->assertions++ : this->failures++;
-    tdd ? cout << "\033[1;37m[ \033[1;32mOK \033[1;37m]\033[1;34m " << s << endl
+    tdd ? cout << "\033[1;37m[ \033[1;32mOK \033[1;37m]\033[1;34m " << describe << endl
                << endl
-        : cout << "\033[1;37m[\033[1;31m KO \033[1;37m]\033[1;34m  " << f << endl
+        : cout << "\033[1;37m[\033[1;31m KO \033[1;37m]\033[1;34m " << describe << endl
                << endl;
-    this_thread::sleep_for(chrono::milliseconds(0750));
+    this_thread::sleep_for(chrono::milliseconds(50));
     return this;
 }
 
