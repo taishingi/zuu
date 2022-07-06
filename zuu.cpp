@@ -36,9 +36,9 @@ void unit()
     {
         if (file.is_regular_file())
         {
-            cmd.append(file.path()).append(" -l Unit -o yubel -l tux && ./yubel");
-            FILE *c = popen(cmd.c_str(), "w");
-            assert(c != nullptr);
+            cmd.append(file.path()).append(" -l Unit -o yubel -l Fs && ./yubel");
+	    FILE *c = popen(cmd.c_str(),"w");
+	    assert(c != nullptr);
             pclose(c);
             cmd.clear();
             cmd.assign(" g++ ");
