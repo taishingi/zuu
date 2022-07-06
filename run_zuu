@@ -1,0 +1,27 @@
+#!/bin/bash
+
+ask()
+{
+read -p "Enter your project path : " p
+
+while [ ! -d "${HOME}/${p}" ]
+do
+	ask
+done
+cd "${HOME}/${p}"
+
+while [ ! -d "./specs" ]
+do
+	ask
+done
+}
+
+
+main()
+{
+
+	ask
+        zuu
+}
+
+main

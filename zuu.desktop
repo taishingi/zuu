@@ -10,5 +10,5 @@ Categories=Network;ConsoleOnly
 Type=Application
 Icon=utilities-terminal
 Terminal=true
-Exec=wezterm start zuu
+Exec=wezterm-gui start /usr/bin/run_zuu
 MimeType=
