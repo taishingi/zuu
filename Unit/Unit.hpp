@@ -84,7 +84,7 @@ namespace Yubel
          * @return Unit*
          *
          **/
-        Unit *theory(const string &describe, bool expected, bool (*f)(Unit *u));
+        Unit *theory(const string &describe, bool expected, bool (*f)(void));
 
         /**
          *
@@ -96,7 +96,7 @@ namespace Yubel
          * @return Unit*
          *
          */
-        Unit *chaos(const string &describe, bool (*f)(Unit *u));
+        Unit *chaos(const string &describe, bool (*f)(void));
 
         /**
          *

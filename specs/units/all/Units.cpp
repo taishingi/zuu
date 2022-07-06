@@ -2,7 +2,7 @@
 
 using namespace Yubel;
 
-bool exit_bool(Unit *u)
+bool exit_bool()
 {
     return false;
 }

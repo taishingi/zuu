@@ -26,14 +26,13 @@ Unit *Unit::run(Unit *(*it)(Unit *u))
     return it(this);
 }
 
-Unit *Unit::theory(const string &describe, bool expected, bool (*f)(Unit *u))
+Unit *Unit::theory(const string &describe, bool expected, bool (*f)(void))
 {
-    return this->check(describe, expected == f(this));
+    return this->check(describe, expected == f());
 }
 
-Unit *Unit::chaos(const string &describe, bool (*f)(Unit *u))
-{
-    return this->check(describe, f(this) == false);
+Unit *Unit::chaos(const string &describe, bool (*f)(void)){
+    return this->check(describe, f() == false);
 }
 
 Unit *Unit::empty(const string &describe, const string &actual)
