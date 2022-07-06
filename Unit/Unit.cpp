@@ -1,3 +1,5 @@
+#ifndef __UNIT_H__
+#define __UNIT_H__
 
 #include "Unit.hpp"
 
@@ -98,10 +100,56 @@ Unit *Unit::check(const string &describe, bool tdd)
     return this;
 }
 
+Unit *Unit::cc(const string &describe, bool expected,bool (*f)(void), int repeat)	
+{
+
+    int i = 0;
+
+    do
+    {
+        this->check(describe, expected == f());
+        i++;
+    } while (i < repeat);
+    return this;
+}
+Unit *Unit::cc(const string &describe, int expected, int (*f)(void), int repeat)
+{
+
+    int i = 0;
+
+    do
+    {
+        this->check(describe, expected == f());
+        i++;
+    } while (i < repeat);
+    return this;
+}
+Unit *Unit::shure(const string &describe, int expected,int (*f)(void), int repeat)
+{
+    int i = 0;
+
+    do
+    {
+        this->check(describe, expected == f());
+        i++;
+    } while (i < repeat);
+    return this;
+}
+Unit *Unit::shure(const string &describe, bool expected, bool (*f)(void), int repeat)
+{
+    int i = 0;
+
+    do
+    {
+        this->check(describe, expected == f());
+        i++;
+    } while (i < repeat);
+    return this;
+}
 int Unit::end()
 {
-    double s = (this->assertions / (this->failures + this->assertions) * 100) / 2;
-    double f = (this->failures / (this->failures + this->assertions) * 100) / 2;
+    double s = (this->assertions / (this->failures + this->assertions) * 100) / 4;
+    double f = (this->failures / (this->failures + this->assertions) * 100) / 4;
 
     cout << endl
          << endl
@@ -185,3 +233,5 @@ int Unit::end()
     this_thread::sleep_for(chrono::milliseconds(1000));
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }
+
+#endif // __UNIT_H__

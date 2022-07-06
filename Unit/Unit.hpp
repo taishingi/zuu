@@ -7,6 +7,7 @@
 #include <cmath>
 #include <chrono>
 #include <thread>
+#include <cmath>
 
 namespace Yubel
 {
@@ -28,6 +29,24 @@ namespace Yubel
          */
         int end();
 
+        /**
+         *
+         * @brief check if a function run successfully
+         * @param describe  The decription
+         * @param expected  The expected result
+         * @param f         The callcack
+         * @param repeat    The repeat function number
+         *
+         * @return true
+         * @return false
+         *
+         */
+        Unit *shure(const string &decribe, bool expected, bool (*f)(void), int repeat = 1);
+
+        Unit *shure(const string &decribe, int expected, int (*f)(void), int repeat = 1);
+        Unit *cc(const string &describe, int expected, int (*f)(void), int repeat = 1);
+
+        Unit *cc(const string &describe, bool expected, bool (*f)(void), int repeat = 1);
         /**
          * @brief Construct a new Unit object
          *

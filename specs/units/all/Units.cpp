@@ -6,6 +6,10 @@ bool exit_bool(Unit *u)
 {
     return false;
 }
+bool exit_sure(void)
+{
+    return true;
+}
 int exit_success(void)
 {
     return EXIT_SUCCESS;
@@ -17,6 +21,7 @@ int exit_failure()
 
 Unit *application(Unit *u)
 {
+    u->shure("Exit must be return true",true, exit_sure, 5);
     for (int i = 0; i < 10; i++)
     {
         u->ok("Receveing or not data", true)
@@ -26,7 +31,7 @@ Unit *application(Unit *u)
             ->empty("Data must be empty", "")
             ->contains("Data must be contains Linux", "linux", "Os linux is super")
             ->success("Data must be have a success return status code", exit_success)
-            ->fail("Data must be have a failure return status code", exit_failure)
+              ->fail("Data must be have a failure return status code", exit_failure)
             ->theory("Theory must be return false", false, exit_bool)
             ->chaos("The chaos must be true", exit_bool)
             ->code("The status code must be equal to 0", 0, exit_success)
@@ -34,7 +39,6 @@ Unit *application(Unit *u)
     }
     return u;
 }
-
 
 int main(void)
 {

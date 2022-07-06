@@ -4,7 +4,7 @@
 #include <cassert>
 
 using namespace std;
-using std::filesystem::directory_iterator;
+namespace fs = std::filesystem;
 
 void installation()
 {
@@ -12,7 +12,7 @@ void installation()
     string cmd = "g++ ";
     string path = "./specs/install";
 
-    for (const auto &file : directory_iterator(path))
+    for (const auto &file : fs::recursive_directory_iterator(path.c_str()))
     {
         if (file.is_regular_file())
         {
@@ -20,6 +20,8 @@ void installation()
             FILE *c = popen(cmd.c_str(), "w");
             assert(c != nullptr);
             pclose(c);
+            cmd.clear();
+            cmd.assign(" g++ ");
         }
     }
 }
@@ -30,7 +32,7 @@ void unit()
     string cmd = "g++ ";
     string path = "./specs/units";
 
-    for (const auto &file : directory_iterator(path))
+    for (const auto &file : fs::recursive_directory_iterator(path.c_str()))
     {
         if (file.is_regular_file())
         {
@@ -38,6 +40,8 @@ void unit()
             FILE *c = popen(cmd.c_str(), "w");
             assert(c != nullptr);
             pclose(c);
+            cmd.clear();
+            cmd.assign(" g++ ");
         }
     }
 }
@@ -45,7 +49,7 @@ void unit()
 int ask()
 {
     system("clear");
-    fprintf(stdout, "\033[1;35mHi %s ! Please enter the number of the test suite to run\n\n", getenv("USER"));
+   fprintf(stdout, "\033[1;35mHi %s ! Please enter the number of the test\n\n", getenv("USER"));
     string choise;
     puts("\033[1;32m1)\033[1;36m Unit\n\033[1;32m2)\033[1;36m Installation\n\033[1;32m3)\033[1;36m Unit Loop\n\033[1;32m4)\033[1;36m Installation Loop\n\033[1;32m5)\033[1;36m All\n\033[1;32m6)\033[1;36m All loop\n\033[1;32m7)\033[1;36m Exit\n");
     cout << "\033[1;35mChoise : \033[1;32m";
