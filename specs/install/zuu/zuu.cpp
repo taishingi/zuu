@@ -4,5 +4,5 @@
 using namespace Yubel;
 int main(void)
 {
-    app("/run/media/juwishmaster/git/zuu","zuu");
+    app("/mnt/git/zuu","zuu");
 }
