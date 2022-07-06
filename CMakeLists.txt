@@ -13,7 +13,7 @@ endmacro()
 
 macro(add_exec name)
     add_executable(${name} ${name}.cpp)
-    target_link_libraries(${name} tux)
+    target_link_libraries(${name} Fs)
     install(PROGRAMS ${name} DESTINATION bin)
 endmacro()
 
@@ -22,3 +22,4 @@ add_exec(zuu)
 add_lib(Generator)
 add_lib(Unit)
 add_lib(Installation)
+install(FILES zuu.desktop DESTINATION /usr/share/applications)

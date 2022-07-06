@@ -2,9 +2,66 @@
 #include <string>
 #include <filesystem>
 #include <cassert>
-
+#include <Fs.hpp>
 using namespace std;
+using namespace Tux;
 namespace fs = std::filesystem;
+
+bool found_specs(const string &directory)
+{
+    return directory.contains("specs");
+}
+
+void check()
+{
+    string path(".");
+    
+    for (const auto &file : fs::directory_iterator(path.c_str()))
+    {
+		if(found_specs(file.path()))
+		{
+			puts("\033[1;32mTest directory has been founded");
+    			this_thread::sleep_for(chrono::milliseconds(1000));
+			return;
+		}else
+		{
+			if(Fs::directory(file.path()))
+			{
+				f::path(file.path());
+			}		
+		}		
+	}
+    char dir[FILENAME_MAX];
+    getcwd(dir,FILENAME_MAX);
+    fprintf(stderr,"\033[1;31mThe %s directory is not contains specs directory.\033[30m\n",dir);
+    	exit(1);
+}
+
+int ask()
+{
+
+    system("clear");
+   fprintf(stdout, "\033[1;35mHi %s ! Please enter the number of the test\n\n", getenv("USER"));
+    string choise;
+    puts("\033[1;32m1)\033[1;36m Unit\n\033[1;32m2)\033[1;36m Installation\n\033[1;32m3)\033[1;36m Unit Loop\n\033[1;32m4)\033[1;36m Installation Loop\n\033[1;32m5)\033[1;36m All\n\033[1;32m6)\033[1;36m All loop\n\033[1;32m7)\033[1;36m Exit\n");
+    cout << "\033[1;35mChoise : \033[1;32m";
+    
+    getline(cin, choise);
+
+    if (
+        choise.compare("1") == 0 ||
+        choise.compare("2") == 0 ||
+        choise.compare("3") == 0 ||
+        choise.compare("4") == 0 ||
+        choise.compare("5") == 0 ||
+        choise.compare("6") == 0 ||
+        choise.compare("7") == 0)
+        {
+            system("clear");
+            return atoi(choise.c_str());
+   	}
+    return ask();
+}
 
 void installation()
 {
@@ -46,32 +103,9 @@ void unit()
     }
 }
 
-int ask()
-{
-    system("clear");
-   fprintf(stdout, "\033[1;35mHi %s ! Please enter the number of the test\n\n", getenv("USER"));
-    string choise;
-    puts("\033[1;32m1)\033[1;36m Unit\n\033[1;32m2)\033[1;36m Installation\n\033[1;32m3)\033[1;36m Unit Loop\n\033[1;32m4)\033[1;36m Installation Loop\n\033[1;32m5)\033[1;36m All\n\033[1;32m6)\033[1;36m All loop\n\033[1;32m7)\033[1;36m Exit\n");
-    cout << "\033[1;35mChoise : \033[1;32m";
-    getline(cin, choise);
-    if (
-        choise.compare("1") == 0 ||
-        choise.compare("2") == 0 ||
-        choise.compare("3") == 0 ||
-        choise.compare("4") == 0 ||
-        choise.compare("5") == 0 ||
-        choise.compare("6") == 0 ||
-        choise.compare("7") == 0)
-    {
-        system("clear");
-        return atoi(choise.c_str());
-    }
-
-    return ask();
-}
-
 int main(void)
 {
+    check();
     puts("\033[?25l\n");
     while (true)
     {

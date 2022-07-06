@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=zuu
+
+GenericName=Test Framework
+Comment=Launches the test framework client
+Keywords=Tdd,test
+Categories=Network;ConsoleOnly
+
+Type=Application
+Icon=utilities-terminal
+Terminal=true
+Exec=wezterm start zuu
+MimeType=
