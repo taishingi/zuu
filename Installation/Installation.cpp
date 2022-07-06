@@ -76,9 +76,12 @@ void Yubel::shell(const string &command)
  */
 void Yubel::clone(const string &url, const string &directory)
 {
+    string log = "git log HEAD -1 --stat";
     string x = "git clone ";
     make(directory, x.append(url).append(" /tmp/").append(directory));
     x.assign("git clone ");
+    cd(directory);
+    make(directory,log);
 }
 /**
  *
@@ -112,6 +115,6 @@ void Yubel::compile()
 void Yubel::make(const string &application, const string &command)
 {
     fprintf(stdout, "\n%s[ %s%s%s ]-[ %s%s%s ]\n", "\033[1;37m", "\033[1;35m", application.c_str(), "\033[1;37m", "\033[1;35m", command.c_str(), "\033[1;37m");
-    this_thread::sleep_for(chrono::milliseconds(750));
+    this_thread::sleep_for(chrono::milliseconds(2000));
     shell(command);
 }
