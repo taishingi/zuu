@@ -101,7 +101,6 @@ Unit *Unit::check(const string &describe, bool tdd)
 
 Unit *Unit::cc(const string &describe, bool expected,bool (*f)(void), int repeat)	
 {
-
     int i = 0;
 
     do
@@ -113,7 +112,6 @@ Unit *Unit::cc(const string &describe, bool expected,bool (*f)(void), int repeat
 }
 Unit *Unit::cc(const string &describe, int expected, int (*f)(void), int repeat)
 {
-
     int i = 0;
 
     do

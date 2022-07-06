@@ -16,7 +16,7 @@ void installation()
     {
         if (file.is_regular_file())
         {
-            cmd.append(file.path()).append(" -l Installation -o yubel && ./yubel");
+            cmd.append(file.path()).append(" -l Installation -l tux -o yubel && ./yubel");
             FILE *c = popen(cmd.c_str(), "w");
             assert(c != nullptr);
             pclose(c);
@@ -36,7 +36,7 @@ void unit()
     {
         if (file.is_regular_file())
         {
-            cmd.append(file.path()).append(" -l Unit -o yubel && ./yubel");
+            cmd.append(file.path()).append(" -l Unit -o yubel -l tux && ./yubel");
             FILE *c = popen(cmd.c_str(), "w");
             assert(c != nullptr);
             pclose(c);
