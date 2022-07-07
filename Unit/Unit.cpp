@@ -227,7 +227,7 @@ int Unit::end()
          << endl;
     cout << "\033[1;32mAssertions " << this->assertions << " \033[1;37mFailures : \033[1;31m" << this->failures << " \033[1;36mExecuted :  \033[1;37m" << this->assertions + this->failures << endl
          << endl;
-    this_thread::sleep_for(chrono::milliseconds(1000));
+    this_thread::sleep_for(chrono::seconds(7));
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
