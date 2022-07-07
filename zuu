@@ -1,0 +1,117 @@
+#!/bin/bash
+
+tput init
+tput bold
+tput cup  0
+printf "\033[?25l"
+cols=`tput cols`
+run_installation_infinite()
+{
+
+	while [ true ]
+	do
+	    run_installation
+	done
+
+}
+run_installation()
+{
+            tput clear
+	    for i in `find  ./specs/install   -type f -name "zuu_*.cpp"`
+    	    do
+		g++ $i -l Installation -l Fs -o zzz && ./zzz && rm ./zzz
+    	    done
+}
+
+run_unit_infinite()
+{
+	while [ true ]
+	do
+	    run_unit
+	done
+
+}
+run_unit()
+{
+    tput clear
+    for i in `find  ./specs/units   -type f -name "zuu_*.cpp"`
+    do
+	g++ $i -l Unit -l Fs -o zzz && ./zzz && rm ./zzz
+    done
+    _bar "Units"
+
+}
+_()
+{
+
+    tput cup  $1 $2 
+    printf "$3"
+    sleep $4
+}
+
+_bar()
+{
+	tput clear
+	_ 0 0  "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 000 \033[1;34m]" 1
+	_ 0 0  "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 001 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 010 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 011 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 100 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 101 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 110 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 111 \033[1;34m]\n\n" 1
+}
+main()
+{
+	x=3
+	p=""
+	cd "${HOME}/Git"
+
+	while [ ! -d  "${HOME}/Git/${p}/specs" ]
+	do
+		for i in `exa --git --git-ignore -D`
+		do
+			_ 0 $x "\033[1;34m[\033[1;36m $i \033[1;34m]" 0.2
+			x=$(($x+3 *3 +2))
+		done
+		
+		_  3 3 "\033[1;36mEntrer le chemin du projet à tester : \033[1;32m" 0.250
+		
+		read p
+
+		if [  -d "${HOME}/Git/$p" ]
+		then
+			tput clear
+			cd "${HOME}/Git/${p}"
+			_ 0 0  "\033[1;34m[ \033[1;36m1 \033[1;34m] [\033[1;36m Executer les tests unitaires 				   	            \033[1;34m]" 0.250
+			_ 2 0  "\033[1;34m[ \033[1;36m2 \033[1;34m] [\033[1;36m Executer les tests unitaires à l'infinie 		   		    \033[1;34m]" 0.250
+			_ 4 0  "\033[1;34m[ \033[1;36m3 \033[1;34m] [\033[1;36m Executer les tests d'installation   		      		 	    \033[1;34m]" 0.250
+			_ 6 0  "\033[1;34m[ \033[1;36m4 \033[1;34m] [\033[1;36m Executer les tests d'installation à l'infinie	     		 	    \033[1;34m]" 0.250
+	
+
+			_  8 0  "\033[1;36mVoitre choix : \033[1;32m" 0.250
+			read choice
+
+			if [ $choice == 1 ]
+			then
+			       	run_unit
+			elif [ $choice == 2 ]
+			then
+				run_unit_infinite
+			elif [ $choice == 3 ]
+			then
+			       	run_installation
+			elif [ $choice == 4 ]
+			then
+			       	run_installation_infinite
+			fi
+		fi
+	done	
+}
+
+while [ true ]
+do
+	tput clear
+	main
+done
+

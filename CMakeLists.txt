@@ -22,3 +22,4 @@ add_lib(Generator)
 add_lib(Unit)
 add_lib(Installation)
 install(PROGRAMS zuu DESTINATION bin)
+
