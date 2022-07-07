@@ -14,9 +14,9 @@ Unit::~Unit()
 }
 Unit::Unit(const string &description)
 {
-    cout << "\033[1;37m[ \033[1;35m" << description << " \033[1;37m]" << endl
+    cout << "\033[1;34m[ \033[1;36m" << description << " \033[1;34m]" << endl
          << endl;
-    this_thread::sleep_for(chrono::milliseconds(1000));
+    this_thread::sleep_for(chrono::milliseconds(500));
     this->assertions = 0;
     this->failures = 0;
 }
@@ -91,11 +91,11 @@ Unit *Unit::contains(const string &describe, const string &expected, const strin
 Unit *Unit::check(const string &describe, bool tdd)
 {
     tdd ? this->assertions++ : this->failures++;
-    tdd ? cout << "\033[1;37m[ \033[1;32mOK \033[1;37m]\033[1;34m " << describe << endl
+    tdd ? cout << "\033[1;34m[ \033[1;36mOK \033[1;34m]\033[1;39m " << describe << endl
                << endl
-        : cout << "\033[1;37m[\033[1;31m KO \033[1;37m]\033[1;34m " << describe << endl
+        : cout << "\033[1;34m[\033[1;36m KO \033[1;34m]\033[32m " << describe << endl
                << endl;
-    this_thread::sleep_for(chrono::milliseconds(50));
+    this_thread::sleep_for(chrono::milliseconds(250));
     return this;
 }
 
@@ -227,8 +227,8 @@ int Unit::end()
          << endl;
     cout << "\033[1;32mAssertions " << this->assertions << " \033[1;37mFailures : \033[1;31m" << this->failures << " \033[1;36mExecuted :  \033[1;37m" << this->assertions + this->failures << endl
          << endl;
-    this_thread::sleep_for(chrono::seconds(7));
+    this_thread::sleep_for(chrono::seconds(1));
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }
 
-#endif // __UNIT_H__
+#endif 

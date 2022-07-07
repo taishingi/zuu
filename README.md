@@ -46,9 +46,3 @@ int main(void)
 
 ```
 
-## Installation
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/taishingi/zuu/master/install | bash
-```
-

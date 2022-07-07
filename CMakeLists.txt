@@ -18,9 +18,7 @@ macro(add_exec name)
 endmacro()
 
 
-add_exec(zuu)
 add_lib(Generator)
 add_lib(Unit)
 add_lib(Installation)
-install(FILES zuu.desktop DESTINATION /usr/share/applications)
-install(PROGRAMS run_zuu  DESTINATION bin)
+install(PROGRAMS zuu DESTINATION bin)
