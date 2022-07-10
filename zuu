@@ -43,7 +43,6 @@ run_unit()
 }
 _()
 {
-
     tput cup  $1 $2 
     printf "$3"
     sleep $4
@@ -69,19 +68,21 @@ main()
 
 	while [ ! -d  "${HOME}/Git/${p}/specs" ]
 	do
+		tput clear
 		for i in `exa --git --git-ignore -D`
 		do
-			_ 0 $x "\033[1;34m[\033[1;36m $i \033[1;34m]" 0.2
-			x=$(($x+3 *3 +2))
+			_ 0 $x "\033[1;34m[\033[1;36m $i \033[1;34m] " 0.2
+			x=$(($x+3 *4))
 		done
 		
 		_  3 3 "\033[1;36mEntrer le chemin du projet à tester : \033[1;32m" 0.250
 		
 		read p
-
+	x=3
+	done
+		tput clear
 		if [  -d "${HOME}/Git/$p" ]
 		then
-			tput clear
 			cd "${HOME}/Git/${p}"
 			_ 0 0  "\033[1;34m[ \033[1;36m1 \033[1;34m] [\033[1;36m Executer les tests unitaires 				   	            \033[1;34m]" 0.250
 			_ 2 0  "\033[1;34m[ \033[1;36m2 \033[1;34m] [\033[1;36m Executer les tests unitaires à l'infinie 		   		    \033[1;34m]" 0.250
@@ -91,8 +92,12 @@ main()
 
 			_  8 0  "\033[1;36mVoitre choix : \033[1;32m" 0.250
 			read choice
+			tput clear
+			if [ -z $choice  ]
+			then
 
-			if [ $choice == 1 ]
+				main
+			elif [ $choice == 1 ]
 			then
 			       	run_unit
 			elif [ $choice == 2 ]
@@ -106,7 +111,6 @@ main()
 			       	run_installation_infinite
 			fi
 		fi
-	done	
 }
 
 while [ true ]
