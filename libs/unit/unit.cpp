@@ -1,7 +1,4 @@
-#ifndef __UNIT_H__
-#define __UNIT_H__
-
-#include "Unit.hpp"
+#include "unit.hpp"
 
 using namespace Yubel;
 
@@ -230,5 +227,3 @@ int Unit::end()
     this_thread::sleep_for(chrono::seconds(1));
     return this->failures > 0 ? EXIT_FAILURE : EXIT_SUCCESS;
 }
-
-#endif 

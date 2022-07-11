@@ -1,4 +1,4 @@
-#include "Generator.hpp"
+#include "generator.hpp"
 
 using namespace Yubel;
 

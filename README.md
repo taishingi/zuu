@@ -9,8 +9,8 @@
 >Best regards
 
 * [Source code](https://github.com/taishingi/zuu)
-	* [Unit](https://github.com/taishingi/zuu/tree/master/Unit)
-	* [Installation](https://github.com/taishingi/zuu/tree/master/Installation)
+	* [Unit](https://github.com/taishingi/zuu/tree/master/libs/Unit)
+	* [Installation](https://github.com/taishingi/zuu/tree/master/libs/Installation)
 * [Todo](https://trello.com/invite/b/XMS8W2TN/ebf447aa1ec218071a67fcafec3df0ae/yubel)
 * [Twitter](https://twitter.com/taishingi)
 * [Donate](https://www.paypal.com/donate/?hosted_button_id=A99G4XSSEX9LJ)

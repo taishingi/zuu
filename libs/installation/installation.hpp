@@ -24,6 +24,7 @@ namespace Yubel
     static const string rmdir = "rm -rf ";
 
     bool app(const string &repository, const string &app, const string &command = RUN_CMAKE);
+    
     /**
      *
      * @brief change of directory

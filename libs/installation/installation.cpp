@@ -1,5 +1,5 @@
 
-#include "Installation.hpp"
+#include "installation.hpp"
 
 using namespace Yubel;
 
@@ -58,7 +58,6 @@ void Yubel::shell(const string &command)
     if (c == NULL)
     {
         pclose(c);
-        puts("aaa");
         exit(EXIT_FAILURE);
     }
     pclose(c);
@@ -114,7 +113,7 @@ void Yubel::compile()
 
 void Yubel::make(const string &application, const string &command)
 {
-    fprintf(stdout, "\n%s[ %s%s%s ]-[ %s%s%s ]\n", "\033[1;34m", "\033[1;36m", application.c_str(), "\033[1;34m", "\033[1;32m", command.c_str(), "\033[1;34m");
+    fprintf(stdout, "\n%s[ %s%s%s ]-[ %s%s%s ]\n", "\033[1;34m", "\033[1;36m", application.c_str(), "\033[1;34m", "\033[1;35m", command.c_str(), "\033[1;34m");
     this_thread::sleep_for(chrono::seconds(1));
     shell(command);
 }

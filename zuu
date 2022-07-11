@@ -5,6 +5,7 @@ tput bold
 tput cup  0
 printf "\033[?25l"
 cols=`tput cols`
+LIBS=" -l unit -l installation -l fs -l str -l generator "
 run_installation_infinite()
 {
 
@@ -19,7 +20,12 @@ run_installation()
             tput clear
 	    for i in `find  ./specs/install   -type f -name "zuu_*.cpp"`
     	    do
-		g++ $i -l Installation -l Fs -o zzz && ./zzz && rm ./zzz
+		g++ $i ${LIBS} -o Zuu && ./Zuu  && rm Zuu
+		if [ $? -ne 0 ]
+		then
+			rm ${OUTPUT}
+			exit 1
+		fi
     	    done
 }
 
@@ -36,7 +42,12 @@ run_unit()
     tput clear
     for i in `find  ./specs/units   -type f -name "zuu_*.cpp"`
     do
-	g++ $i -l Unit -l Fs -o zzz && ./zzz && rm ./zzz
+	g++ $i ${LIBS} -o Zuu && ./Zuu  && rm Zuu
+	if [ $? -ne 0 ]
+	then
+		rm ${OUTPUT}
+		exit 1
+	fi
     done
     _bar "Units"
 
@@ -51,8 +62,8 @@ _()
 _bar()
 {
 	tput clear
-	_ 0 0  "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 000 \033[1;34m]" 1
-	_ 0 0  "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 001 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 000 \033[1;34m]" 1
+	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 001 \033[1;34m]" 1
 	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 010 \033[1;34m]" 1
 	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 011 \033[1;34m]" 1
 	_ 0 0 "\033[1;34m[ \033[1;36m$1\033[1;34m ]-[\033[1;36m 100 \033[1;34m]" 1
