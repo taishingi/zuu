@@ -1,6 +1,6 @@
 [package]
 name = "zuu"
-version = "0.3.6"
+version = "0.3.7"
 edition = "2021"
 description = "A tests runner for rust"
 license = "GPL-2.0-or-later"

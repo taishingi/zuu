@@ -89,7 +89,7 @@ fn main() {
         cursor.hide().expect("failed to hide cursor");
         let arg: &String = args.get(1).expect("failed to get argument");
         if arg.eq("init") {
-            let name = ".git/hooks/commit-msg";
+            let name = ".git/hooks/pre-commit";
             if Path::new(name).is_file() {
                 println!(
                     "Project already initialised at {:?}",
@@ -104,7 +104,7 @@ fn main() {
             }
             assert!(Command::new("chmod")
                 .arg("+x")
-                .arg(".git/hooks/commit-msg")
+                .arg(".git/hooks/pre-commit")
                 .spawn()
                 .expect("failed to init git hook")
                 .wait()
