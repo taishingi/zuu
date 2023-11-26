@@ -26,6 +26,11 @@ A testing framework to all program written in rust.
 cargo install zuu
 ```
 
+## Arch user 
+
+```bash
+yay -S zuu
+ ```
 ## Usage
 
 ```sh
