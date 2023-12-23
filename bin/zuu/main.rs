@@ -5,7 +5,7 @@ use std::io::Write;
 use std::path::Path;
 use std::process::{exit, Command, ExitCode};
 
-const HOOK: &str = "./.git/hooks/pre-commit";
+const HOOK: &str = ".git/hooks/pre-commit";
 
 fn create_badges() -> bool {
     if !Path::new("badges").is_dir() {
