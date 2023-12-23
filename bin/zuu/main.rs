@@ -30,19 +30,14 @@ fn create_hook() -> bool {
     let mut x = File::create(HOOK).unwrap_or_else(|_| panic!("Failed to create the {} file", HOOK));
     x.write_all("#!/bin/bash\n\nzuu\n\nexit $?\n".as_bytes())
         .unwrap_or_else(|_| panic!("Failed to create the {} file", HOOK));
-    assert!(Command::new("chmod")
+    Command::new("chmod")
         .arg("+x")
         .arg(HOOK)
         .spawn()
         .expect("failed to init git hook")
         .wait()
         .expect("")
-        .success());
-    println!(
-        "Project initialised at {:?}",
-        current_dir().expect("failed to get current dir")
-    );
-    true
+        .success()
 }
 
 fn cargo() -> bool {
@@ -66,25 +61,13 @@ fn check() -> bool {
     exit(1);
 }
 
-fn create_vcs() -> bool {
-    if !Path::new(".git").is_dir() {
-        return Command::new("git")
-            .arg("init")
-            .current_dir(".")
-            .spawn()
-            .expect("Failed to find git")
-            .wait()
-            .expect("msg")
-            .success();
-    }
-    false
-}
-
 fn create(bin: bool, name: &str) -> bool {
     if bin {
         Command::new("cargo")
             .arg("init")
             .arg("--bin")
+            .arg("--vcs")
+            .arg("git")
             .arg(name)
             .current_dir(".")
             .spawn()
@@ -96,6 +79,8 @@ fn create(bin: bool, name: &str) -> bool {
         Command::new("cargo")
             .arg("init")
             .arg("--lib")
+            .arg("--vcs")
+            .arg("git")
             .arg(name)
             .current_dir(".")
             .spawn()
@@ -195,9 +180,8 @@ fn main() -> ExitCode {
                 if t.eq("bin") && arg.eq("init") && !init || t.eq("lib") && arg.eq("init") && !init
                 {
                     assert!(create_badges());
-                    assert!(create_vcs());
-                    assert!(create_hook());
                     assert!(create(t.eq("bin"), "."));
+                    assert!(create_hook());
                 }
                 exit(0);
             }
