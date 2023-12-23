@@ -1,4 +1,3 @@
-use crossterm_cursor::TerminalCursor;
 use rsbadges::{Badge, Style};
 use std::env::current_dir;
 use std::fs::{self, File};
@@ -70,9 +69,6 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
 
     if args.len() == 1 {
-        let cursor = TerminalCursor::new();
-        cursor.hide().expect("failed to hide cursor");
-
         badge("verify", done("cargo", "verify-project"));
         badge("build", done("cargo", "build"));
         badge("clippy", done("cargo", "clippy"));
@@ -82,14 +78,23 @@ fn main() {
         badge("documentation", done("cargo", "doc"));
         badge("tests", done("cargo", "test"));
         badge("tree", done("cargo", "tree"));
-        cursor.show().expect("failed to show cursor");
         exit(0);
     } else {
-        let cursor = TerminalCursor::new();
-        cursor.hide().expect("failed to hide cursor");
         let arg: &String = args.get(1).expect("failed to get argument");
         if arg.eq("init") {
             let name = ".git/hooks/pre-commit";
+
+            if !Path::new(".git").is_dir() {
+                assert!(Command::new("git")
+                    .arg("init")
+                    .current_dir(".")
+                    .spawn()
+                    .expect("Failed to find git")
+                    .wait()
+                    .expect("msg")
+                    .success());
+            }
+            
             if Path::new(name).is_file() {
                 println!(
                     "Project already initialised at {:?}",
@@ -110,14 +115,12 @@ fn main() {
                 .wait()
                 .expect("")
                 .success());
-            cursor.show().expect("failed to restore cursor");
             println!(
                 "Project initialised at {:?}",
                 current_dir().expect("failed to get current dir")
             );
             exit(0);
         } else {
-            cursor.show().expect("failed to restore cursor");
             help();
         }
     }
