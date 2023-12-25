@@ -3,8 +3,10 @@ name = "zuu"
 version = "0.4.2"
 edition = "2021"
 description = "A tests runner for rust"
-license = "GPL-2.0-or-later"
+license-file = "LICENSE"
 repository = "https://github.com/taishingi/zuu"
+readme = "README.md"
+authors = ["Willy Micieli"]
 
 [[bin]]
 name = "zuu"

@@ -1,8 +1,12 @@
-# Zuu
+- [Build status](#build-status)
+  - [Installation](#installation)
+  - [Arch user](#arch-user)
+  - [Usage](#usage)
+  - [Social links](#social-links)
 
-A testing framework to all program written in rust.
+# Build status
 
-![build](https://raw.githubusercontent.com/taishingi/zuu/master/badges/build.svg)
+![build](https://raw.githubusercontent.com/taishingi/zuu/master/badges/build.svg) 
 
 ![check](https://raw.githubusercontent.com/taishingi/zuu/master/badges/check.svg)
 
@@ -13,6 +17,7 @@ A testing framework to all program written in rust.
 ![format](https://raw.githubusercontent.com/taishingi/zuu/master/badges/format.svg)
 
 ![benchmark](https://raw.githubusercontent.com/taishingi/zuu/master/badges/benchmark.svg)
+
 
 ![tests](https://raw.githubusercontent.com/taishingi/zuu/master/badges/tests.svg)
 
@@ -41,10 +46,14 @@ zuu init
 git add .
 git commit -m "commit msg"
 ```
-# Social links
 
-* [**Email**](mailto:micieli@vivaldi.net)
-* [**Donate**](https://www.paypal.com/donate/?hosted_button_id=D43VUM85PM724)
-* [**Github**](https://github.com/taishingi)
-* [**Discord**](https://discord.gg/U5gFCtfc)
+## Social links
+
+[Email](mailto:micieli@vivaldi.net)
+
+[Donate](https://www.paypal.com/donate/?hosted_button_id=D43VUM85PM724)
+
+[Github](https://github.com/taishingi)
+
+[Discord](https://discord.gg/U5gFCtfc)
 
