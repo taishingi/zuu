@@ -15,7 +15,6 @@ CHECK=false
 
 if ! cargo verify-project --quiet  > verify.out 2> verify_error.out
 then
-    vim verify.out verify_error.out
     VERIFY=false
 else
     VERIFY=true
@@ -23,7 +22,6 @@ fi
 
 if ! cargo fmt --check  > fmt.out 2> fmt_error.out
 then
-    vim fmt.out fmt_error.out
     FORMAT=false
 else
     FORMAT=true
@@ -32,7 +30,6 @@ fi
 
 if ! cargo audit --quiet  > audit.out 2> audit_error.out
 then
-    vim audit.out audit_error.out
     AUDIT=false
 else
     AUDIT=true
@@ -40,7 +37,6 @@ fi
 
 if ! cargo clippy --quiet -- -D clippy::all -D clippy::pedantic -D clippy::nursery -D clippy::cargo > clippy.out 2> clippy_error.out
 then
-    vim clippy.out clippy_error.out
     CLIPPY=false
 else
     CLIPPY=true
@@ -48,7 +44,6 @@ fi
 
 if ! cargo test --quiet --tests --all-targets --no-fail-fast  > tests.out 2> test_error.out
 then
-    vim tests.out tests_error.out
     TESTS=false
 else
     TESTS=true
@@ -56,7 +51,6 @@ fi
 
 if ! cargo check --quiet --all-targets  > check.out 2> check_error.out
 then
-    vim check.out check_error.out
     CHECK=false
 else
     CHECK=true
