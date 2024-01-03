@@ -1,0 +1,15 @@
+[package]
+name = "zuu"
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE"
+keywords = ["clippy", "git", "hook"]
+categories = ["development-tools"]
+readme = "README.md"
+authors = ["Willy Micieli"]
+repository = "https://github.com/taishingi/zuu"
+description = "A program to run tests before commit"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
