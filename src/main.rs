@@ -19,6 +19,12 @@ fn main() {
                 .expect("failed to get hook file");
             fs::copy("/tmp/pre-commit", HOOK).expect("Fail to copy the hook file");
             fs::remove_file("/tmp/pre-commit").expect("fail to remove hook file");
+            Command::new("chmod")
+                .arg("+x")
+                .arg(HOOK)
+                .current_dir(".")
+                .spawn()
+                .expect("failed to run chmod");
         } else {
             println!("nad");
         }
