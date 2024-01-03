@@ -27,6 +27,10 @@ git add .
 git commit -m "commit msg"
 ```
 
+## Output 
+
+![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu.gif)
+
 ## Social links
 
 [Email](mailto:micieli@vivaldi.net)

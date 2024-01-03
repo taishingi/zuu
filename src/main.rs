@@ -21,7 +21,7 @@ fn main() -> ExitCode {
         if init.eq(&"init") {
             assert!(Command::new("wget")
                 .arg("-q")
-                .arg("https://raw.githubusercontent.com/taishingi/zuu/develop/pre-commit")
+                .arg("https://raw.githubusercontent.com/taishingi/zuu/master/pre-commit")
                 .current_dir(HOOK_DIR)
                 .spawn()
                 .expect("Failed to get hook file")
