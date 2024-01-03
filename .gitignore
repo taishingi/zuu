@@ -2,3 +2,4 @@ Cargo.lock
 target/
 continuous
 .icon/
+*.out
