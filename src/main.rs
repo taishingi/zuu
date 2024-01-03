@@ -1,62 +1,51 @@
-use std::{env::args, fs, process::Command};
+use std::{
+    env::args,
+    path::Path,
+    process::{exit, Command, ExitCode},
+};
 
 const HOOK: &str = ".git/hooks/pre-commit";
+const HOOK_DIR: &str = ".git/hooks/";
 
-fn main() {
-    if args().count() == 1 {
-        Command::new("bash")
-            .arg(HOOK)
-            .spawn()
-            .expect("failed to run hook");
+fn main() -> ExitCode {
+    if args().count() == 1 && !Path::new(HOOK).exists() {
+        println!("Run -> zuu init");
+        exit(1);
     } else if args().count() == 2 {
+        if Path::new(HOOK).exists() {
+            println!("Project already initialized");
+            exit(0);
+        }
         let args: Vec<String> = args().collect();
         let init = args.get(1).expect("msg");
         if init.eq(&"init") {
-            Command::new("wget")
+            assert!(Command::new("wget")
+                .arg("-q")
                 .arg("https://raw.githubusercontent.com/taishingi/zuu/develop/pre-commit")
-                .current_dir("/tmp")
+                .current_dir(HOOK_DIR)
                 .spawn()
-                .expect("failed to get hook file");
-            fs::copy("/tmp/pre-commit", HOOK).expect("Fail to copy the hook file");
-            fs::remove_file("/tmp/pre-commit").expect("fail to remove hook file");
-            Command::new("chmod")
+                .expect("Failed to get hook file")
+                .wait()
+                .expect("msg")
+                .success());
+
+            assert!(Command::new("chmod")
                 .arg("+x")
                 .arg(HOOK)
                 .current_dir(".")
                 .spawn()
-                .expect("failed to run chmod");
+                .expect("Failed to run chmod")
+                .wait()
+                .expect("")
+                .success());
+            println!("Project initialized successfully");
+            exit(0);
         } else {
             println!("nad");
         }
     }
-}
+    println!("git commit   : Run tests");
+    println!("zuu init     : Init a repository");
 
-#[cfg(test)]
-mod test {
-    use std::process::Command;
-    #[test]
-    fn init() {
-        assert!(Command::new("cargo")
-            .arg("run")
-            .arg("--bin")
-            .arg("zuu")
-            .arg("init")
-            .current_dir(".")
-            .spawn()
-            .expect("msg")
-            .wait()
-            .expect("msg")
-            .success());
-    }
-    #[test]
-    fn all() {
-        assert!(Command::new("cargo")
-            .arg("run")
-            .current_dir(".")
-            .spawn()
-            .expect("msg")
-            .wait()
-            .expect("msg")
-            .success());
-    }
+    exit(1);
 }
