@@ -38,7 +38,7 @@ Time is in seconds
 
 ## Output 
 
-![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu.gif)
+![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-2.gif)
 
 ## Social links
 
