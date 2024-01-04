@@ -8,16 +8,15 @@ A git hook test runner for rust programer.
 cargo install zuu
 ```
 
-## Arch user 
+## Requirement
 
-```bash
-yay -S zuu
-```
+Wget and git mustbe installed on your system
 
 ## Track repository
 
 ```bash
 git init
+zuu init
 ```
 
 ## Usage
@@ -26,6 +25,16 @@ git init
 git add .
 git commit -m "commit msg"
 ```
+
+## Manual usage 
+
+```bash
+zuu
+zuu --watch
+zuu --watch 5 
+```
+
+Time is in seconds
 
 ## Output 
 
