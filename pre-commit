@@ -51,7 +51,7 @@ else
     CLIPPY=true
 fi
 
-if ! cargo test --quiet --tests --all-targets --no-fail-fast  > "${OUTPUT_DIR}/tests.out" 2> "${OUTPUT_DIR}/tests_error.out"
+if ! cargo test  > "${OUTPUT_DIR}/tests.out" 2> "${OUTPUT_DIR}/tests_error.out"
 then
     TESTS=false
 else
