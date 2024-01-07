@@ -44,7 +44,7 @@ else
     AUDIT=true
 fi
 
-if ! cargo clippy --quiet -- -D clippy::all -D clippy::pedantic -D clippy::nursery -D clippy::cargo > "${OUTPUT_DIR}/clippy.out" 2> "${OUTPUT_DIR}/clippy_error.out"
+if ! cargo clippy --quiet -- -F keyword_idents -F warnings -F let-underscore -F rust-2018-compatibility -F rust-2018-idioms  -F rust-2021-compatibility -F future-incompatible -F unused -F unused_crate_dependencies -F unused_extern_crates  -D unused_macro_rules -F unused_results -F unused_qualifications -F nonstandard-style -F macro_use_extern_crate -F absolute_paths_not_starting_with_crate -F ambiguous_glob_imports -F clippy::all -F clippy::perf -F clippy::pedantic -F clippy::style -F clippy::suspicious -F clippy::correctness -F clippy::nursery -F clippy::complexity -F clippy::cargo > "${OUTPUT_DIR}/clippy.out" 2> "${OUTPUT_DIR}/clippy_error.out"
 then
     CLIPPY=false
 else
