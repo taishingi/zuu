@@ -1,5 +1,6 @@
 use std::{
     env::args,
+    fs,
     path::Path,
     process::{exit, Command, ExitCode},
     thread::sleep,
@@ -11,12 +12,21 @@ const HOOK_DIR: &str = ".git/hooks/";
 
 fn help() -> i32 {
     println!("zuu                   : Run test cases");
+    println!("zuu upgrade           : Upgrade the hook script");
     println!("zuu init              : Init the repository");
+    println!("zuu --help            : Display help");
     println!("zuu --watch           : Run hook script in watch mode");
     println!("zuu --watch <time>    : Run hook script in watch mode with the expected time");
-    1
+    0
 }
 
+fn upgrade() -> i32 {
+    if Path::new(HOOK).exists() {
+        fs::remove_file(HOOK).expect("Failed to remove hook");
+        return init();
+    }
+    1
+}
 fn init() -> i32 {
     if Path::new(HOOK).exists() {
         println!("The project is already initialized");
@@ -123,6 +133,12 @@ fn main() -> ExitCode {
         exit(1);
     }
 
+    if args.get(1).expect("failed to get argument").eq(&"upgrade") {
+        exit(upgrade());
+    }
+    if args.get(1).expect("failed to get argument").eq(&"--help") {
+        exit(help());
+    }
     if args
         .get(1)
         .expect("Fail to get the argument")

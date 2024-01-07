@@ -1,4 +1,4 @@
-# Zuu 
+# Zuu
 
 A git hook test runner for rust programer.
 
@@ -10,7 +10,7 @@ cargo install zuu
 
 ## Requirement
 
-Wget and git mustbe installed on your system
+Wget and git must be installed on your system
 
 ## Track repository
 
@@ -26,7 +26,7 @@ git add .
 git commit -m "commit msg"
 ```
 
-## Manual usage 
+## Manual usage
 
 ```bash
 zuu
@@ -36,7 +36,19 @@ zuu --watch 5
 
 Time is in seconds
 
-## Output 
+## Upgrade the hook file
+
+```bash
+zuu upgrade
+```
+
+## Display help
+
+```bash
+zuu --help
+```
+
+## Output
 
 ![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-2.gif)
 
