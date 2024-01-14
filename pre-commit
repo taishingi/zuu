@@ -22,6 +22,14 @@ then
     echo "*.out" > "${OUTPUT_DIR}/.gitignore"
 fi
 
+if [ ! -d "${OUTPUT_DIR}/git" ]
+then
+    mkdir -p "${OUTPUT_DIR}/git/patch"
+    touch "${OUTPUT_DIR}/git/.gitignore"
+    echo "*.out" > "${OUTPUT_DIR}/git/.gitignore"
+    echo "*.patch" > "${OUTPUT_DIR}/git/patch/.gitignore"
+fi
+
 if ! cargo verify-project --quiet  > "${OUTPUT_DIR}/verify.out" 2> "${OUTPUT_DIR}/verify_error.out"
 then
     VERIFY=false
@@ -116,6 +124,12 @@ fi
 if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ ${CLIPPY} == true ]  && [ ${TESTS} == true ] && [ ${CHECK} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}\n"
+    git status > "${OUTPUT_DIR}/git/status.out" 2> "${OUTPUT_DIR}/git/status_error.out"
+    git diff -p > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
+    for x in $(git remote show)
+    do
+        git format-patch --root "$x" -o "${OUTPUT_DIR}/git/patch" --progress >  "${OUTPUT_DIR}/git/patch.out" 2> "${OUTPUT_DIR}/git/patch_error.out"
+    done
     exit 0
 else
     echo
