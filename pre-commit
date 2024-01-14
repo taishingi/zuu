@@ -22,11 +22,10 @@ CHECK=false
 if [ -z "$1" ]
 then
     GENERATE_BADGE=false
-elif [ "$1" == "--gen-badges"]
+elif [ "$1" == "--gen-badges" ]
 then
     GENERATE_BADGE=true
 else
-    
     GENERATE_BADGE=false
 fi
 
