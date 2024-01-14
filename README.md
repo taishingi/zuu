@@ -11,7 +11,17 @@ A git hook test runner for rust programer.
 ## Installation
 
 ```sh
-cargo install zuu
+cargo install zuu git-graph git-igitt rsbadges
+```
+
+## Archlinux install
+
+![AUR Version](https://img.shields.io/aur/version/zuu?style=social)
+![AUR Last Modified](https://img.shields.io/aur/last-modified/zuu?style=social)
+![AUR Votes](https://img.shields.io/aur/votes/zuu?style=social)
+
+```bash
+paru -S zuu
 ```
 
 ## Requirement
