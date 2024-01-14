@@ -126,9 +126,10 @@ then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}\n"
     git status > "${OUTPUT_DIR}/git/status.out" 2> "${OUTPUT_DIR}/git/status_error.out"
     git diff -p > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
+    branch=$(git branch --show-current)
     for x in $(git remote show)
     do
-        git format-patch --root "$x" -o "${OUTPUT_DIR}/git/patch" --progress >  "${OUTPUT_DIR}/git/patch.out" 2> "${OUTPUT_DIR}/git/patch_error.out"
+        git format-patch --root "$x/$branch" -o "${OUTPUT_DIR}/git/patch" --progress >  "${OUTPUT_DIR}/git/patch.out" 2> "${OUTPUT_DIR}/git/patch_error.out"
     done
     exit 0
 else
