@@ -19,13 +19,26 @@ CLIPPY=false
 TESTS=false
 CHECK=false
 
+if [ -z "$1" ]
+then
+    GENERATE_BADGE=false
+elif [ "$1" == "--gen-badges"]
+then
+    GENERATE_BADGE=true
+else
+    
+    GENERATE_BADGE=false
+fi
 
 function badge()
 {
-    for style in "${BADGES_STYLES[@]}"
-    do
-        rsbadges --style "${style}"  --label "${1}" --msg "${2}" --logo https://simpleicons.org/icons/rust.svg  --embed-logo --save-to-svg-at  "${BADGES_DIR}/${style}/${1}.svg" > /dev/null 2> /dev/null
-    done
+    if [ ${GENERATE_BADGE} == true ]
+    then
+        for style in "${BADGES_STYLES[@]}"
+        do
+            rsbadges --style "${style}"  --label "${1}" --msg "${2}" --logo https://simpleicons.org/icons/rust.svg  --embed-logo --save-to-svg-at  "${BADGES_DIR}/${style}/${1}.svg" > /dev/null 2> /dev/null
+        done
+    fi
 }
 
 if [ ! -d ${OUTPUT_DIR} ]
