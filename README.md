@@ -2,6 +2,12 @@
 
 A git hook test runner for rust programer.
 
+![audit](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/audit.svg)
+![check](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/check.svg)
+![clippy](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/clippy.svg)
+![format](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/fmt.svg)
+![test](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/test.svg)
+
 ## Installation
 
 ```sh
