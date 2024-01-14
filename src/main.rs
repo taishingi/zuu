@@ -14,6 +14,7 @@ fn help() -> i32 {
     println!("zuu                   : Run test cases");
     println!("zuu upgrade           : Upgrade the hook script");
     println!("zuu init              : Init the repository");
+    println!("zuu --gen-badges      : Run test cases and generate badges");
     println!("zuu --help            : Display help");
     println!("zuu --watch           : Run hook script in watch mode");
     println!("zuu --watch <time>    : Run hook script in watch mode with the expected time");
@@ -66,6 +67,23 @@ fn run() -> bool {
     }
     false
 }
+
+fn gen_badges() -> i32 {
+    if Path::new(HOOK).exists()
+        && Command::new("bash")
+            .arg(HOOK)
+            .arg("--gen-badges")
+            .spawn()
+            .expect("msg")
+            .wait()
+            .expect("msg")
+            .success()
+    {
+        return 0;
+    }
+    1
+}
+
 fn watch(args: &[String]) {
     if args.len() == 3 {
         let time = args
@@ -126,6 +144,15 @@ fn main() -> ExitCode {
 
     if args.len() == 2 && args.get(1).expect("Fail to get the argument").eq(&"init") {
         exit(init());
+    }
+
+    if args.len() == 2
+        && args
+            .get(1)
+            .expect("Fail to get the argument")
+            .eq(&"--gen-badges")
+    {
+        exit(gen_badges());
     }
 
     if !Path::new(HOOK).exists() {

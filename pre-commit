@@ -8,12 +8,37 @@ GREEN='\033[1;32m'
 WHITE='\033[1;37m'
 
 OUTPUT_DIR=zuu
+BADGES_DIR=badges
+BADGES_STYLES=('plastic' 'flat' 'flatsquare' 'forthebadge' 'social')
+SUCCESS="success"
+FAILURE="failure"
 FORMAT=false
 VERIFY=false
 AUDIT=false
 CLIPPY=false
 TESTS=false
 CHECK=false
+
+if [ -z "$1" ]
+then
+    GENERATE_BADGE=false
+elif [ "$1" == "--gen-badges" ]
+then
+    GENERATE_BADGE=true
+else
+    GENERATE_BADGE=false
+fi
+
+function badge()
+{
+    if [ ${GENERATE_BADGE} == true ]
+    then
+        for style in "${BADGES_STYLES[@]}"
+        do
+            rsbadges --style "${style}"  --label "${1}" --msg "${2}" --logo https://simpleicons.org/icons/rust.svg  --embed-logo --save-to-svg-at  "${BADGES_DIR}/${style}/${1}.svg" > /dev/null 2> /dev/null
+        done
+    fi
+}
 
 if [ ! -d ${OUTPUT_DIR} ]
 then
@@ -22,47 +47,76 @@ then
     echo "*.out" > "${OUTPUT_DIR}/.gitignore"
 fi
 
+if [ ! -d "${BADGES_DIR}" ]
+then
+    mkdir "${BADGES_DIR}"
+    for style in "${BADGES_STYLES[@]}"
+    do
+        mkdir "${BADGES_DIR}/${style}"
+    done
+fi
+
+if [ ! -d "${OUTPUT_DIR}/git" ]
+then
+    mkdir -p "${OUTPUT_DIR}/git/patch"
+    touch "${OUTPUT_DIR}/git/.gitignore"
+    echo "*.out" > "${OUTPUT_DIR}/git/.gitignore"
+    echo "*.patch" > "${OUTPUT_DIR}/git/patch/.gitignore"
+fi
+
 if ! cargo verify-project --quiet  > "${OUTPUT_DIR}/verify.out" 2> "${OUTPUT_DIR}/verify_error.out"
 then
     VERIFY=false
+    badge "verify-project" "${FAILURE}"
 else
     VERIFY=true
+    badge "verify-project" "${SUCCESS}"
 fi
 
 if ! cargo fmt --check  > "${OUTPUT_DIR}/fmt.out" 2> "${OUTPUT_DIR}/fmt_error.out"
 then
     FORMAT=false
+    badge "fmt" "${FAILURE}"
 else
     FORMAT=true
+    badge "fmt" "${SUCCESS}"
 fi
 
 
 if ! cargo audit --quiet  > "${OUTPUT_DIR}/audit.out" 2> "${OUTPUT_DIR}/audit_error.out"
 then
     AUDIT=false
+    badge "audit" "${FAILURE}"
 else
     AUDIT=true
+    badge "audit" "${SUCCESS}"
 fi
 
 if ! cargo clippy --quiet -- -F keyword_idents -F warnings -F let-underscore -F rust-2018-compatibility -F rust-2018-idioms  -F rust-2021-compatibility -F future-incompatible -F unused -F unused_crate_dependencies -F unused_extern_crates  -D unused_macro_rules -F unused_results -F unused_qualifications -F nonstandard-style -F macro_use_extern_crate -F absolute_paths_not_starting_with_crate -F ambiguous_glob_imports -F clippy::all -F clippy::perf -F clippy::pedantic -F clippy::style -F clippy::suspicious -F clippy::correctness -F clippy::nursery -F clippy::complexity -F clippy::cargo > "${OUTPUT_DIR}/clippy.out" 2> "${OUTPUT_DIR}/clippy_error.out"
 then
     CLIPPY=false
+    badge "clippy" "${FAILURE}"
 else
     CLIPPY=true
+    badge "clippy" "${SUCCESS}"
 fi
 
 if ! cargo test  > "${OUTPUT_DIR}/tests.out" 2> "${OUTPUT_DIR}/tests_error.out"
 then
     TESTS=false
+    badge "test" "${FAILURE}"
 else
     TESTS=true
+    badge "test" "${SUCCESS}"
 fi
 
 if ! cargo check --quiet --all-targets  > "${OUTPUT_DIR}/check.out" 2> "${OUTPUT_DIR}/check_error.out"
 then
     CHECK=false
+    badge "check" "${FAILURE}"
 else
     CHECK=true
+    badge "check" "${SUCCESS}"
 fi
 
 
@@ -116,6 +170,14 @@ fi
 if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ ${CLIPPY} == true ]  && [ ${TESTS} == true ] && [ ${CHECK} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}\n"
+    git status > "${OUTPUT_DIR}/git/status.out" 2> "${OUTPUT_DIR}/git/status_error.out"
+    git diff --stat -p > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
+    git-graph > "${OUTPUT_DIR}/git/log.out" 2> "${OUTPUT_DIR}/git/log_error.out"
+    branch=$(git branch --show-current)
+    for x in $(git remote show)
+    do
+        git format-patch --root "$x/$branch" -o "${OUTPUT_DIR}/git/patch" --progress >  "${OUTPUT_DIR}/git/patch.out" 2> "${OUTPUT_DIR}/git/patch_error.out"
+    done
     exit 0
 else
     echo
