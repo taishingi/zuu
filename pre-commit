@@ -171,7 +171,7 @@ if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ $
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}\n"
     git status > "${OUTPUT_DIR}/git/status.out" 2> "${OUTPUT_DIR}/git/status_error.out"
-    git diff -p > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
+    git diff --stat > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
     git-graph > "${OUTPUT_DIR}/git/log.out" 2> "${OUTPUT_DIR}/git/log_error.out"
     branch=$(git branch --show-current)
     for x in $(git remote show)
