@@ -42,6 +42,56 @@ git add .
 git commit -m "commit msg"
 ```
 
+## Structure of the project
+
+```bash
+.
+├── badges
+│  ├── flat
+│  │  ├── audit.svg
+│  │  ├── check.svg
+│  │  ├── clippy.svg
+│  │  ├── fmt.svg
+│  │  ├── test.svg
+│  │  └── verify-project.svg
+│  ├── flatsquare
+│  │  ├── audit.svg
+│  │  ├── check.svg
+│  │  ├── clippy.svg
+│  │  ├── fmt.svg
+│  │  ├── test.svg
+│  │  └── verify-project.svg
+│  ├── forthebadge
+│  │  ├── audit.svg
+│  │  ├── check.svg
+│  │  ├── clippy.svg
+│  │  ├── fmt.svg
+│  │  ├── test.svg
+│  │  └── verify-project.svg
+│  ├── plastic
+│  │  ├── audit.svg
+│  │  ├── check.svg
+│  │  ├── clippy.svg
+│  │  ├── fmt.svg
+│  │  ├── test.svg
+│  │  └── verify-project.svg
+│  └── social
+│     ├── audit.svg
+│     ├── check.svg
+│     ├── clippy.svg
+│     ├── fmt.svg
+│     ├── test.svg
+│     └── verify-project.svg
+├── src
+│  └── main.rs
+├── zuu
+│  └── git
+│     └── patch
+├── Cargo.toml
+├── LICENSE
+└── README.md
+```
+
 ## Manual usage
 
 ```bash
@@ -75,5 +125,3 @@ zuu --help
 [Donate](https://www.paypal.com/donate/?hosted_button_id=D43VUM85PM724)
 
 [Github](https://github.com/taishingi)
-
-[Discord](https://discord.gg/U5gFCtfc)
