@@ -80,14 +80,6 @@ fn git_tools(time: i32) {
         .wait()
         .expect("msg")
         .success());
-
-    assert!(Command::new("git-igitt")
-        .current_dir(".")
-        .spawn()
-        .expect("msg")
-        .wait()
-        .expect("msg")
-        .success());
 }
 fn run() -> bool {
     if Path::new(HOOK).exists() {
@@ -165,6 +157,7 @@ fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
     if args.len() == 1 && Path::new(HOOK).exists() {
         if run() {
+            git_tools(10);
             exit(0);
         }
         exit(1);
