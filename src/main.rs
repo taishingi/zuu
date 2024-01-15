@@ -1,3 +1,5 @@
+use std::io;
+use std::io::Write;
 use std::{
     env::args,
     fs,
@@ -6,7 +8,6 @@ use std::{
     thread::sleep,
     time::Duration,
 };
-
 const HOOK: &str = ".git/hooks/pre-commit";
 const HOOK_DIR: &str = ".git/hooks/";
 
@@ -55,6 +56,39 @@ fn init() -> i32 {
     println!("Project initialized successfully");
     0
 }
+
+fn waiting(time: i32) {
+    println!(
+        "\n{}",
+        format_args!(
+            "{}[ {}OK {}] Waiting {}s{}\n",
+            "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
+        )
+    );
+    for _i in 1..time {
+        print!(".");
+        io::stdout().flush().unwrap();
+        sleep(Duration::from_secs(1));
+    }
+}
+fn git_tools(time: i32) {
+    waiting(time);
+    assert!(Command::new("gitui")
+        .current_dir(".")
+        .spawn()
+        .expect("msg")
+        .wait()
+        .expect("msg")
+        .success());
+
+    assert!(Command::new("git-igitt")
+        .current_dir(".")
+        .spawn()
+        .expect("msg")
+        .wait()
+        .expect("msg")
+        .success());
+}
 fn run() -> bool {
     if Path::new(HOOK).exists() {
         return Command::new("bash")
@@ -90,45 +124,39 @@ fn watch(args: &[String]) {
             .get(2)
             .expect("Fail to get the sleep time argument")
             .to_string();
-        let converted_time: u64 = time.parse().expect("Fail to parse");
+        let converted_time: i32 = time.parse().expect("Fail to parse");
         loop {
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Starting {}{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", HOOK, "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(1));
-            let _ = run();
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Waiting {}s{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(converted_time));
+            let code = run();
+
+            if code {
+                git_tools(converted_time);
+            } else {
+                println!(
+                    "\n{}",
+                    format_args!(
+                        "{}[ {}OK {}] Waiting {}s{}\n",
+                        "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
+                    )
+                );
+                waiting(converted_time);
+            }
         }
     } else {
         loop {
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Starting {}{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", HOOK, "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(1));
-            let _ = run();
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Waiting {}s{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", "60", "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(60));
+            let code = run();
+
+            if code {
+                git_tools(60);
+            } else {
+                println!(
+                    "\n{}",
+                    format_args!(
+                        "{}[ {}OK {}] Waiting {}s{}",
+                        "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", "60", "\x1b[0m"
+                    )
+                );
+                waiting(60);
+            }
         }
     }
 }
