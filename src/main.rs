@@ -59,7 +59,7 @@ fn init() -> i32 {
 
 fn waiting(time: i32) {
     println!(
-        "\n{}",
+        "{}",
         format_args!(
             "{}[ {}OK {}] Waiting {}s{}\n",
             "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
@@ -73,7 +73,7 @@ fn waiting(time: i32) {
 }
 fn git_tools(time: i32) {
     waiting(time);
-    assert!(Command::new("gitui")
+    assert!(Command::new("lazygit")
         .current_dir(".")
         .spawn()
         .expect("msg")
