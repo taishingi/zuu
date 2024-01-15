@@ -116,7 +116,7 @@ zuu --help
 
 ## Output
 
-![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-2.gif)
+![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-3.gif)
 
 ## Social links
 

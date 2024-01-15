@@ -173,7 +173,11 @@ fn main() -> ExitCode {
             .expect("Fail to get the argument")
             .eq(&"--gen-badges")
     {
-        exit(gen_badges());
+        if gen_badges().eq(&0) {
+            git_tools(10);
+            exit(0);
+        }
+        exit(1);
     }
 
     if !Path::new(HOOK).exists() {
