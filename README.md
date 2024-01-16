@@ -1,6 +1,6 @@
 # What it's ?
 
-<img src="https://raw.githubusercontent.com/taishingi/zuu/develop/img/logo.png" alt="logo" align="right" width="250"/>
+<img src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" alt="logo" align="right" width="250"/>
 
 Zuu will perform certain code tests at the time of the commit. if the tests fail, you will not be able to validate your modifications until all the checks are successful.
 
@@ -23,7 +23,7 @@ You can also generate badges for all checkup in different styles.
 
 ## Output
 
-<img src="https://raw.githubusercontent.com/taishingi/zuu/develop/zuu-6.gif" width="100%" alt="demo">
+<img src="https://raw.githubusercontent.com/taishingi/zuu/master/zuu-6.gif" width="100%" alt="demo">
 
 ## Installation
 
