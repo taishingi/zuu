@@ -1,6 +1,16 @@
-# Zuu
+# What it's ?
 
-A git hook test runner for rust programer.
+<img src="https://raw.githubusercontent.com/taishingi/zuu/develop/img/logo.png" alt="logo" align="right" width="250"/>
+
+Zuu will perform certain code tests at the time of the commit. if the tests fail, you will not be able to validate your modifications until all the checks are successful.
+
+If all controls are successful, a git program will be automatically executed to validate your change, if the controls have failures, ranger is executed in the zuu directory to see all failures.
+
+You can also run the tests yourself to find out if everything is working properly.
+
+Watch mode is available.
+
+You can also generate badges for all checkup in different styles.
 
 ![audit](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/audit.svg)
 ![check](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/check.svg)
@@ -8,9 +18,12 @@ A git hook test runner for rust programer.
 ![format](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/fmt.svg)
 ![test](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/test.svg)
 
+![Version](https://img.shields.io/crates/v/zuu?style=social)
+![Download](https://img.shields.io/crates/d/zuu?style=social)
+
 ## Output
 
-![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-6.gif)
+<img src="https://raw.githubusercontent.com/taishingi/zuu/develop/zuu-6.gif" width="100%" alt="demo">
 
 ## Installation
 
