@@ -8,10 +8,14 @@ A git hook test runner for rust programer.
 ![format](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/fmt.svg)
 ![test](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/test.svg)
 
+## Output
+
+![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-3.gif)
+
 ## Installation
 
 ```sh
-cargo install zuu git-graph git-igitt rsbadges
+cargo install zuu git-graph rsbadges
 ```
 
 ## Archlinux install
@@ -19,6 +23,8 @@ cargo install zuu git-graph git-igitt rsbadges
 ![AUR Version](https://img.shields.io/aur/version/zuu?style=social)
 ![AUR Last Modified](https://img.shields.io/aur/last-modified/zuu?style=social)
 ![AUR Votes](https://img.shields.io/aur/votes/zuu?style=social)
+![AUR Maintainer](https://img.shields.io/aur/maintainer/zuu?style=social)
+![AUR License](https://img.shields.io/aur/license/zuu?style=social)
 
 ```bash
 paru -S zuu
@@ -26,7 +32,14 @@ paru -S zuu
 
 ## Requirement
 
-Wget and git must be installed on your system
+- wget
+- ranger
+- git
+- git-graph
+- lazygit
+- rsbadges
+- cargo-audit
+- rustup
 
 ## Track repository
 
@@ -40,6 +53,34 @@ zuu init
 ```sh
 git add .
 git commit -m "commit msg"
+```
+
+## Manual usage
+
+```bash
+zuu
+zuu --watch
+zuu --watch 10
+```
+
+Time is in seconds
+
+## Upgrade the hook file
+
+```bash
+zuu upgrade
+```
+
+## Display help
+
+```bash
+zuu --help
+```
+
+## Generate badges
+
+```bash
+zuu --gen-badges
 ```
 
 ## Structure of the project
@@ -91,32 +132,6 @@ git commit -m "commit msg"
 ├── LICENSE
 └── README.md
 ```
-
-## Manual usage
-
-```bash
-zuu
-zuu --watch
-zuu --watch 5 
-```
-
-Time is in seconds
-
-## Upgrade the hook file
-
-```bash
-zuu upgrade
-```
-
-## Display help
-
-```bash
-zuu --help
-```
-
-## Output
-
-![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-3.gif)
 
 ## Social links
 
