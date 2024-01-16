@@ -195,5 +195,6 @@ then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] lauching git tools${NOCOLOR}\n"
     exit 0
 else
+    ranger "${OUTPUT_DIR}"
     exit 1
 fi
