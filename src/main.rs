@@ -27,6 +27,7 @@ fn upgrade() -> i32 {
         fs::remove_file(HOOK).expect("Failed to remove hook");
         return init();
     }
+    println!("run -> zuu init");
     1
 }
 fn init() -> i32 {
@@ -34,15 +35,18 @@ fn init() -> i32 {
         println!("The project is already initialized");
         return 0;
     }
-    assert!(Command::new("wget")
-        .arg("-q")
-        .arg("https://raw.githubusercontent.com/taishingi/zuu/master/pre-commit")
-        .current_dir(HOOK_DIR)
-        .spawn()
-        .expect("Failed to get hook file")
-        .wait()
-        .expect("msg")
-        .success());
+    assert!(
+        Command::new("wget")
+            .arg("-q")
+            .arg("https://raw.githubusercontent.com/taishingi/zuu/master/pre-commit")
+            .current_dir(HOOK_DIR)
+            .spawn()
+            .expect("Failed to get hook file")
+            .wait()
+            .expect("msg")
+            .success(),
+        "The git directory has been not founded"
+    );
 
     assert!(Command::new("chmod")
         .arg("+x")
@@ -89,8 +93,9 @@ fn run() -> bool {
     if Path::new(HOOK).exists() {
         return Command::new("bash")
             .arg(HOOK)
+            .current_dir(".")
             .spawn()
-            .expect("msg")
+            .expect("Failed to run the hook")
             .wait()
             .expect("msg")
             .success();
@@ -161,7 +166,7 @@ fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
     if args.len() == 1 && Path::new(HOOK).exists() {
         if run() {
-            git_tools(10);
+            git_tools(3);
             exit(0);
         }
         exit(1);
@@ -171,6 +176,11 @@ fn main() -> ExitCode {
         exit(init());
     }
 
+    if !Path::new(HOOK).exists() {
+        println!("run -> zuu init");
+        exit(1);
+    }
+
     if args.len() == 2
         && args
             .get(1)
@@ -178,14 +188,9 @@ fn main() -> ExitCode {
             .eq(&"--gen-badges")
     {
         if gen_badges().eq(&0) {
-            git_tools(10);
+            git_tools(3);
             exit(0);
         }
-        exit(1);
-    }
-
-    if !Path::new(HOOK).exists() {
-        println!("run -> zuu init");
         exit(1);
     }
 
