@@ -59,7 +59,7 @@ if [ ! -d ${OUTPUT_DIR} ]
 then
     mkdir ${OUTPUT_DIR}
     touch "${OUTPUT_DIR}/.gitignore"
-    echo "*.out" > "${OUTPUT_DIR}/.gitignore"
+    echo "*.txt" > "${OUTPUT_DIR}/.gitignore"
 fi
 
 if [ ! -d "${BADGES_DIR}" ]
@@ -75,7 +75,6 @@ if [ ! -d "${OUTPUT_DIR}/git" ]
 then
     mkdir -p "${OUTPUT_DIR}/git/patch"
     touch "${OUTPUT_DIR}/git/.gitignore"
-    echo "*.out" > "${OUTPUT_DIR}/git/.gitignore"
     echo "*.patch" > "${OUTPUT_DIR}/git/patch/.gitignore"
 fi
 
