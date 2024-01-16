@@ -70,6 +70,7 @@ fn waiting(time: i32) {
         io::stdout().flush().unwrap();
         sleep(Duration::from_secs(1));
     }
+    println!();
 }
 fn git_tools(time: i32) {
     waiting(time);
