@@ -74,13 +74,16 @@ fn waiting(time: i32) {
 }
 fn git_tools(time: i32) {
     waiting(time);
-    assert!(Command::new("lazygit")
-        .current_dir(".")
-        .spawn()
-        .expect("msg")
-        .wait()
-        .expect("msg")
-        .success());
+    assert!(
+        Command::new("lazygit")
+            .current_dir(".")
+            .spawn()
+            .expect("lazygit not founded")
+            .wait()
+            .expect("msg")
+            .success(),
+        "lazygit failure"
+    );
 }
 fn run() -> bool {
     if Path::new(HOOK).exists() {
