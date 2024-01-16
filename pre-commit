@@ -18,6 +18,21 @@ AUDIT=false
 CLIPPY=false
 TESTS=false
 CHECK=false
+SUCCESS_EXT="_${SUCCESS}.txt"
+FAILURE_EXT="_${FAILURE}.txt"
+
+VERIFY_SUCCESS="${OUTPUT_DIR}/verify${SUCCESS_EXT}"
+VERIFY_FAILURE="${OUTPUT_DIR}/verify${FAILURE_EXT}"
+FORMAT_SUCCESS="${OUTPUT_DIR}/fmt${SUCCESS_EXT}"
+FORMAT_FAILURE="${OUTPUT_DIR}/fmt${FAILURE_EXT}"
+AUDIT_SUCCESS="${OUTPUT_DIR}/audit${SUCCESS_EXT}"
+AUDIT_FAILURE="${OUTPUT_DIR}/audit${FAILURE_EXT}"
+CLIPPY_SUCCESS="${OUTPUT_DIR}/clippy${SUCCESS_EXT}"
+CLIPPY_FAILURE="${OUTPUT_DIR}/clippy${FAILURE_EXT}"
+TESTS_SUCCESS="${OUTPUT_DIR}/tests${SUCCESS_EXT}"
+TESTS_FAILURE="${OUTPUT_DIR}/tests${FAILURE_EXT}"
+CHECK_SUCCESS="${OUTPUT_DIR}/check${SUCCESS_EXT}"
+CHECK_FAILURE="${OUTPUT_DIR}/check${FAILURE_EXT}"
 
 if [ -z "$1" ]
 then
@@ -31,7 +46,7 @@ fi
 
 function badge()
 {
-    if [ ${GENERATE_BADGE} == true ]
+    if [ "${GENERATE_BADGE}" == true ]
     then
         for style in "${BADGES_STYLES[@]}"
         do
@@ -44,7 +59,7 @@ if [ ! -d ${OUTPUT_DIR} ]
 then
     mkdir ${OUTPUT_DIR}
     touch "${OUTPUT_DIR}/.gitignore"
-    echo "*.out" > "${OUTPUT_DIR}/.gitignore"
+    echo "*.txt" > "${OUTPUT_DIR}/.gitignore"
 fi
 
 if [ ! -d "${BADGES_DIR}" ]
@@ -60,11 +75,10 @@ if [ ! -d "${OUTPUT_DIR}/git" ]
 then
     mkdir -p "${OUTPUT_DIR}/git/patch"
     touch "${OUTPUT_DIR}/git/.gitignore"
-    echo "*.out" > "${OUTPUT_DIR}/git/.gitignore"
     echo "*.patch" > "${OUTPUT_DIR}/git/patch/.gitignore"
 fi
 
-if ! cargo verify-project --quiet  > "${OUTPUT_DIR}/verify.out" 2> "${OUTPUT_DIR}/verify_error.out"
+if ! cargo verify-project --quiet  > ${VERIFY_SUCCESS} 2> ${VERIFY_FAILURE}
 then
     VERIFY=false
     badge "verify-project" "${FAILURE}"
@@ -73,7 +87,7 @@ else
     badge "verify-project" "${SUCCESS}"
 fi
 
-if ! cargo fmt --check  > "${OUTPUT_DIR}/fmt.out" 2> "${OUTPUT_DIR}/fmt_error.out"
+if ! cargo fmt --check  > ${FORMAT_SUCCESS}  2> ${FORMAT_FAILURE}
 then
     FORMAT=false
     badge "fmt" "${FAILURE}"
@@ -83,7 +97,7 @@ else
 fi
 
 
-if ! cargo audit --quiet  > "${OUTPUT_DIR}/audit.out" 2> "${OUTPUT_DIR}/audit_error.out"
+if ! cargo audit --color=never  > ${AUDIT_SUCCESS} 2> ${AUDIT_FAILURE}
 then
     AUDIT=false
     badge "audit" "${FAILURE}"
@@ -92,7 +106,7 @@ else
     badge "audit" "${SUCCESS}"
 fi
 
-if ! cargo clippy --quiet -- -F keyword_idents -F warnings -F let-underscore -F rust-2018-compatibility -F rust-2018-idioms  -F rust-2021-compatibility -F future-incompatible -F unused -F unused_crate_dependencies -F unused_extern_crates  -D unused_macro_rules -F unused_results -F unused_qualifications -F nonstandard-style -F macro_use_extern_crate -F absolute_paths_not_starting_with_crate -F ambiguous_glob_imports -F clippy::all -F clippy::perf -F clippy::pedantic -F clippy::style -F clippy::suspicious -F clippy::correctness -F clippy::nursery -F clippy::complexity -F clippy::cargo > "${OUTPUT_DIR}/clippy.out" 2> "${OUTPUT_DIR}/clippy_error.out"
+if ! cargo clippy --quiet -- -F keyword_idents -F warnings -F let-underscore -F rust-2018-compatibility -F rust-2018-idioms  -F rust-2021-compatibility -F future-incompatible -F unused -F unused_crate_dependencies -F unused_extern_crates  -D unused_macro_rules -F unused_results -F unused_qualifications -F nonstandard-style -F macro_use_extern_crate -F absolute_paths_not_starting_with_crate -F ambiguous_glob_imports -F clippy::all -F clippy::perf -F clippy::pedantic -F clippy::style -F clippy::suspicious -F clippy::correctness -F clippy::nursery -F clippy::complexity -F clippy::cargo > ${CLIPPY_SUCCESS} 2> ${CLIPPY_FAILURE}
 then
     CLIPPY=false
     badge "clippy" "${FAILURE}"
@@ -101,16 +115,16 @@ else
     badge "clippy" "${SUCCESS}"
 fi
 
-if ! cargo test  > "${OUTPUT_DIR}/tests.out" 2> "${OUTPUT_DIR}/tests_error.out"
+if ! cargo test  > ${TESTS_SUCCESS} 2> ${TESTS_FAILURE}
 then
-    TESTS=false
+    TESTS=fals
     badge "test" "${FAILURE}"
 else
     TESTS=true
     badge "test" "${SUCCESS}"
 fi
 
-if ! cargo check --quiet --all-targets  > "${OUTPUT_DIR}/check.out" 2> "${OUTPUT_DIR}/check_error.out"
+if ! cargo check --quiet --all-targets  > ${CHECK_SUCCESS} 2> ${CHECK_FAILURE}
 then
     CHECK=false
     badge "check" "${FAILURE}"
@@ -136,7 +150,6 @@ then
 else
     echo -e "\n${WHITE}[${RED} KO${WHITE} ] format${NOCOLOR}"
 fi
-
 
 if [ ${AUDIT} == true ]
 then
@@ -169,7 +182,7 @@ fi
 
 if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ ${CLIPPY} == true ]  && [ ${TESTS} == true ] && [ ${CHECK} == true ]
 then
-    echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}\n"
+    echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}"
     git status > "${OUTPUT_DIR}/git/status.out" 2> "${OUTPUT_DIR}/git/status_error.out"
     git diff --stat -p > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
     git-graph > "${OUTPUT_DIR}/git/log.out" 2> "${OUTPUT_DIR}/git/log_error.out"
@@ -178,8 +191,9 @@ then
     do
         git format-patch --root "$x/$branch" -o "${OUTPUT_DIR}/git/patch" --progress >  "${OUTPUT_DIR}/git/patch.out" 2> "${OUTPUT_DIR}/git/patch_error.out"
     done
+    echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] lauching git tools${NOCOLOR}\n"
     exit 0
 else
-    echo
+    ranger "${OUTPUT_DIR}"
     exit 1
 fi

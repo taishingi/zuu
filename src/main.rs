@@ -1,3 +1,5 @@
+use std::io;
+use std::io::Write;
 use std::{
     env::args,
     fs,
@@ -26,6 +28,7 @@ fn upgrade() -> i32 {
         fs::remove_file(HOOK).expect("Failed to remove hook");
         return init();
     }
+    println!("run -> zuu init");
     1
 }
 fn init() -> i32 {
@@ -33,15 +36,18 @@ fn init() -> i32 {
         println!("The project is already initialized");
         return 0;
     }
-    assert!(Command::new("wget")
-        .arg("-q")
-        .arg("https://raw.githubusercontent.com/taishingi/zuu/master/pre-commit")
-        .current_dir(HOOK_DIR)
-        .spawn()
-        .expect("Failed to get hook file")
-        .wait()
-        .expect("msg")
-        .success());
+    assert!(
+        Command::new("wget")
+            .arg("-q")
+            .arg("https://raw.githubusercontent.com/taishingi/zuu/master/pre-commit")
+            .current_dir(HOOK_DIR)
+            .spawn()
+            .expect("Failed to get hook file")
+            .wait()
+            .expect("msg")
+            .success(),
+        "The git directory has been not founded"
+    );
 
     assert!(Command::new("chmod")
         .arg("+x")
@@ -55,12 +61,42 @@ fn init() -> i32 {
     println!("Project initialized successfully");
     0
 }
+
+fn waiting(time: i32) {
+    println!(
+        "{}",
+        format_args!(
+            "{}[ {}OK {}] Waiting {}s{}\n",
+            "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
+        )
+    );
+    for _i in 1..time {
+        print!(".");
+        io::stdout().flush().unwrap();
+        sleep(Duration::from_secs(1));
+    }
+    println!();
+}
+fn git_tools(time: i32) {
+    waiting(time);
+    assert!(
+        Command::new("lazygit")
+            .current_dir(".")
+            .spawn()
+            .expect("lazygit not founded")
+            .wait()
+            .expect("msg")
+            .success(),
+        "lazygit failure"
+    );
+}
 fn run() -> bool {
     if Path::new(HOOK).exists() {
         return Command::new("bash")
             .arg(HOOK)
+            .current_dir(".")
             .spawn()
-            .expect("msg")
+            .expect("Failed to run the hook")
             .wait()
             .expect("msg")
             .success();
@@ -90,45 +126,39 @@ fn watch(args: &[String]) {
             .get(2)
             .expect("Fail to get the sleep time argument")
             .to_string();
-        let converted_time: u64 = time.parse().expect("Fail to parse");
+        let converted_time: i32 = time.parse().expect("Fail to parse");
         loop {
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Starting {}{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", HOOK, "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(1));
-            let _ = run();
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Waiting {}s{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(converted_time));
+            let code = run();
+
+            if code {
+                git_tools(converted_time);
+            } else {
+                println!(
+                    "\n{}",
+                    format_args!(
+                        "{}[ {}OK {}] Waiting {}s{}\n",
+                        "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
+                    )
+                );
+                waiting(converted_time);
+            }
         }
     } else {
         loop {
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Starting {}{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", HOOK, "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(1));
-            let _ = run();
-            println!(
-                "{}",
-                format_args!(
-                    "{}[ {}OK {}] Waiting {}s{}\n",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", "60", "\x1b[0m"
-                )
-            );
-            sleep(Duration::from_secs(60));
+            let code = run();
+
+            if code {
+                git_tools(3);
+            } else {
+                println!(
+                    "\n{}",
+                    format_args!(
+                        "{}[ {}OK {}] Waiting {}s{}",
+                        "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", "60", "\x1b[0m"
+                    )
+                );
+                waiting(60);
+            }
         }
     }
 }
@@ -137,6 +167,7 @@ fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
     if args.len() == 1 && Path::new(HOOK).exists() {
         if run() {
+            git_tools(3);
             exit(0);
         }
         exit(1);
@@ -146,17 +177,21 @@ fn main() -> ExitCode {
         exit(init());
     }
 
+    if !Path::new(HOOK).exists() {
+        println!("run -> zuu init");
+        exit(1);
+    }
+
     if args.len() == 2
         && args
             .get(1)
             .expect("Fail to get the argument")
             .eq(&"--gen-badges")
     {
-        exit(gen_badges());
-    }
-
-    if !Path::new(HOOK).exists() {
-        println!("run -> zuu init");
+        if gen_badges().eq(&0) {
+            git_tools(3);
+            exit(0);
+        }
         exit(1);
     }
 
