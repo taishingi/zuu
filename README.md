@@ -10,7 +10,7 @@ A git hook test runner for rust programer.
 
 ## Output
 
-![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-3.gif)
+![zuu output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-6.gif)
 
 ## Installation
 
