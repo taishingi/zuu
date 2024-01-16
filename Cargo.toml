@@ -13,3 +13,4 @@ description = "A program to run tests before commit"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+is_executable = "1.0.1"

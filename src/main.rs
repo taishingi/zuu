@@ -8,6 +8,8 @@ use std::{
     thread::sleep,
     time::Duration,
 };
+
+use is_executable::IsExecutable;
 const HOOK: &str = ".git/hooks/pre-commit";
 const HOOK_DIR: &str = ".git/hooks/";
 
@@ -78,16 +80,29 @@ fn waiting(time: i32) {
 }
 fn git_tools(time: i32) {
     waiting(time);
-    assert!(
-        Command::new("lazygit")
-            .current_dir(".")
-            .spawn()
-            .expect("lazygit not founded")
-            .wait()
-            .expect("msg")
-            .success(),
-        "lazygit failure"
-    );
+    if Path::new("/usr/bin/lazygit").is_executable() {
+        assert!(
+            Command::new("lazygit")
+                .current_dir(".")
+                .spawn()
+                .expect("lazygit not founded")
+                .wait()
+                .expect("msg")
+                .success(),
+            "lazygit failure"
+        );
+    } else {
+        assert!(
+            Command::new("gitui")
+                .current_dir(".")
+                .spawn()
+                .expect("gitui not founded")
+                .wait()
+                .expect("msg")
+                .success(),
+            "gitui failure"
+        );
+    }
 }
 fn run() -> bool {
     if Path::new(HOOK).exists() {
@@ -147,7 +162,7 @@ fn watch(args: &[String]) {
             let code = run();
 
             if code {
-                git_tools(60);
+                git_tools(3);
             } else {
                 println!(
                     "\n{}",
