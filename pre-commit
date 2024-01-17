@@ -134,42 +134,42 @@ if [ ${VERIFY} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] verify${NOCOLOR}"
 else
-    echo -e "\n${WHITE}[${RED} KO${WHITE} ] verify${NOCOLOR}"
+    cat "${VERIFY_FAILURE}"
 fi
 
 if [ ${FORMAT} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] format${NOCOLOR}"
 else
-    echo -e "\n${WHITE}[${RED} KO${WHITE} ] format${NOCOLOR}"
+   cat "${FORMAT_FAILURE}"
 fi
 
 if [ ${AUDIT} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] audit${NOCOLOR}"
 else
-    echo -e "\n${WHITE}[${RED} KO${WHITE} ] audit${NOCOLOR}"
+    cat "${AUDIT_FAILURE}"
 fi
 
 if [ ${CLIPPY} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] clippy${NOCOLOR}"
 else
-    echo -e "\n${WHITE}[${RED} KO${WHITE} ] clippy${NOCOLOR}"
+    cat "${CLIPPY_FAILURE}"
 fi
 
 if [ ${TESTS} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] tests${NOCOLOR}"
 else
-    echo -e "\n${WHITE}[${RED} KO${WHITE} ] tests${NOCOLOR}"
+   cat "${TESTS_FAILURE}"
 fi
 
 if [ ${CHECK} == true ]
 then
     echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] check${NOCOLOR}"
 else
-    echo -e "\n${WHITE}[${RED} KO${WHITE} ] check${NOCOLOR}"
+    cat "${CHECK_FAILURE}"
 fi
 
 
