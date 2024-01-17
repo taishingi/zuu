@@ -1,8 +1,10 @@
 # What it's ?
 
-<img src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" alt="logo" align="right" width="250"/>
+<img src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" alt="logo" style="float:right" width="250" title="zuu"/>
 
-Zuu will perform certain code tests at the time of the commit. if the tests fail, you will not be able to validate your modifications until all the checks are successful.
+Zuu will perform certain code tests at the time of the commit. 
+
+If the tests fail, you will not be able to validate your modifications until all the checks are successful.
 
 If all controls are successful, a git program will be automatically executed to validate your change, if the controls have failures, ranger is executed in the zuu directory to see all failures.
 
@@ -20,10 +22,6 @@ You can also generate badges for all checkup in different styles.
 
 ![Version](https://img.shields.io/crates/v/zuu?style=social)
 ![Download](https://img.shields.io/crates/d/zuu?style=social)
-
-## Output
-
-<img src="https://raw.githubusercontent.com/taishingi/zuu/master/zuu-6.gif" width="100%" alt="demo">
 
 ## Installation
 
@@ -43,16 +41,38 @@ cargo install zuu git-graph rsbadges
 paru -S zuu
 ```
 
+## Using docker compose
+
+```yaml
+version: '3'
+services:
+  zuu:
+    image: taishingi/zuu:latest
+    volumes:
+      - .:/app
+```
+
+## Run tests
+
+```bash
+docker-compose up
+```
+
+## Kill tests container
+
+```bash
+docker-compose down
+```
+
 ## Requirement
 
 - wget
-- ranger
 - git
-- git-graph
-- lazygit
 - rsbadges
 - cargo-audit
 - rustup
+- docker-compose
+- docker
 
 ## Track repository
 

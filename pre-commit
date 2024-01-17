@@ -71,13 +71,6 @@ then
     done
 fi
 
-if [ ! -d "${OUTPUT_DIR}/git" ]
-then
-    mkdir -p "${OUTPUT_DIR}/git/patch"
-    touch "${OUTPUT_DIR}/git/.gitignore"
-    echo "*.patch" > "${OUTPUT_DIR}/git/patch/.gitignore"
-fi
-
 if ! cargo verify-project --quiet  > ${VERIFY_SUCCESS} 2> ${VERIFY_FAILURE}
 then
     VERIFY=false
@@ -182,18 +175,8 @@ fi
 
 if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ ${CLIPPY} == true ]  && [ ${TESTS} == true ] && [ ${CHECK} == true ]
 then
-    echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}"
-    git status > "${OUTPUT_DIR}/git/status.out" 2> "${OUTPUT_DIR}/git/status_error.out"
-    git diff --stat -p > "${OUTPUT_DIR}/git/diff.out" 2> "${OUTPUT_DIR}/git/diff_error.out"
-    git-graph > "${OUTPUT_DIR}/git/log.out" 2> "${OUTPUT_DIR}/git/log_error.out"
-    branch=$(git branch --show-current)
-    for x in $(git remote show)
-    do
-        git format-patch --root "$x/$branch" -o "${OUTPUT_DIR}/git/patch" --progress >  "${OUTPUT_DIR}/git/patch.out" 2> "${OUTPUT_DIR}/git/patch_error.out"
-    done
-    echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] lauching git tools${NOCOLOR}\n"
+    echo -e "\n${WHITE}[${GREEN} OK${WHITE} ] Code is valid${NOCOLOR}\n"
     exit 0
 else
-    ranger "${OUTPUT_DIR}"
     exit 1
 fi
