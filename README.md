@@ -47,6 +47,8 @@ paru -S zuu
 version: '3'
 services:
   zuu:
+    environment:
+      TERM: xterm-color
     image: taishingi/zuu:latest
     volumes:
       - .:/app
