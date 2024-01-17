@@ -1,6 +1,9 @@
-# What it's ?
+<h1 style="text-align: center">What it's ?</h1>
 
-<img src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" alt="logo" style="float:right" width="250" title="zuu"/>
+
+<div style="float: left">
+<img src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" alt="logo" width="250" title="zuu"/>
+</div>
 
 Zuu will perform certain code tests at the time of the commit. 
 
@@ -26,16 +29,18 @@ You can also generate badges for all checkup in different styles.
 ## Installation
 
 ```sh
-cargo install zuu git-graph rsbadges
+cargo install zuu rsbadges
 ```
 
 ## Archlinux install
 
-![AUR Version](https://img.shields.io/aur/version/zuu?style=social)
-![AUR Last Modified](https://img.shields.io/aur/last-modified/zuu?style=social)
-![AUR Votes](https://img.shields.io/aur/votes/zuu?style=social)
-![AUR Maintainer](https://img.shields.io/aur/maintainer/zuu?style=social)
-![AUR License](https://img.shields.io/aur/license/zuu?style=social)
+<div style="text-align: center">
+<img src="https://img.shields.io/aur/version/zuu?style=social" alt="Aur version"/>
+<img src="https://img.shields.io/aur/last-modified/zuu?style=social" alt="Aur last modified"/>
+<img src="https://img.shields.io/aur/votes/zuu?style=social" alt="Aur votes"/>
+<img src="https://img.shields.io/aur/maintainer/zuu?style=social" alt="Aur maintainer"/>
+<img src="https://img.shields.io/aur/license/zuu?style=social" alt="Aur license"/>
+</div>
 
 ```bash
 paru -S zuu
