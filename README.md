@@ -1,6 +1,6 @@
-<h1 style="text-align: center">What it's ?</h1>
+# What it's ?
 
-<img src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" style="float: left" alt="logo" width="250" title="zuu"/>
+<img alt="logo" src="https://raw.githubusercontent.com/taishingi/zuu/master/img/logo.png" title="zuu" align="right" width="250"/>
 
 Zuu will perform certain code tests at the time of the commit. 
 
@@ -31,11 +31,11 @@ cargo install zuu rsbadges
 
 ## Archlinux install
 
-<img src="https://img.shields.io/aur/version/zuu?style=social" alt="Aur version"/>
-<img src="https://img.shields.io/aur/last-modified/zuu?style=social" alt="Aur last modified"/>
-<img src="https://img.shields.io/aur/votes/zuu?style=social" alt="Aur votes"/>
-<img src="https://img.shields.io/aur/maintainer/zuu?style=social" alt="Aur maintainer"/>
-<img src="https://img.shields.io/aur/license/zuu?style=social" alt="Aur license"/>
+![Aur version](https://img.shields.io/aur/version/zuu?style=social "Aur version")
+![Aur last modified](https://img.shields.io/aur/last-modified/zuu?style=social "Aur last modified")
+![Aur votes](https://img.shields.io/aur/votes/zuu?style=social "Aur votes")
+![Aur maintainer](https://img.shields.io/aur/maintainer/zuu?style=social "Aur maintainer")
+![Aur license](https://img.shields.io/aur/license/zuu?style=social "Aur license")
 
 ```bash
 paru -S zuu
