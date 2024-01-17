@@ -1,6 +1,6 @@
 [package]
 name = "zuu"
-version = "7.1.0"
+version = "7.1.1"
 edition = "2021"
 license = "GPL-2.0-or-later"
 keywords = ["code", "quality", "production", "certified","git"]
