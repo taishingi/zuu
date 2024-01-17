@@ -77,19 +77,6 @@ fn waiting(time: i32) {
     }
     println!();
 }
-fn git_tools(time: i32) {
-    waiting(time);
-    assert!(
-        Command::new("lazygit")
-            .current_dir(".")
-            .spawn()
-            .expect("lazygit not founded")
-            .wait()
-            .expect("msg")
-            .success(),
-        "lazygit failure"
-    );
-}
 fn run() -> bool {
     if Path::new(HOOK).exists() {
         return Command::new("bash")
@@ -131,13 +118,19 @@ fn watch(args: &[String]) {
             let code = run();
 
             if code {
-                git_tools(converted_time);
-            } else {
                 println!(
                     "\n{}",
                     format_args!(
                         "{}[ {}OK {}] Waiting {}s{}\n",
                         "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
+                    )
+                );
+            } else {
+                println!(
+                    "\n{}",
+                    format_args!(
+                        "{}[ {}KO {}] Waiting {}s{}\n",
+                        "\x1b[1;37m", "\x1b[1;31m", "\x1b[1;37m", time, "\x1b[0m"
                     )
                 );
                 waiting(converted_time);
@@ -148,13 +141,19 @@ fn watch(args: &[String]) {
             let code = run();
 
             if code {
-                git_tools(3);
-            } else {
                 println!(
                     "\n{}",
                     format_args!(
                         "{}[ {}OK {}] Waiting {}s{}",
                         "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", "60", "\x1b[0m"
+                    )
+                );
+            } else {
+                println!(
+                    "\n{}",
+                    format_args!(
+                        "{}[ {}KO {}] Waiting {}s{}",
+                        "\x1b[1;37m", "\x1b[1;31m", "\x1b[1;37m", "60", "\x1b[0m"
                     )
                 );
                 waiting(60);
@@ -167,7 +166,6 @@ fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
     if args.len() == 1 && Path::new(HOOK).exists() {
         if run() {
-            git_tools(3);
             exit(0);
         }
         exit(1);
@@ -189,7 +187,6 @@ fn main() -> ExitCode {
             .eq(&"--gen-badges")
     {
         if gen_badges().eq(&0) {
-            git_tools(3);
             exit(0);
         }
         exit(1);
