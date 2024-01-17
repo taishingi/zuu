@@ -1,10 +1,11 @@
 [package]
 name = "zuu"
-version = "7.0.1"
+version = "7.0.2"
 edition = "2021"
 license-file = "LICENSE"
-keywords = ["clippy", "git", "hook"]
-categories = ["development-tools"]
+license = "GPL-3"
+keywords = ["code", "quality", "production", "certified","git"]
+categories = ["development-tools","development-tools::testing"]
 readme = "README.md"
 authors = ["Willy Micieli"]
 repository = "https://github.com/taishingi/zuu"
