@@ -1,11 +1,11 @@
 [package]
 name = "zuu"
-version = "7.0.2"
+version = "7.1.0"
 edition = "2021"
-license = "GPL-3"
+license = "GPL-2.0-or-later"
 keywords = ["code", "quality", "production", "certified","git"]
 categories = ["development-tools","development-tools::testing"]
 readme = "README.md"
 authors = ["Willy Micieli"]
 repository = "https://github.com/taishingi/zuu"
-description = "A program to run tests before commit"
+description = "A program to check your code quality before all commit"
