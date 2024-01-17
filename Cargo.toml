@@ -2,7 +2,6 @@
 name = "zuu"
 version = "7.0.2"
 edition = "2021"
-license-file = "LICENSE"
 license = "GPL-3"
 keywords = ["code", "quality", "production", "certified","git"]
 categories = ["development-tools","development-tools::testing"]
