@@ -29,6 +29,8 @@ You can also generate badges for all checkup in different styles.
 cargo install zuu rsbadges
 ```
 
+![output](https://raw.githubusercontent.com/taishingi/zuu/develop/zuu-7.gif)
+
 ## Archlinux install
 
 ![Aur version](https://img.shields.io/aur/version/zuu?style=social "Aur version")

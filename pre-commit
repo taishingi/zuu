@@ -151,21 +151,21 @@ clear
 
 if [ ${VERIFY} == true ]
 then
-    output "Project valid" "waiting ${SUCCESS_TIME} secs" "${VERIFY_SUCCESS}" ${SUCCESS_TIME}
+    output "Project is valid" "waiting ${SUCCESS_TIME} secs" "${VERIFY_SUCCESS}" ${SUCCESS_TIME}
 else
     output "Project not valid" "waiting ${FAILURE_TIME} secs" "${VERIFY_FAILURE}" ${FAILURE_TIME}
 fi
 
 if [ ${FORMAT} == true ]
 then
-    output "Code format valid"  "waiting ${SUCCESS_TIME} secs" "${FORMAT_SUCCESS}" ${SUCCESS_TIME}
+    output "Source code format is valid"  "waiting ${SUCCESS_TIME} secs" "${FORMAT_SUCCESS}" ${SUCCESS_TIME}
 else
-    output "Code format error" "waiting ${FAILURE_TIME} secs" "${FORMAT_FAILURE}" ${FAILURE_TIME}
+    output "Source code format contains error" "waiting ${FAILURE_TIME} secs" "${FORMAT_FAILURE}" ${FAILURE_TIME}
 fi
 
 if [ ${AUDIT} == true ]
 then
-    output "Audit passes check" "waiting ${SUCCESS_TIME} secs" "${AUDIT_SUCCESS}" ${SUCCESS_TIME}
+    output "Audit passes" "waiting ${SUCCESS_TIME} secs" "${AUDIT_SUCCESS}" ${SUCCESS_TIME}
 else
     output "Audit detect warnings" "waiting ${FAILURE_TIME} secs" "${AUDIT_FAILURE}" ${FAILURE_TIME}
 fi
@@ -179,9 +179,9 @@ fi
 
 if [ ${TESTS} == true ]
 then
-    output "Test passes" "waiting ${SUCCESS_TIME} secs" "${TESTS_SUCCESS}" ${SUCCESS_TIME}
+    output "All tests passes" "waiting ${SUCCESS_TIME} secs" "${TESTS_SUCCESS}" ${SUCCESS_TIME}
 else
-    output "Tests has failure" "waiting ${FAILURE_TIME} secs" "${TESTS_FAILURE}" ${FAILURE_TIME}
+    output "Tests contains failure" "waiting ${FAILURE_TIME} secs" "${TESTS_FAILURE}" ${FAILURE_TIME}
 fi
 
 if [ ${CHECK} == true ]
