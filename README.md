@@ -77,6 +77,7 @@ docker-compose down
 - rustup
 - docker-compose
 - docker
+- ncurses
 
 ## Track repository
 
