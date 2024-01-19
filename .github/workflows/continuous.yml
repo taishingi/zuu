@@ -1,0 +1,22 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "master" , "develop" ]
+  pull_request:
+    branches: [ "master" , "develop"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: deps 
+      run: apt-get install curl fd-find git docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin packer && packer plugins install github.com/hashicorp/docker
+    - name: continuous
+      run: git clone https://github.com/taishingi/continuous-template.git continuous && cd continuous/rust && ./scripts-gen "github.com" "taishingi" "zuu" && packer validate . && packer build .
