@@ -14,7 +14,8 @@ Watch mode is available.
 
 You can also generate badges for all checkup in different styles.
 
-[![Rust](https://github.com/taishingi/zuu/actions/workflows/rust.yml/badge.svg)](https://github.com/taishingi/zuu/actions/workflows/rust.yml)
+[![zuu](https://github.com/taishingi/zuu/actions/workflows/rust.yml/badge.svg)](https://github.com/taishingi/zuu/actions/workflows/rust.yml)
+[![continuous](https://github.com/taishingi/zuu/actions/workflows/continuous.yml/badge.svg)](https://github.com/taishingi/zuu/actions/workflows/continuous.yml)
 
 ![audit](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/audit.svg)
 ![check](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/check.svg)
