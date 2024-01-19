@@ -59,17 +59,42 @@ services:
       - .:/app
 ```
 
-## Run tests
+### Run tests
 
 ```bash
 docker-compose up
 ```
 
-## Kill tests container
+### Kill tests container
 
 ```bash
 docker-compose down
 ```
+
+## GitHub workflow
+
+```yaml
+name: zuu
+on:
+  push:
+    branches: [ "master" , "develop" ]
+  pull_request:
+    branches: [ "master" , "develop"  ]
+env:
+  CARGO_TERM_COLOR: always
+  TERM: xterm-256color
+jobs:
+  zuu:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: deps
+      run: sudo apt-get install -y wget && wget https://raw.githubusercontent.com/taishingi/zuu/master/pre-commit
+    - name: zuu
+      run: bash pre-commit
+```
+
+
 
 ## Requirement
 
