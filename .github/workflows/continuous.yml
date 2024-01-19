@@ -17,6 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: deps 
-      run: sudo apt-get install -y curl fd-find git docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin packer && packer plugins install github.com/hashicorp/docker
+      run: sudo apt-get install -y curl fd-find git docker-ce docker-ce-cli containerd.io docker-buildx-plugin packer && packer plugins install github.com/hashicorp/docker
     - name: continuous
       run: git clone https://github.com/taishingi/continuous-template.git continuous && cd continuous/rust && ./scripts-gen "github.com" "taishingi" "zuu" && packer validate . && packer build .
