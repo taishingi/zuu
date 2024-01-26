@@ -61,7 +61,7 @@ function output {
     printf "\n%s\n\n" "$b"
     cat "$3"
     printf "\n%*s\n" $(((${#text}+COLUMNS)/2)) "$text"
-    read -r -s -t $4
+    read -r -s -t "$4"
 }
 
 
