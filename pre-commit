@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 
-unset GIT_DIR
+if [ -n "$GIT_DIR" ]
+then
+  unset GIT_DIR
+fi
 
 LINES=$(tput lines)
 COLUMNS=$(tput cols)
