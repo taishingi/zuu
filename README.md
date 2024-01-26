@@ -32,7 +32,7 @@ You can also generate badges for all checkup in different styles.
 cargo install zuu rsbadges
 ```
 
-![output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-7.gif)
+![output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-8.0.0.gif)
 
 ## Archlinux install
 
@@ -106,6 +106,11 @@ jobs:
 - docker-compose
 - docker
 - ncurses
+
+## Support versioning
+
+- Git
+- Mercurial
 
 ## Track repository
 

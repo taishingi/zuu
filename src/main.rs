@@ -85,13 +85,6 @@ fn init() -> i32 {
 }
 
 fn waiting(time: i32) {
-    println!(
-        "{}",
-        format_args!(
-            "{}[ {}OK {}] Waiting {}s{}\n",
-            "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", time, "\x1b[0m"
-        )
-    );
     for _i in 1..time {
         print!(".");
         io::stdout().flush().unwrap();
@@ -100,7 +93,7 @@ fn waiting(time: i32) {
     println!();
 }
 fn run() -> bool {
-    if Path::new(GIT_DIR).exists() {
+    if Path::new(GIT_HOOK).exists() {
         return Command::new("bash")
             .arg(GIT_HOOK)
             .current_dir(".")
@@ -110,7 +103,7 @@ fn run() -> bool {
             .expect("msg")
             .success();
     }
-    if Path::new(HG_DIR).exists() {
+    if Path::new(HG_HOOK).exists() {
         return Command::new("pre-commit")
             .current_dir(".")
             .spawn()
@@ -119,7 +112,7 @@ fn run() -> bool {
             .expect("msg")
             .success();
     }
-
+    println!("run -> zuu init");
     false
 }
 
@@ -176,8 +169,8 @@ fn watch(args: &[String]) {
                         "\x1b[1;37m", "\x1b[1;31m", "\x1b[1;37m", time, "\x1b[0m"
                     )
                 );
-                waiting(converted_time);
             }
+            waiting(converted_time);
         }
     } else {
         loop {
@@ -199,22 +192,22 @@ fn watch(args: &[String]) {
                         "\x1b[1;37m", "\x1b[1;31m", "\x1b[1;37m", "60", "\x1b[0m"
                     )
                 );
-                waiting(60);
             }
+            waiting(60);
         }
     }
 }
 
 fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
-    if args.len() == 1 && Path::new(GIT_DIR).exists() {
+    if args.len() == 1 {
         if run() {
             exit(0);
         }
         exit(1);
     }
 
-    if args.len() == 2 && args.get(1).expect("Fail to get the argument").eq(&"init") {
+    if args.len() == 2 && args.get(1).expect("Fail to get the argument").eq("init") {
         exit(init());
     }
 
