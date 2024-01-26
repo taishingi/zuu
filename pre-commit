@@ -201,7 +201,12 @@ then
     printf "\n%*s\n" $(((${#title}+COLUMNS)/2)) "$title"
     exit 0
 else
-      title="The code is not valid"
-      printf "\n%*s\n" $(((${#title}+COLUMNS)/2)) "$title"
-    exit 1
+    title="The code is not valid"
+    printf "\n%*s\n" $(((${#title}+COLUMNS)/2)) "$title"
+    if [ ${GENERATE_BADGE} == true ]
+    then
+      exit 0
+    else
+      exit 1
+    fi
 fi
