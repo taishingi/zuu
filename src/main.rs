@@ -17,21 +17,24 @@ const HG_DIR: &str = ".hg";
 
 fn help() -> i32 {
     println!("zuu                   : Run test cases");
-    println!("zuu upgrade           : Upgrade the hook script");
+    println!("zuu update            : Update the hook script");
     println!("zuu init              : Init the repository");
-    println!("zuu --gen-badges      : Run test cases and generate badges");
-    println!("zuu --help            : Display help");
-    println!("zuu --watch           : Run hook script in watch mode");
-    println!("zuu --watch <time>    : Run hook script in watch mode with the expected time");
+    println!("zuu badges            : Run test cases and generate badges");
+    println!("zuu help              : Display help");
+    println!("zuu watch             : Run hook script in watch mode");
+    println!("zuu watch <time>      : Run hook script in watch mode with the expected time");
     0
 }
 
-fn upgrade() -> i32 {
+fn update() -> i32 {
     if Path::new(GIT_DIR).exists() {
         fs::remove_file(GIT_HOOK).expect("Failed to remove hook");
         return init();
     }
     if Path::new(HG_DIR).exists() {
+        if Path::new(HG_HOOK).exists() {
+            assert!(fs::copy(HG_HOOK, "hgrc.copy").is_ok());
+        }
         fs::remove_file(HG_HOOK).expect("failed to remove the hook");
         return init();
     }
@@ -39,7 +42,7 @@ fn upgrade() -> i32 {
     1
 }
 fn init() -> i32 {
-    if Path::new(GIT_DIR).exists() {
+    if Path::new(GIT_DIR).exists() && !Path::new(GIT_HOOK).exists() {
         assert!(
             Command::new("wget")
                 .arg("-q")
@@ -65,7 +68,7 @@ fn init() -> i32 {
         println!("Project initialized successfully");
         return 0;
     }
-    if Path::new(HG_DIR).exists() {
+    if Path::new(HG_DIR).exists() && !Path::new(HG_HOOK).exists() {
         assert!(
             Command::new("wget")
                 .arg("-q")
@@ -81,6 +84,7 @@ fn init() -> i32 {
         println!("Project initialized successfully");
         return 0;
     }
+    println!("Project already initialized");
     0
 }
 
@@ -92,10 +96,11 @@ fn waiting(time: i32) {
     }
     println!();
 }
-fn run() -> bool {
+fn run(time: i32) -> bool {
     if Path::new(GIT_HOOK).exists() {
         return Command::new("bash")
             .arg(GIT_HOOK)
+            .arg(time.to_string().as_str())
             .current_dir(".")
             .spawn()
             .expect("Failed to run the hook")
@@ -120,7 +125,7 @@ fn gen_badges() -> i32 {
     if Path::new(GIT_HOOK).exists()
         && Command::new("bash")
             .arg(GIT_HOOK)
-            .arg("--gen-badges")
+            .arg("badges")
             .spawn()
             .expect("msg")
             .wait()
@@ -131,7 +136,7 @@ fn gen_badges() -> i32 {
     }
     if Path::new(HG_HOOK).exists() {
         assert!(Command::new("pre-commit")
-            .arg("--gen-badges")
+            .arg("badges")
             .current_dir(".")
             .spawn()
             .expect("failed")
@@ -151,7 +156,7 @@ fn watch(args: &[String]) {
             .to_string();
         let converted_time: i32 = time.parse().expect("Fail to parse");
         loop {
-            let code = run();
+            let code = run(converted_time);
 
             if code {
                 println!(
@@ -174,7 +179,7 @@ fn watch(args: &[String]) {
         }
     } else {
         loop {
-            let code = run();
+            let code = run(60);
 
             if code {
                 println!(
@@ -201,7 +206,7 @@ fn watch(args: &[String]) {
 fn main() -> ExitCode {
     let args: Vec<String> = args().collect();
     if args.len() == 1 {
-        if run() {
+        if run(0) {
             exit(0);
         }
         exit(1);
@@ -220,25 +225,17 @@ fn main() -> ExitCode {
         exit(1);
     }
 
-    if args.len() == 2
-        && args
-            .get(1)
-            .expect("Fail to get the argument")
-            .eq("--gen-badges")
-    {
-        if gen_badges().eq(&0) {
-            exit(0);
-        }
-        exit(1);
+    if args.len() == 2 && args.get(1).expect("Fail to get the argument").eq("badges") {
+        exit(gen_badges());
     }
 
-    if args.get(1).expect("failed to get argument").eq("upgrade") {
-        exit(upgrade());
+    if args.get(1).expect("failed to get argument").eq("update") {
+        exit(update());
     }
-    if args.get(1).expect("failed to get argument").eq("--help") {
+    if args.get(1).expect("failed to get argument").eq("help") {
         exit(help());
     }
-    if args.get(1).expect("Fail to get the argument").eq("--watch") {
+    if args.get(1).expect("Fail to get the argument").eq("watch") {
         watch(&args);
     }
     exit(help());

@@ -33,16 +33,17 @@ TESTS_SUCCESS="${OUTPUT_DIR}/tests${SUCCESS_EXT}"
 TESTS_FAILURE="${OUTPUT_DIR}/tests${FAILURE_EXT}"
 CHECK_SUCCESS="${OUTPUT_DIR}/check${SUCCESS_EXT}"
 CHECK_FAILURE="${OUTPUT_DIR}/check${FAILURE_EXT}"
-FAILURE_TIME=20
-SUCCESS_TIME=5
-
 if [ -z "$1" ]
 then
     GENERATE_BADGE=false
-elif [ "$1" == "--gen-badges" ]
+elif [ "$1" == "badges" ]
 then
     GENERATE_BADGE=true
+    SUCCESS_TIME=0
+    FAILURE_TIME=20
 else
+    SUCCESS_TIME=$1
+    FAILURE_TIME=$1
     GENERATE_BADGE=false
 fi
 
@@ -148,50 +149,48 @@ else
     badge "check" "${SUCCESS}"
 fi
 
-
 clear
-
 
 if [ ${VERIFY} == true ]
 then
-    output "Project is valid" "waiting ${SUCCESS_TIME} secs" "${VERIFY_SUCCESS}" ${SUCCESS_TIME}
+    output "Project is valid" "waiting ${SUCCESS_TIME} secs" "${VERIFY_SUCCESS}" "${SUCCESS_TIME}"
 else
-    output "Project not valid" "waiting ${FAILURE_TIME} secs" "${VERIFY_FAILURE}" ${FAILURE_TIME}
+    output "Project not valid" "waiting ${FAILURE_TIME} secs" "${VERIFY_FAILURE}" "${FAILURE_TIME}"
 fi
 
 if [ ${FORMAT} == true ]
 then
-    output "Source code format is valid"  "waiting ${SUCCESS_TIME} secs" "${FORMAT_SUCCESS}" ${SUCCESS_TIME}
+    output "Source code format is valid"  "waiting ${SUCCESS_TIME} secs" "${FORMAT_SUCCESS}" "${SUCCESS_TIME}"
 else
-    output "Source code format contains error" "waiting ${FAILURE_TIME} secs" "${FORMAT_FAILURE}" ${FAILURE_TIME}
+    output "Source code format contains error" "waiting ${FAILURE_TIME} secs" "${FORMAT_FAILURE}" "${FAILURE_TIME}"
 fi
 
 if [ ${AUDIT} == true ]
 then
-    output "Audit passes" "waiting ${SUCCESS_TIME} secs" "${AUDIT_SUCCESS}" ${SUCCESS_TIME}
+    output "Audit passes" "waiting ${SUCCESS_TIME} secs" "${AUDIT_SUCCESS}" "${SUCCESS_TIME}"
 else
-    output "Audit detect warnings" "waiting ${FAILURE_TIME} secs" "${AUDIT_FAILURE}" ${FAILURE_TIME}
+    output "Audit detect warnings" "waiting ${FAILURE_TIME} secs" "${AUDIT_FAILURE}" "${FAILURE_TIME}"
 fi
 
 if [ ${CLIPPY} == true ]
 then
-    output "Code is clean" "waiting ${SUCCESS_TIME} secs" "${CLIPPY_SUCCESS}" ${SUCCESS_TIME}
+    output "Code is clean" "waiting ${SUCCESS_TIME} secs" "${CLIPPY_SUCCESS}" "${SUCCESS_TIME}"
 else
-    output "Code contains errors" "waiting ${FAILURE_TIME} secs" "${CLIPPY_FAILURE}" ${FAILURE_TIME}
+    output "Code contains errors" "waiting ${FAILURE_TIME} secs" "${CLIPPY_FAILURE}" "${FAILURE_TIME}"
 fi
 
 if [ ${TESTS} == true ]
 then
-    output "All tests passes" "waiting ${SUCCESS_TIME} secs" "${TESTS_SUCCESS}" ${SUCCESS_TIME}
+    output "All tests passes" "waiting ${SUCCESS_TIME} secs" "${TESTS_SUCCESS}" "${SUCCESS_TIME}"
 else
-    output "Tests contains failure" "waiting ${FAILURE_TIME} secs" "${TESTS_FAILURE}" ${FAILURE_TIME}
+    output "Tests contains failure" "waiting ${FAILURE_TIME} secs" "${TESTS_FAILURE}" "${FAILURE_TIME}"
 fi
 
 if [ ${CHECK} == true ]
 then
-    output "Code clean" "waiting ${SUCCESS_TIME} secs" "${CHECK_SUCCESS}" ${SUCCESS_TIME}
+    output "Code clean" "waiting ${SUCCESS_TIME} secs" "${CHECK_SUCCESS}" "${SUCCESS_TIME}"
 else
-    output "Code contains errors" "waiting ${FAILURE_TIME} secs" "${CHECK_FAILURE}" ${FAILURE_TIME}
+    output "Code contains errors" "waiting ${FAILURE_TIME} secs" "${CHECK_FAILURE}" "${FAILURE_TIME}"
 fi
 
 if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ ${CLIPPY} == true ]  && [ ${TESTS} == true ] && [ ${CHECK} == true ]

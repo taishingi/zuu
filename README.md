@@ -32,8 +32,6 @@ You can also generate badges for all checkup in different styles.
 cargo install zuu rsbadges
 ```
 
-![output](https://raw.githubusercontent.com/taishingi/zuu/master/zuu-8.0.0.gif)
-
 ## Archlinux install
 
 ![Aur version](https://img.shields.io/aur/version/zuu?style=social "Aur version")
@@ -130,8 +128,8 @@ git commit -m "commit msg"
 
 ```bash
 zuu
-zuu --watch
-zuu --watch 10
+zuu watch
+zuu watch 10
 ```
 
 Time is in seconds
@@ -139,19 +137,19 @@ Time is in seconds
 ## Upgrade the hook file
 
 ```bash
-zuu upgrade
+zuu update
 ```
 
 ## Display help
 
 ```bash
-zuu --help
+zuu help
 ```
 
 ## Generate badges
 
 ```bash
-zuu --gen-badges
+zuu badges
 ```
 
 ## Structure of the project
