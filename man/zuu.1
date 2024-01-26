@@ -11,13 +11,16 @@ It's support \fBgit\fR and \fBmercurial\fR.
 .BR init 
 Init code tracking.
 .TP
+.BR help 
+Display the help.
+.TP
 .BR badges
 Run the hook and generate all badges.
 .TP
 .BR update
 Erase the hook file to the latest content.
 .SS WATCH MODE
-\fB--watch \fR[ WAITING_TIME ]\fR
+\fBwatch \fR[ WAITING_TIME ]\fR
 .TP
 .BR
 Run hook in watch mode.
@@ -25,7 +28,7 @@ Run hook in watch mode.
 .TP
 The sleep time to re run the script in seconds.
 .TP
-The default \fBWAITING_TIME\fR value is set to \fBone minute\fR by default.
+The default \fBWAITING_TIME\fR value is set to \fB1 minute\fR by default.
 .TP
 If the \fBWAITING_TIME\fR is set waiting this time.
 .SS EXIT WATCH MODE
@@ -34,10 +37,10 @@ If the \fBWAITING_TIME\fR is set waiting this time.
 Ctrl+c to exit.
 .SH EXIT STATUS 
 .TP
-.BR 0 "
+.BR 0
 Code is valid
 .TP
-.BR 1 "
+.BR 1
 Code not valid
 .SH AUTHORS
 .TP
