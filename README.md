@@ -1,6 +1,6 @@
 # What it's ?
 
-<img alt="logo" src="https://raw.githubusercontent.com/taishingi/zuu/master/img/zuu.png" title="zuu" align="right" width="250"/>
+<img alt="logo" src="img/avatar.png" title="zuu" align="right" width="250"/>
 
 Zuu will perform certain code tests at the time of the commit. 
 
