@@ -1,5 +1,3 @@
-<div style="background-color:black;">
-
 <h1>What it's ?</h1> 
 
 <img alt="logo" src="https://raw.githubusercontent.com/taishingi/zuu/master/img/avatar.png" title="zuu" align="right" width="250"/>
@@ -16,12 +14,8 @@ Watch mode is available.
 
 You can also generate badges for all checkup in different styles.
 
-<div style="display: flex;justify-content: center">
-
 [![zuu](https://github.com/taishingi/zuu/actions/workflows/rust.yml/badge.svg)](https://github.com/taishingi/zuu/actions/workflows/rust.yml)
 [![continuous](https://github.com/taishingi/zuu/actions/workflows/continuous.yml/badge.svg)](https://github.com/taishingi/zuu/actions/workflows/continuous.yml)
-
-</div> 
 
 ![audit](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/audit.svg)
 ![check](https://raw.githubusercontent.com/taishingi/zuu/master/badges/social/check.svg)
@@ -215,5 +209,3 @@ zuu badges
 [Donate](https://www.paypal.com/donate/?hosted_button_id=D43VUM85PM724)
 
 [Github](https://github.com/taishingi)
-
-</div> 

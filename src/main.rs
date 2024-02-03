@@ -32,9 +32,6 @@ impl App {
             audit: (String::new(), 0),
         }
     }
-    fn svg(&mut self, _name: &str) -> bool {
-        true
-    }
     pub fn init(&mut self) -> i32 {
         if Path::new(GIT_DIR).exists() && Path::new(GIT_HOOK).exists() {
             println!("already initialized");
@@ -266,14 +263,6 @@ impl App {
             .success()
     }
 
-    pub fn generate_svg(&mut self) -> bool {
-        let tests = self.test();
-        if tests.1.eq(&0) {
-            return true;
-        }
-        false
-    }
-
     fn done(&mut self, q: bool, wait: i32) -> i32 {
         let mut s;
         loop {
@@ -289,7 +278,6 @@ impl App {
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
     let mut app = App::new();
-    app.generate_svg();
     if args.len() == 2 && args.get(1).unwrap().eq("init") {
         exit(app.init());
     }
