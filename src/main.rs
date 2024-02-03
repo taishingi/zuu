@@ -1,307 +1,153 @@
-use std::fs::{read_to_string, File};
-use std::io;
-use std::io::Write;
-use std::path::Path;
-use std::process::{exit, Command, ExitCode};
-use std::thread::sleep;
-use std::time::Duration;
+mod c;
+mod d;
+mod global;
+mod go;
+mod haskell;
+mod java;
+mod js;
+mod php;
+mod python;
+mod r;
+mod ruby;
+mod rust;
+mod zuu;
 
-const GIT_HOOK: &str = ".git/hooks/pre-commit";
-const HG_HOOK: &str = ".hg/hgrc";
-const GIT_DIR: &str = ".git";
-const HG_DIR: &str = ".hg";
+use crate::c::C;
+use crate::d::D;
+use crate::go::Go;
+use crate::haskell::Haskell;
+use crate::java::Java;
+use crate::js::Js;
+use crate::php::Php;
+use crate::python::Python;
+use crate::r::R;
+use crate::ruby::Ruby;
+use crate::rust::Rust;
+use crate::zuu::{
+    Application, Language, Zuu, C_PROJECT, D_PROJECT, GO_PROJECT, HASKELL_PROJECT, JAVA_PROJECT,
+    JS_PROJECT, PHP_PROJECT, PYTHON_PROJECT, RUBY_PROJECT, RUST_PROJECT, R_PROJECT,
+};
+use std::path::Path;
+use std::process::{exit, ExitCode};
 
 struct App {
-    should_quit: bool,
-    init: i32,
-    test: (String, i32),
-    clippy: (String, i32),
-    check: (String, i32),
-    format: (String, i32),
-    audit: (String, i32),
+    args: Vec<String>,
 }
-impl App {
-    fn new() -> Self {
+impl Application for App {
+    fn new(args: &[String]) -> Self {
         Self {
-            should_quit: false,
-            init: 1,
-            test: (String::new(), 0),
-            clippy: (String::new(), 0),
-            check: (String::new(), 0),
-            format: (String::new(), 0),
-            audit: (String::new(), 0),
+            args: Vec::from(args),
         }
-    }
-    pub fn init(&mut self) -> i32 {
-        if Path::new(GIT_DIR).exists() && Path::new(GIT_HOOK).exists() {
-            println!("already initialized");
-            self.init = 1;
-            return self.init;
-        }
-        if Path::new(GIT_DIR).exists() && !Path::new(GIT_HOOK).exists() {
-            let mut f = File::create(GIT_HOOK).expect("failed to create the file");
-            f.write_all(b"#!/bin/bash\nunset GIT_DIR\nzuu\nexit $?")
-                .expect("failed to write content");
-            f.sync_all().expect("failed to write content");
-            assert!(Command::new("chmod")
-                .arg("+x")
-                .arg(GIT_HOOK)
-                .current_dir(".")
-                .spawn()
-                .expect("Failed to run chmod")
-                .wait()
-                .expect("")
-                .success());
-            println!("Project initialized successfully");
-            self.init = 0;
-        }
-        if Path::new(HG_DIR).exists() && !Path::new(HG_HOOK).exists() {
-            let mut f = File::create(HG_HOOK).expect("failed to create the hook");
-            f.write_all(b"[hooks]\nprecommit = zuu").expect("");
-            f.sync_data().expect("");
-            println!("Project initialized");
-            self.init = 0;
-        }
-        self.init
-    }
-    pub fn waiting(&mut self, time: i32) -> &mut Self {
-        println!();
-
-        for _i in 1..time {
-            print!(".");
-            io::stdout().flush().unwrap();
-            sleep(Duration::from_secs(1));
-        }
-        self
-    }
-    pub fn test(&mut self) -> (String, i32) {
-        self.test.0.clear();
-        let code = Command::new("cargo")
-            .arg("--quiet")
-            .arg("test")
-            .stdout(File::create("zuu/test.txt").expect("failed to create the file"))
-            .current_dir(".")
-            .output()
-            .expect("")
-            .status
-            .code()
-            .unwrap();
-        self.test
-            .0
-            .push_str(read_to_string("zuu/test.txt").expect("failed").as_str());
-        self.test.1 = code;
-        self.test.clone()
     }
 
-    pub fn check(&mut self) -> (String, i32) {
-        self.check.0.clear();
-        let code = Command::new("cargo")
-            .arg("check")
-            .stderr(File::create("zuu/check.txt").expect("failed to create the file"))
-            .current_dir(".")
-            .output()
-            .expect("")
-            .status
-            .code()
-            .unwrap();
-        self.check
-            .0
-            .push_str(read_to_string("zuu/check.txt").expect("failed").as_str());
-        self.check.1 = code;
-        self.check.clone()
-    }
-    pub fn audit(&mut self) -> (String, i32) {
-        self.audit.0.clear();
-        let code = Command::new("cargo")
-            .arg("audit")
-            .stdout(File::create("zuu/audit.txt").expect("failed to create the file"))
-            .current_dir(".")
-            .output()
-            .expect("")
-            .status
-            .code()
-            .unwrap();
-        self.audit
-            .0
-            .push_str(read_to_string("zuu/audit.txt").expect("failed").as_str());
-        self.audit.1 = code;
-        self.audit.clone()
-    }
-    pub fn format(&mut self) -> (String, i32) {
-        let code = Command::new("cargo")
-            .arg("fmt")
-            .arg("--check")
-            .stdout(File::create("zuu/fmt.txt").expect("failed to create the file"))
-            .current_dir(".")
-            .output()
-            .expect("")
-            .status
-            .code()
-            .unwrap();
-        self.format
-            .0
-            .push_str(read_to_string("zuu/fmt.txt").expect("failed").as_str());
-        self.format.1 = code;
-        self.format.clone()
-    }
-
-    pub fn clippy(&mut self) -> (String, i32) {
-        let code = Command::new("cargo")
-            .arg("clippy")
-            .arg("--")
-            .arg("-F")
-            .arg("keyword_idents")
-            .arg("-F")
-            .arg("warnings")
-            .arg("-F")
-            .arg("let-underscore")
-            .arg("-F")
-            .arg("rust-2018-compatibility")
-            .arg("-F")
-            .arg("rust-2018-idioms")
-            .arg("-F")
-            .arg("rust-2021-compatibility")
-            .arg("-F")
-            .arg("future-incompatible")
-            .arg("-F")
-            .arg("unused")
-            .arg("-F")
-            .arg("unused_crate_dependencies")
-            .arg("-F")
-            .arg("unused_extern_crates")
-            .arg("-F")
-            .arg("unused_macro_rules")
-            .arg("-F")
-            .arg("unused_results")
-            .arg("-F")
-            .arg("unused_qualifications")
-            .arg("-F")
-            .arg("nonstandard-style")
-            .arg("-F")
-            .arg("macro_use_extern_crate")
-            .arg("-F")
-            .arg("absolute_paths_not_starting_with_crate")
-            .arg("-F")
-            .arg("ambiguous_glob_imports")
-            .arg("-F")
-            .arg("clippy::all")
-            .arg("-F")
-            .arg("clippy::perf")
-            .arg("-F")
-            .arg("clippy::pedantic")
-            .arg("-F")
-            .arg("clippy::style")
-            .arg("-F")
-            .arg("clippy::suspicious")
-            .arg("-F")
-            .arg("clippy::correctness")
-            .arg("-F")
-            .arg("clippy::nursery")
-            .arg("-F")
-            .arg("clippy::complexity")
-            .arg("-F")
-            .arg("clippy::cargo")
-            .stderr(File::create("zuu/clippy.txt").expect("failed to create the file"))
-            .current_dir(".")
-            .output()
-            .unwrap()
-            .status
-            .code()
-            .unwrap();
-        self.clippy
-            .0
-            .push_str(read_to_string("zuu/clippy.txt").expect("failed").as_str());
-        self.clippy.1 = code;
-        self.clippy.clone()
-    }
-    pub fn quit(&mut self, quit: bool) -> &mut Self {
-        self.should_quit = quit;
-        self
-    }
-
-    pub fn out(&mut self, x: i32, s: &str, e: &str) -> &mut Self {
-        if x.eq(&0) {
-            println!(
-                "\n{}",
-                format_args!(
-                    "{}[ {}OK {}] {}{}",
-                    "\x1b[1;37m", "\x1b[1;32m", "\x1b[1;37m", s, "\x1b[0m"
-                )
-            );
-        } else {
-            println!(
-                "\n{}",
-                format_args!(
-                    "{}[ {}KO {}] {}{}",
-                    "\x1b[1;37m", "\x1b[1;31m", "\x1b[1;37m", e, "\x1b[0m"
-                )
-            );
+    fn detect(&mut self) -> Language {
+        if self.exist(RUST_PROJECT) {
+            return Language::Rust;
+        } else if self.exist(GO_PROJECT) {
+            return Language::Go;
+        } else if self.exist(JS_PROJECT) {
+            return Language::Js;
+        } else if self.exist(D_PROJECT) {
+            return Language::D;
+        } else if self.exist(PYTHON_PROJECT) {
+            return Language::Python;
+        } else if self.exist(C_PROJECT) {
+            return Language::C;
+        } else if self.exist(HASKELL_PROJECT) {
+            return Language::Haskell;
+        } else if self.exist(R_PROJECT) {
+            return Language::R;
+        } else if self.exist(RUBY_PROJECT) {
+            return Language::Ruby;
+        } else if self.exist(PHP_PROJECT) {
+            return Language::Php;
+        } else if self.exist(JAVA_PROJECT) {
+            return Language::Java;
         }
-        self
-    }
-    pub fn success(&mut self) -> bool {
-        self.check.1.eq(&0)
-            && self.audit.1.eq(&0)
-            && self.format.1.eq(&0)
-            && self.clippy.1.eq(&0)
-            && self.test.1.eq(&0)
+        Language::Unknown
     }
 
-    pub fn all(&mut self, q: bool, wait: i32) -> bool {
-        let tests = self.test();
-        let clippy = self.clippy();
-        let format = self.format();
-        let audit = self.audit();
-        let check = self.check();
-        self.out(tests.1, "test", tests.0.as_str())
-            .out(clippy.1, "clippy", clippy.0.as_str())
-            .out(format.1, "format", format.0.as_str())
-            .out(audit.1, "audit", audit.0.as_str())
-            .out(check.1, "check", check.0.as_str())
-            .quit(q)
-            .waiting(wait)
-            .success()
+    fn exist(&mut self, file: &str) -> bool {
+        Path::new(file).exists()
     }
 
-    fn done(&mut self, q: bool, wait: i32) -> i32 {
-        let mut s;
-        loop {
-            s = self.all(q, wait);
-            if self.should_quit {
-                break;
-            }
+    fn has(&mut self, index: usize, argument: &str) -> bool {
+        if self.args.len() > index {
+            return self.args.get(index).unwrap().eq(argument);
         }
-        i32::from(!s)
+        false
+    }
+}
+
+fn check(args: Vec<String>, l: Language) -> ExitCode {
+    match l {
+        Language::Rust => Rust::new(args).check(),
+        Language::C => C::new(args).check(),
+        Language::D => D::new(args).check(),
+        Language::Python => Python::new(args).check(),
+        Language::Java => Java::new(args).check(),
+        Language::Php => Php::new(args).check(),
+        Language::Ruby => Ruby::new(args).check(),
+        Language::R => R::new(args).check(),
+        Language::Go => Go::new(args).check(),
+        Language::Js => Js::new(args).check(),
+        Language::Haskell => Haskell::new(args).check(),
+        Language::Unknown => {
+            exit(1);
+        }
+    }
+}
+
+fn hook(args: Vec<String>, l: Language) -> ExitCode {
+    match l {
+        Language::Rust => Rust::new(args).init(),
+        Language::C => C::new(args).init(),
+        Language::D => D::new(args).init(),
+        Language::Python => Python::new(args).init(),
+        Language::Java => Java::new(args).init(),
+        Language::Php => Php::new(args).init(),
+        Language::Ruby => Ruby::new(args).init(),
+        Language::R => R::new(args).init(),
+        Language::Go => Go::new(args).init(),
+        Language::Js => Js::new(args).init(),
+        Language::Haskell => Haskell::new(args).init(),
+        Language::Unknown => {
+            exit(1);
+        }
+    }
+}
+
+fn watching(args: Vec<String>, l: Language) -> ExitCode {
+    match l {
+        Language::Rust => Rust::new(args).each(),
+        Language::C => C::new(args).each(),
+        Language::D => D::new(args).each(),
+        Language::Python => Python::new(args).each(),
+        Language::Java => Java::new(args).each(),
+        Language::Php => Php::new(args).each(),
+        Language::Ruby => Ruby::new(args).each(),
+        Language::R => R::new(args).each(),
+        Language::Go => Go::new(args).each(),
+        Language::Js => Js::new(args).each(),
+        Language::Haskell => Haskell::new(args).each(),
+        Language::Unknown => {
+            exit(1);
+        }
     }
 }
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
-    let mut app = App::new();
-    if args.len() == 2 && args.get(1).unwrap().eq("init") {
-        exit(app.init());
+    let mut app = App::new(&args);
+    if app.has(1, "check") {
+        return check(args, app.detect());
+    } else if app.has(1, "init") {
+        return hook(args, app.detect());
+    } else if app.has(1, "watch") {
+        return watching(args, app.detect());
     }
-    if args.len() == 2 && args.get(1).unwrap().eq("watch") {
-        exit(app.done(false, 60));
-    }
-    if args.len() == 3 {
-        let time: i32 = args.get(2).unwrap().parse().unwrap();
-        let q = args.get(1).unwrap().eq("watch");
-        exit(app.done(q, time));
-    }
-    exit(app.done(true, 0));
+    exit(1);
 }
 
 #[cfg(test)]
-mod test {
-    use crate::App;
-
-    #[test]
-    pub fn all() {
-        let mut app = App::new();
-        assert_eq!(app.clippy().1, 0);
-        assert_eq!(app.check().1, 0);
-        assert_eq!(app.audit().1, 0);
-        assert_eq!(app.format().1, 0);
-    }
-}
+mod test {}

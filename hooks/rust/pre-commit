@@ -1,0 +1,212 @@
+#!/usr/bin/bash
+
+if [ -n "$GIT_DIR" ]
+then
+  unset GIT_DIR
+fi
+
+LINES=$(tput lines)
+COLUMNS=$(tput cols)
+OUTPUT_DIR=zuu
+BADGES_DIR=badges
+BADGES_STYLES=('plastic' 'flat' 'flatsquare' 'forthebadge' 'social')
+SUCCESS="success"
+FAILURE="failure"
+FORMAT=false
+VERIFY=false
+AUDIT=false
+CLIPPY=false
+TESTS=false
+CHECK=false
+SUCCESS_EXT="_${SUCCESS}.txt"
+FAILURE_EXT="_${FAILURE}.txt"
+
+VERIFY_SUCCESS="${OUTPUT_DIR}/verify${SUCCESS_EXT}"
+VERIFY_FAILURE="${OUTPUT_DIR}/verify${FAILURE_EXT}"
+FORMAT_SUCCESS="${OUTPUT_DIR}/fmt${SUCCESS_EXT}"
+FORMAT_FAILURE="${OUTPUT_DIR}/fmt${FAILURE_EXT}"
+AUDIT_SUCCESS="${OUTPUT_DIR}/audit${SUCCESS_EXT}"
+AUDIT_FAILURE="${OUTPUT_DIR}/audit${FAILURE_EXT}"
+CLIPPY_SUCCESS="${OUTPUT_DIR}/clippy${SUCCESS_EXT}"
+CLIPPY_FAILURE="${OUTPUT_DIR}/clippy${FAILURE_EXT}"
+TESTS_SUCCESS="${OUTPUT_DIR}/tests${SUCCESS_EXT}"
+TESTS_FAILURE="${OUTPUT_DIR}/tests${FAILURE_EXT}"
+CHECK_SUCCESS="${OUTPUT_DIR}/check${SUCCESS_EXT}"
+CHECK_FAILURE="${OUTPUT_DIR}/check${FAILURE_EXT}"
+
+if [ -z "$1" ]
+then
+    GENERATE_BADGE=false
+elif [ "$1" == "badges" ]
+then
+    GENERATE_BADGE=true
+    SUCCESS_TIME=0
+    FAILURE_TIME=20
+else
+    SUCCESS_TIME=$1
+    FAILURE_TIME=$1
+    GENERATE_BADGE=false
+fi
+
+function output {
+    local text="$2"
+    local b=""
+
+    for (( i = 0; i < (COLUMNS); i++ ))
+    do
+        b+="="
+    done
+    tput cuf 0
+    printf "\n%s\n" "$b"
+    printf "\n%*s\n" $(((${#1}+COLUMNS)/2)) "$1"
+    tput cuf 0
+    printf "\n%s\n\n" "$b"
+    cat "$3"
+    printf "\n%*s\n" $(((${#text}+COLUMNS)/2)) "$text"
+    read -r -s -t "$4"
+}
+
+
+
+function badge()
+{
+    if [ "${GENERATE_BADGE}" == true ]
+    then
+        for style in "${BADGES_STYLES[@]}"
+        do
+            rsbadges --style "${style}"  --label "${1}" --msg "${2}" --logo https://simpleicons.org/icons/rust.svg  --embed-logo --save-to-svg-at  "${BADGES_DIR}/${style}/${1}.svg" > /dev/null 2> /dev/null
+        done
+    fi
+}
+
+if [ ! -d ${OUTPUT_DIR} ]
+then
+    mkdir ${OUTPUT_DIR}
+    touch "${OUTPUT_DIR}/.gitignore"
+    echo "*.txt" > "${OUTPUT_DIR}/.gitignore"
+fi
+
+if [ ! -d "${BADGES_DIR}" ]
+then
+    mkdir "${BADGES_DIR}"
+    for style in "${BADGES_STYLES[@]}"
+    do
+        mkdir "${BADGES_DIR}/${style}"
+    done
+fi
+
+if ! cargo verify-project --quiet  > ${VERIFY_SUCCESS} 2> ${VERIFY_FAILURE}
+then
+    VERIFY=false
+    badge "verify-project" "${FAILURE}"
+else
+    VERIFY=true
+    badge "verify-project" "${SUCCESS}"
+fi
+
+if ! cargo fmt --check  > ${FORMAT_SUCCESS}  2> ${FORMAT_FAILURE}
+then
+    FORMAT=false
+    badge "fmt" "${FAILURE}"
+else
+    FORMAT=true
+    badge "fmt" "${SUCCESS}"
+fi
+
+
+if ! cargo audit --color=never  > ${AUDIT_SUCCESS} 2> ${AUDIT_FAILURE}
+then
+    AUDIT=false
+    badge "audit" "${FAILURE}"
+else
+    AUDIT=true
+    badge "audit" "${SUCCESS}"
+fi
+
+if ! cargo clippy -- -F keyword_idents -F warnings -F let-underscore -F rust-2018-compatibility -F rust-2018-idioms  -F rust-2021-compatibility -F future-incompatible -F unused -F unused_crate_dependencies -F unused_extern_crates  -D unused_macro_rules -F unused_results -F unused_qualifications -F nonstandard-style -F macro_use_extern_crate -F absolute_paths_not_starting_with_crate -F ambiguous_glob_imports -F clippy::all -F clippy::perf -F clippy::pedantic -F clippy::style -F clippy::suspicious -F clippy::correctness -F clippy::nursery -F clippy::complexity -F clippy::cargo > ${CLIPPY_SUCCESS} 2> ${CLIPPY_FAILURE}
+then
+    CLIPPY=false
+    badge "clippy" "${FAILURE}"
+else
+    CLIPPY=true
+    badge "clippy" "${SUCCESS}"
+fi
+
+if ! cargo test  > ${TESTS_SUCCESS} 2> ${TESTS_FAILURE}
+then
+    TESTS=false
+    badge "test" "${FAILURE}"
+else
+    TESTS=true
+    badge "test" "${SUCCESS}"
+fi
+
+if ! cargo check --quiet --all-targets  > ${CHECK_SUCCESS} 2> ${CHECK_FAILURE}
+then
+    CHECK=false
+    badge "check" "${FAILURE}"
+else
+    CHECK=true
+    badge "check" "${SUCCESS}"
+fi
+
+clear
+
+if [ ${VERIFY} == true ]
+then
+    output "Project is valid" "waiting ${SUCCESS_TIME} secs" "${VERIFY_SUCCESS}" "${SUCCESS_TIME}"
+else
+    output "Project not valid" "waiting ${FAILURE_TIME} secs" "${VERIFY_FAILURE}" "${FAILURE_TIME}"
+fi
+
+if [ ${FORMAT} == true ]
+then
+    output "Source code format is valid"  "waiting ${SUCCESS_TIME} secs" "${FORMAT_SUCCESS}" "${SUCCESS_TIME}"
+else
+    output "Source code format contains error" "waiting ${FAILURE_TIME} secs" "${FORMAT_FAILURE}" "${FAILURE_TIME}"
+fi
+
+if [ ${AUDIT} == true ]
+then
+    output "Audit passes" "waiting ${SUCCESS_TIME} secs" "${AUDIT_SUCCESS}" "${SUCCESS_TIME}"
+else
+    output "Audit detect warnings" "waiting ${FAILURE_TIME} secs" "${AUDIT_FAILURE}" "${FAILURE_TIME}"
+fi
+
+if [ ${CLIPPY} == true ]
+then
+    output "Code is clean" "waiting ${SUCCESS_TIME} secs" "${CLIPPY_SUCCESS}" "${SUCCESS_TIME}"
+else
+    output "Code contains errors" "waiting ${FAILURE_TIME} secs" "${CLIPPY_FAILURE}" "${FAILURE_TIME}"
+fi
+
+if [ ${TESTS} == true ]
+then
+    output "All tests passes" "waiting ${SUCCESS_TIME} secs" "${TESTS_SUCCESS}" "${SUCCESS_TIME}"
+else
+    output "Tests contains failure" "waiting ${FAILURE_TIME} secs" "${TESTS_FAILURE}" "${FAILURE_TIME}"
+fi
+
+if [ ${CHECK} == true ]
+then
+    output "Code clean" "waiting ${SUCCESS_TIME} secs" "${CHECK_SUCCESS}" "${SUCCESS_TIME}"
+else
+    output "Code contains errors" "waiting ${FAILURE_TIME} secs" "${CHECK_FAILURE}" "${FAILURE_TIME}"
+fi
+
+if [ ${FORMAT} == true ] && [ ${VERIFY} == true ] && [ ${AUDIT} == true ] && [ ${CLIPPY} == true ]  && [ ${TESTS} == true ] && [ ${CHECK} == true ]
+then
+    tput clear
+    title="The code can be committed"
+    printf "\n%*s\n" $(((${#title}+COLUMNS)/2)) "$title"
+    exit 0
+else
+    title="The code is not valid"
+    printf "\n%*s\n" $(((${#title}+COLUMNS)/2)) "$title"
+    if [ ${GENERATE_BADGE} == true ]
+    then
+      exit 0
+    else
+      exit 1
+    fi
+fi
