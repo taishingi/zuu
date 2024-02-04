@@ -79,7 +79,7 @@ impl Application for App {
     }
 }
 
-fn check(args: Vec<String>, l: Language) -> ExitCode {
+fn check(args: Vec<String>, l: &Language) -> ExitCode {
     match l {
         Language::Rust => Rust::new(args).check(),
         Language::C => C::new(args).check(),
@@ -98,7 +98,7 @@ fn check(args: Vec<String>, l: Language) -> ExitCode {
     }
 }
 
-fn hook(args: Vec<String>, l: Language) -> ExitCode {
+fn hook(args: Vec<String>, l: &Language) -> ExitCode {
     match l {
         Language::Rust => Rust::new(args).init(),
         Language::C => C::new(args).init(),
@@ -117,7 +117,7 @@ fn hook(args: Vec<String>, l: Language) -> ExitCode {
     }
 }
 
-fn watching(args: Vec<String>, l: Language) -> ExitCode {
+fn watching(args: Vec<String>, l: &Language) -> ExitCode {
     match l {
         Language::Rust => Rust::new(args).each(),
         Language::C => C::new(args).each(),
@@ -140,11 +140,11 @@ fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
     let mut app = App::new(&args);
     if app.has(1, "check") {
-        return check(args, app.detect());
+        return check(args, &app.detect());
     } else if app.has(1, "init") {
-        return hook(args, app.detect());
+        return hook(args, &app.detect());
     } else if app.has(1, "watch") {
-        return watching(args, app.detect());
+        return watching(args, &app.detect());
     }
     exit(1);
 }

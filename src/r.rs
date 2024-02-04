@@ -18,10 +18,10 @@ impl Zuu for R {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "r", R_HOOK)
+        get_hook(&self.args, "r", R_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "r")
+        watch(&self.args, "r")
     }
 }

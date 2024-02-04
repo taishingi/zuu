@@ -11,17 +11,17 @@ impl Zuu for D {
         Self { args }
     }
     fn check(&mut self) -> ExitCode {
-        if ok("c") {
+        if ok("d") {
             exit(0)
         }
         exit(1)
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "d", D_HOOK)
+        get_hook(&self.args, "d", D_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "d")
+        watch(&self.args, "d")
     }
 }

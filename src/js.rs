@@ -18,10 +18,10 @@ impl Zuu for Js {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "js", JS_HOOK)
+        get_hook(&self.args, "js", JS_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "js")
+        watch(&self.args, "js")
     }
 }

@@ -11,47 +11,47 @@ use std::thread::sleep;
 use std::time::Duration;
 use std::{fs, io};
 
-pub fn get_hook(args: Vec<String>, language: &str, url: &str) -> ExitCode {
+pub fn get_hook(args: &[String], language: &str, url: &str) -> ExitCode {
     let h = var("HOME").expect("");
     let hook_dir = format!(".local/bin/{language}/");
     let hook = format!("{h}/{hook_dir}/pre-commit");
 
-    if has(args.clone(), 1, "init") && has(args.clone(), 2, "git") {
+    if has(args, 1, "init") && has(args, 2, "git") {
         if !exist(GIT_DIR) {
-            println!("{}", GIT_INIT);
+            println!("{GIT_INIT}");
             exit(1);
         }
         if exist(GIT_HOOK) && exist(hook.as_str()) {
-            println!("{}", ALREADY_INIT);
+            println!("{ALREADY_INIT}");
             exit(1);
         }
-        assert!(download_hook(Versioning::Git, language, url));
-        println!("{}", INIT_SUCCESSFULLY);
+        assert!(download_hook(&Versioning::Git, language, url));
+        println!("{INIT_SUCCESSFULLY}");
         exit(0);
     }
 
-    if has(args.clone(), 1, "init") && has(args.clone(), 2, "hg") {
+    if has(args, 1, "init") && has(args, 2, "hg") {
         if !exist(HG_DIR) {
-            println!("{}", HG_INIT);
+            println!("{HG_INIT}");
             exit(1);
         }
         if exist(HG_HOOK) && exist(hook.as_str()) {
-            println!("{}", ALREADY_INIT);
+            println!("{ALREADY_INIT}");
             exit(1);
         }
-        assert!(download_hook(Versioning::Hg, language, url));
-        println!("{}", INIT_SUCCESSFULLY);
+        assert!(download_hook(&Versioning::Hg, language, url));
+        println!("{INIT_SUCCESSFULLY}");
         exit(0);
     }
     println!("run -> zuu init hg || zuu init git");
     exit(1);
 }
 
-pub fn watch(args: Vec<String>, language: &str) -> ExitCode {
+pub fn watch(args: &[String], language: &str) -> ExitCode {
     let mut b;
     loop {
         b = ok(language);
-        if should_quit(args.clone()) {
+        if should_quit(args) {
             break;
         }
         wait(60);
@@ -70,7 +70,7 @@ pub fn shell(program: &str, args: Vec<&str>, d: &str) -> bool {
 }
 pub fn ok(language: &str) -> bool {
     let h = var("HOME").expect("");
-    let hook_dir = format!(".local/bin/zuu/{language}/");
+    let hook_dir = format!(".local/bin/zuu/{language}");
     let hook = format!("{h}/{hook_dir}/pre-commit");
     shell("bash", vec![hook.as_str()], ".")
 }
@@ -104,7 +104,7 @@ pub fn touch(f: &str, d: &str, c: &str) -> bool {
     f.sync_data().is_ok()
 }
 
-pub fn has(args: Vec<String>, index: usize, argument: &str) -> bool {
+pub fn has(args: &[String], index: usize, argument: &str) -> bool {
     if args.len() > index {
         return args
             .get(index)
@@ -114,7 +114,7 @@ pub fn has(args: Vec<String>, index: usize, argument: &str) -> bool {
     false
 }
 
-pub fn should_quit(args: Vec<String>) -> bool {
+pub fn should_quit(args: &[String]) -> bool {
     if args.len() > 1 && has(args, 1, "watch") {
         return false;
     }
@@ -128,9 +128,9 @@ pub fn quit(status: bool) -> ExitCode {
     exit(1);
 }
 
-pub fn download_hook(vcs: Versioning, language: &str, url: &str) -> bool {
+pub fn download_hook(vcs: &Versioning, language: &str, url: &str) -> bool {
     let h = var("HOME").expect("");
-    let hook_dir = format!("{h}/.local/bin/zuu/{language}/");
+    let hook_dir = format!("{h}/.local/bin/zuu/{language}");
     let hook = format!("{hook_dir}/pre-commit");
     if !exist(hook.as_str()) {
         assert!(shell("mkdir", vec!["-p", hook_dir.as_str()], h.as_str()));

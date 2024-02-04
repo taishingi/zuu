@@ -18,10 +18,10 @@ impl Zuu for Rust {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "rust", RUST_HOOK)
+        get_hook(&self.args.clone(), "rust", RUST_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "rust")
+        watch(&self.args, "rust")
     }
 }

@@ -18,10 +18,10 @@ impl Zuu for Php {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "php", PHP_HOOK)
+        get_hook(&self.args, "php", PHP_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "php")
+        watch(&self.args, "php")
     }
 }

@@ -18,10 +18,10 @@ impl Zuu for Ruby {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "ruby", RUBY_HOOK)
+        get_hook(&self.args, "ruby", RUBY_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "ruby")
+        watch(&self.args, "ruby")
     }
 }

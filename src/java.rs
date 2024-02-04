@@ -18,10 +18,10 @@ impl Zuu for Java {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "java", JAVA_HOOK)
+        get_hook(&self.args, "java", JAVA_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "lava")
+        watch(&self.args, "java")
     }
 }

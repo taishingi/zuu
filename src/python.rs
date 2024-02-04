@@ -18,10 +18,10 @@ impl Zuu for Python {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "python", PYTHON_HOOK)
+        get_hook(&self.args, "python", PYTHON_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "python")
+        watch(&self.args, "python")
     }
 }

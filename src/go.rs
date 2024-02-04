@@ -18,10 +18,10 @@ impl Zuu for Go {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "go", GO_HOOK)
+        get_hook(&self.args, "go", GO_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "go")
+        watch(&self.args, "go")
     }
 }

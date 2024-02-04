@@ -18,10 +18,10 @@ impl Zuu for Haskell {
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(self.args.clone(), "haskell", HASKELL_HOOK)
+        get_hook(&self.args, "haskell", HASKELL_HOOK)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(self.args.clone(), "haskell")
+        watch(&self.args, "haskell")
     }
 }
