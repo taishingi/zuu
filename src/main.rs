@@ -24,8 +24,9 @@ use crate::r::R;
 use crate::ruby::Ruby;
 use crate::rust::Rust;
 use crate::zuu::{
-    Application, Language, Zuu, C_PROJECT, D_PROJECT, GO_PROJECT, HASKELL_PROJECT, JAVA_PROJECT,
-    JS_PROJECT, PHP_PROJECT, PYTHON_PROJECT, RUBY_PROJECT, RUST_PROJECT, R_PROJECT,
+    Application, Language, Zuu, ARGS_NOT_RECOGNIZED, C_PROJECT, D_PROJECT, GO_PROJECT,
+    HASKELL_PROJECT, JAVA_PROJECT, JS_PROJECT, LANGUAGE_NOT_DETECTED, PHP_PROJECT, PYTHON_PROJECT,
+    RUBY_PROJECT, RUST_PROJECT, R_PROJECT,
 };
 use std::path::Path;
 use std::process::{exit, ExitCode};
@@ -93,6 +94,7 @@ fn check(args: Vec<String>, l: &Language) -> ExitCode {
         Language::Js => Js::new(args).check(),
         Language::Haskell => Haskell::new(args).check(),
         Language::Unknown => {
+            println!("{LANGUAGE_NOT_DETECTED}");
             exit(1);
         }
     }
@@ -112,6 +114,7 @@ fn hook(args: Vec<String>, l: &Language) -> ExitCode {
         Language::Js => Js::new(args).init(),
         Language::Haskell => Haskell::new(args).init(),
         Language::Unknown => {
+            println!("{LANGUAGE_NOT_DETECTED}");
             exit(1);
         }
     }
@@ -131,6 +134,7 @@ fn watching(args: Vec<String>, l: &Language) -> ExitCode {
         Language::Js => Js::new(args).each(),
         Language::Haskell => Haskell::new(args).each(),
         Language::Unknown => {
+            println!("{LANGUAGE_NOT_DETECTED}");
             exit(1);
         }
     }
@@ -146,6 +150,7 @@ fn main() -> ExitCode {
     } else if app.has(1, "watch") {
         return watching(args, &app.detect());
     }
+    println!("{ARGS_NOT_RECOGNIZED}");
     exit(1);
 }
 

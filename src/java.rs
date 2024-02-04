@@ -1,5 +1,5 @@
 use crate::global::{get_hook, ok, watch};
-use crate::zuu::{Zuu, JAVA_HOOK};
+use crate::zuu::{Language, Zuu};
 use std::process::{exit, ExitCode};
 
 pub struct Java {
@@ -11,17 +11,17 @@ impl Zuu for Java {
         Self { args }
     }
     fn check(&mut self) -> ExitCode {
-        if ok("java") {
+        if ok(&Language::Java) {
             exit(0)
         }
         exit(1)
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(&self.args, "java", JAVA_HOOK)
+        get_hook(&self.args, &Language::Java)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(&self.args, "java")
+        watch(&self.args, &Language::Java)
     }
 }

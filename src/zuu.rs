@@ -22,33 +22,18 @@ pub enum Language {
     Unknown,
 }
 
-pub const RUST_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/rust/pre-commit";
-pub const C_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/c/pre-commit";
-pub const D_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/d/pre-commit";
-pub const PYTHON_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/python/pre-commit";
-pub const JAVA_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/java/pre-commit";
-pub const PHP_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/php/pre-commit";
-pub const RUBY_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/ruby/pre-commit";
-pub const R_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/r/pre-commit";
-pub const GO_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/go/pre-commit";
-pub const JS_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/js/pre-commit";
-pub const HASKELL_HOOK: &str =
-    "https://raw.githubusercontent.com/taishingi/zuu/develop/hooks/haskell/pre-commit";
-
 pub const ALREADY_INIT: &str =
-    "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Project already tracked by zuu \x1b[0m";
+    "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Project already tracked by zuu\x1b[0m";
+
+pub const LANGUAGE_NOT_DETECTED: &str =
+    "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Failed to detect the language\x1b[0m";
+
+pub const ARGS_NOT_RECOGNIZED: &str =
+    "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Arguments not recognized\x1b[0m";
 pub const INIT_SUCCESSFULLY: &str =
     "\x1b[1;37m[ \x1b[1;32mOK \x1b[1;37m] Your project is now tracked by zuu\x1b[0m";
+pub const INIT_FAILED: &str =
+    "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Failed to track your repository\x1b[0m";
 
 pub const HG_INIT: &str = "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Run hg init first\x1b[0m";
 pub const GIT_INIT: &str = "\x1b[1;37m[ \x1b[1;31mKO \x1b[1;37m] Run git init first\x1b[0m";
@@ -59,7 +44,7 @@ pub const JS_PROJECT: &str = "package.json";
 pub const PYTHON_PROJECT: &str = "pyproject.toml";
 pub const GO_PROJECT: &str = "go.mod";
 pub const C_PROJECT: &str = "CMakeLists.txt";
-pub const D_PROJECT: &str = "dub";
+pub const D_PROJECT: &str = "dub.json";
 pub const R_PROJECT: &str = "R";
 pub const RUBY_PROJECT: &str = "Gemfile";
 pub const PHP_PROJECT: &str = "composer.json";

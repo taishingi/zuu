@@ -1,5 +1,5 @@
 use crate::global::{get_hook, ok, watch};
-use crate::zuu::{Zuu, PYTHON_HOOK};
+use crate::zuu::{Language, Zuu};
 use std::process::{exit, ExitCode};
 
 pub struct Python {
@@ -11,17 +11,17 @@ impl Zuu for Python {
         Self { args }
     }
     fn check(&mut self) -> ExitCode {
-        if ok("python") {
+        if ok(&Language::Python) {
             exit(0)
         }
         exit(1)
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(&self.args, "python", PYTHON_HOOK)
+        get_hook(&self.args, &Language::Python)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(&self.args, "python")
+        watch(&self.args, &Language::Python)
     }
 }

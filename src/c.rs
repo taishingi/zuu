@@ -1,5 +1,5 @@
 use crate::global::{get_hook, ok, watch};
-use crate::zuu::{Zuu, C_HOOK};
+use crate::zuu::{Language, Zuu};
 use std::process::{exit, ExitCode};
 
 pub struct C {
@@ -11,17 +11,17 @@ impl Zuu for C {
         Self { args }
     }
     fn check(&mut self) -> ExitCode {
-        if ok("c") {
+        if ok(&Language::C) {
             exit(0)
         }
         exit(1)
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(&self.args, "c", C_HOOK)
+        get_hook(&self.args, &Language::C)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(&self.args, "c")
+        watch(&self.args, &Language::C)
     }
 }

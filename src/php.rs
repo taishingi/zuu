@@ -1,5 +1,5 @@
 use crate::global::{get_hook, ok, watch};
-use crate::zuu::{Zuu, PHP_HOOK};
+use crate::zuu::{Language, Zuu};
 use std::process::{exit, ExitCode};
 
 pub struct Php {
@@ -11,17 +11,17 @@ impl Zuu for Php {
         Self { args }
     }
     fn check(&mut self) -> ExitCode {
-        if ok("php") {
+        if ok(&Language::Php) {
             exit(0)
         }
         exit(1)
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(&self.args, "php", PHP_HOOK)
+        get_hook(&self.args, &Language::Php)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(&self.args, "php")
+        watch(&self.args, &Language::Php)
     }
 }

@@ -1,5 +1,5 @@
 use crate::global::{get_hook, ok, watch};
-use crate::zuu::{Zuu, RUST_HOOK};
+use crate::zuu::{Language, Zuu};
 use std::process::{exit, ExitCode};
 
 pub struct Rust {
@@ -11,17 +11,17 @@ impl Zuu for Rust {
         Self { args }
     }
     fn check(&mut self) -> ExitCode {
-        if ok("rust") {
+        if ok(&Language::Rust) {
             exit(0)
         }
         exit(1)
     }
 
     fn init(&mut self) -> ExitCode {
-        get_hook(&self.args.clone(), "rust", RUST_HOOK)
+        get_hook(&self.args, &Language::Rust)
     }
 
     fn each(&mut self) -> ExitCode {
-        watch(&self.args, "rust")
+        watch(&self.args, &Language::Rust)
     }
 }
