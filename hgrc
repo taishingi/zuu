@@ -1,2 +1,0 @@
-[hooks]
-precommit = /usr/bin/pre-commit
