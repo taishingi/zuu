@@ -14,4 +14,4 @@ jobs:
     - name: deps 
       run: sudo apt-get install -y curl fd-find git docker-ce docker-ce-cli containerd.io packer && packer plugins install github.com/hashicorp/docker
     - name: continuous
-      run: git clone https://github.com/taishingi/continuous-template.git continuous && cd continuous/rust && ./scripts-gen "github.com" "taishingi" "zuu" "master" "4" && packer validate . && packer build .
+      run: git clone https://github.com/taishingi/continuous-template.git continuous && cd continuous/rust && ./scripts-gen "github.com" "taishingi" "zuu" "${GITHUB_REF##*/}" "4" && packer validate . && packer build .
